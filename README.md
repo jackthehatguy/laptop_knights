@@ -1,11 +1,8 @@
 # Laptop Knights
 
 ## What We've Done
-* NOTHING! (at least so far)
-* ok, that's a bit harsh, we have some resources (pics, audio, etc.)
+* started the html5/js demo
 
 ## What We Are Doing
-* making a game
-
-## What We Will Do
-* put a license on it!!!
+* placing collision boxes in room
+    1. add collision physics
