@@ -52,20 +52,20 @@ SpriteDeck.prototype.draw = function (x, y) {
 
 //==============================================================================
 
-function Animation(width, height, src, num_frames, spd) {
+function Animation(width, height, src, num_frames, delay) {
   this.width = width;
   this.height = height;
 
   this.frames = new Image(width, height);
   this.frames.src = src;
   this.num_frames = num_frames;
-  this.spd = spd; // the number of ticks that must pass before the next frame is shown
+  this.delay = delay; // the number of ticks that must pass before the next frame is shown
   this.tick = 0;
   this.cur_frame = 0;
 }
 
 Animation.prototype.update = function () {
-  if (this.tick++ >= this.spd) {
+  if (this.tick++ >= this.delay) {
     this.tick = 0;
     this.cur_frame++;
     if (this.cur_frame >= this.num_frames) {
