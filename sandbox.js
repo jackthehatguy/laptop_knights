@@ -43,7 +43,7 @@ SpriteDeck.prototype.update = function () {
 SpriteDeck.prototype.trade = function (animation) {
   this.cur_anim = animation;
   this.cur_anim.cur_frame = 0;
-  this.tick = 0;
+  this.cur_anim.tick = 0;
 };
 
 SpriteDeck.prototype.draw = function (x, y) {
