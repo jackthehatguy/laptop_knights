@@ -103,12 +103,12 @@ Animation.prototype.update = function () {
 };
 
 Animation.prototype.draw = function (x, y) {
-  c.clearRect(
-    x,
-    y,
-    this.frames.width,
-    this.frames.height
-  );
+  // c.clearRect(
+  //   x,
+  //   y,
+  //   this.frames.width,
+  //   this.frames.height
+  // );
   c.drawImage(
     this.frames,
     this.cur_frame * this.width,
@@ -158,7 +158,11 @@ pierre.sprite_deck.walk_right = new Animation(32, 32, 'img/pierre_right.png', 4,
 pierre.sprite_deck.walk_down = new Animation(32, 32, 'img/pierre_down.png', 4, 10);
 pierre.sprite_deck.cur_anim = pierre.sprite_deck.walk_down;
 
+var bg = new Image(640,480);
+bg.src = 'img/Tabletop Knights Cover.jpg';
+
 window.onload = function loop() {
+  c.drawImage(bg, 0, 0, 1200, 1800, 0, 0, canvas.width, canvas.height);
   pierre.render();
   requestAnimationFrame(loop);
 }
