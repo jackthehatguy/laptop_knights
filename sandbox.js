@@ -1,8 +1,14 @@
-function Actor() {
-  this.x = -1;
-  this.y = -1;
+var canvas = document.getElementById('game');
+canvas.width = 640;
+canvas.height = 480;
+var c = canvas.getContext('2d');
 
-  this.sprite_sheet = null;
+//==============================================================================
+function Actor(x, y, sprite_deck) {
+  this.x = x;
+  this.y = y;
+
+  this.sprite_deck = sprite_deck;
 
   this.spd = 7;
 
@@ -17,32 +23,42 @@ Actor.prototype.move = function () {
 };
 
 Actor.prototype.render = function () {
-  this.sprite_sheet.render(this.x, this.y)
-};
-
-Actor.prototype.update = function () {
-  this.sprite_sheet.update();
+  this.sprite_deck.update();
+  this.sprite_deck.draw(this.x, this.y);
 };
 
 //==============================================================================
 
-function SpriteDeck(idle_animation) {
-  this.idle_animation = idle_animation;
-
-  this.cur_animation = this.idle_animation;
+function SpriteDeck(anim) {
+  this.cur_anim = anim;     // the current animation to be rendered
 }
 
+/**
+* moves the current anim to the next frame if possible
+*/
 SpriteDeck.prototype.update = function () {
-  return this.cur_animation.update();
+  return this.cur_anim.update();
 };
 
-SpriteDeck.prototype.switch_animation = function (animation) {
-  this.cur_animation = animation;
-  this.cur_animation.cur_frame = 0;
+SpriteDeck.prototype.trade = function (animation) {
+  this.cur_anim = animation;
+  this.cur_anim.cur_frame = 0;
 };
 
-SpriteDeck.prototype.render = function (x, y) {
-
+SpriteDeck.prototype.draw = function (x, y) {
+  c.clearRect(x, y, this.cur_anim.frames.width, this.cur_anim.frames.height);
+  c.drawImage(
+    this.cur_anim.frames,
+    this.cur_anim.cur_frame * this.cur_anim.frames.width / this.cur_anim.num_frames,
+    0,
+    this.cur_anim.frames.width,
+    this.cur_anim.frames.height,
+    x,
+    y,
+    this.cur_anim.frames.width,
+    this.cur_anim.frames.height
+  );
+  // c.drawImage(this.cur_anim.frames,x,y)
 };
 
 //==============================================================================
@@ -53,23 +69,20 @@ function Animation(width, height, src, num_frames, spd) {
   this.num_frames = num_frames;
   this.spd = spd; // the number of ticks that must pass before the next frame is shown
   this.tick = 0;
+  this.cur_frame = 0;
 }
 
 Animation.prototype.update = function () {
   if (this.tick++ >= this.spd) {
     this.tick = 0;
     this.cur_frame++;
-    if (this.cur_frame >= this.frames.length) {
+    if (this.cur_frame >= this.num_frames) {
       this.cur_frame = 0;
       return 1;
     }
     return 0;
   }
   return -1;
-};
-
-Animation.prototype.render = function (x, y) {
-
 };
 
 //==============================================================================
@@ -100,3 +113,10 @@ controller = {
 }
 
 //==============================================================================
+
+pierre = new Actor(canvas.width/2, canvas.height/2, new SpriteDeck(new Animation(32, 32, 'img/pierre_up.png', 4, 10)));
+
+window.onload = function loop() {
+  pierre.render();
+  requestAnimationFrame(loop);
+}
