@@ -42,8 +42,7 @@ pierre = {
     pierre.y_vel *= FRICTION;
   }
 }
-pierre.sprite.src = 'img/dummy_pierre.png';
-pierre.sprite.style.clip = 'rect(32px, 32px, 32px, 32px)';
+pierre.sprite.src = 'img/pierre_up.png';
 
 controller = {
   left: false,
@@ -70,12 +69,44 @@ controller = {
   }
 }
 
+var rate = 0;
+var frame_x = 0;
+var frame_y = 0;
+
 loop = function() {
   context.clearRect(0,0,canvas.width,canvas.height);
 
   pierre.move(controller);
 
-  context.drawImage(pierre.sprite, pierre.x, pierre.y);
+  context.drawImage(pierre.sprite, frame_x, frame_y, 32, 32, pierre.x, pierre.y, pierre.sprite.width, pierre.sprite.height);
+
+  if (rate % 37 == 0) {
+    console.log('rate: '+rate);
+    switch (rate % 4) {
+    case 0:
+      frame_x = 0;
+      frame_y = 0;
+      console.log('case:',0);
+      rate = 0;
+      break;
+    case 1:
+      frame_x = 32;
+      frame_y = 0;
+      console.log('case:',1);
+      break;
+    case 2:
+      frame_x = 64;
+      frame_y = 0;
+      console.log('case:',2);
+      break;
+    case 3:
+      frame_x = 96;
+      frame_y = 0;
+      console.log('case:',3);
+      break;
+    }
+  }
+  rate += 1;
 
   window.requestAnimationFrame(loop);
 }
