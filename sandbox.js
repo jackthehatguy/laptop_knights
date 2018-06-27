@@ -2,6 +2,35 @@ var canvas = document.getElementById('game');
 canvas.width = 640;
 canvas.height = 480;
 var c = canvas.getContext('2d');
+const FRICTION = 0; //what has Jack done now?? daijoubu desuyo!
+
+//==============================================================================
+
+controller = {
+  left: false,
+  up: false,
+  right: false,
+  down: false,
+  keyListener: function(e) {
+    // console.log('e',e);
+    var key_state = (e.type == 'keydown');
+
+    switch (e.keyCode) {
+      case 37: case 65: // kb.left & a
+        controller.left = key_state;
+        break;
+      case 38: case 87: // kb.up & w
+        controller.up = key_state;
+        break;
+      case 39: case 68: // kb.right & d
+        controller.right = key_state;
+        break;
+      case 40: case 83: // kb.down & s
+        controller.down = key_state;
+        break;
+    }
+  }
+}
 
 //==============================================================================
 function Actor(x, y, sprite_deck) {
@@ -10,7 +39,9 @@ function Actor(x, y, sprite_deck) {
 
   this.sprite_deck = sprite_deck;
 
-  this.spd = 7;
+  this.spd = 2;
+  this.x_vel = 0;
+  this.y_vel = 0;
 
   this.hp = 0;
   this.sp = 0;
@@ -18,14 +49,37 @@ function Actor(x, y, sprite_deck) {
   this.status_fx = null;
 }
 
-Actor.prototype.move = function () {
+Actor.prototype.move = function (controller) {
+  // console.log(controller);
+  // this code is Jack's fault, lol; don't worry about it, Spencer will fix it
+  if(controller.left) {
+    this.x_vel = -this.spd;
+    this.sprite_deck.trade(this.sprite_deck.walk_left);
+  }
+  if (controller.up) {
+    this.y_vel = -this.spd;
+    this.sprite_deck.trade(this.sprite_deck.walk_up);
+  }
+  if (controller.right) {
+    this.x_vel = this.spd;
+    this.sprite_deck.trade(this.sprite_deck.walk_right);
+  }
+  if (controller.down) {
+    this.y_vel = this.spd;
+    this.sprite_deck.trade(this.sprite_deck.walk_down);
+  }
 
+  this.x += this.x_vel;
+  this.y += this.y_vel;
+  this.x_vel *= FRICTION;
+  this.y_vel *= FRICTION;
 };
 
 Actor.prototype.render = function () {
   this.sprite_deck.update();
   this.sprite_deck.draw(this.x, this.y);
 };
+
 
 //==============================================================================
 
@@ -67,8 +121,8 @@ SpriteDeck.prototype.update = function () {
 
 SpriteDeck.prototype.trade = function (animation) {
   this.cur_anim = animation;
-  this.cur_anim.cur_frame = 0;
-  this.cur_anim.tick = 0;
+  // this.cur_anim.cur_frame = 0;
+  // this.cur_anim.tick = 0;
 };
 
 SpriteDeck.prototype.draw = function (x, y) {
@@ -124,33 +178,6 @@ Animation.prototype.draw = function (x, y) {
 
 //==============================================================================
 
-controller = {
-  left: false,
-  up: false,
-  right: false,
-  down: false,
-  keyListener: function(e) {
-    var key_state = (e.type == 'keydown');
-
-    switch (e.keyCode) {
-      case 37: case 65: // kb.left & a
-        controller.left = key_state;
-        break;
-      case 38: case 87: // kb.up & w
-        controller.up = key_state;
-        break;
-      case 39: case 68: // kb.right & d
-        controller.right = key_state;
-        break;
-      case 40: case 83: // kb.down & s
-        controller.down = key_state;
-        break;
-    }
-  }
-}
-
-//==============================================================================
-
 pierre = new Actor(canvas.width/2, canvas.height/2, new SpriteDeck());
 pierre.sprite_deck.walk_left = new Animation(32, 32, 'img/pierre_left.png', 4, 10);
 pierre.sprite_deck.walk_up = new Animation(32, 32, 'img/pierre_up.png', 4, 10);
@@ -161,8 +188,13 @@ pierre.sprite_deck.cur_anim = pierre.sprite_deck.walk_down;
 var bg = new Image(640,480);
 bg.src = 'img/Tabletop Knights Cover.jpg';
 
-window.onload = function loop() {
+function loop() {
   c.drawImage(bg, 0, 0, 1200, 1800, 0, 0, canvas.width, canvas.height);
+  pierre.move(controller);
   pierre.render();
   requestAnimationFrame(loop);
 }
+
+window.addEventListener('keydown', controller.keyListener);
+window.addEventListener('keyup', controller.keyListener);
+window.requestAnimationFrame(loop);
