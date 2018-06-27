@@ -29,6 +29,31 @@ Actor.prototype.render = function () {
 
 //==============================================================================
 
+function Box(x, y, width, height) {
+  this.x = x,
+  this.y = y,
+
+  this.width = width,
+  this.height = height
+}
+
+Box.prototype.overlaps = function (box) {
+  if (
+      (this.x >= box.x && this.x <= box.x+box.width)
+      &&
+      (this.y >= box.y && this.y <= box.y+box.height)
+    ||
+      (this.x+this.width >= box.x && this.x+this.width <= box.x+box.width)
+      &&
+      (this.y+this.height >= box.y && this.y+this.height <= box.y+box.height)
+  ) {
+    return true;;
+  }
+  return false;
+};
+
+//==============================================================================
+
 function SpriteDeck() {
   this.cur_anim = null;
 }
