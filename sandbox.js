@@ -46,24 +46,15 @@ SpriteDeck.prototype.trade = function (animation) {
 };
 
 SpriteDeck.prototype.draw = function (x, y) {
-  c.clearRect(x, y, this.cur_anim.frames.width, this.cur_anim.frames.height);
-  c.drawImage(
-    this.cur_anim.frames,
-    this.cur_anim.cur_frame * this.cur_anim.frames.width / this.cur_anim.num_frames,
-    0,
-    this.cur_anim.frames.width,
-    this.cur_anim.frames.height,
-    x,
-    y,
-    this.cur_anim.frames.width,
-    this.cur_anim.frames.height
-  );
-  // c.drawImage(this.cur_anim.frames,x,y)
+  this.cur_anim.draw(x, y);
 };
 
 //==============================================================================
 
 function Animation(width, height, src, num_frames, spd) {
+  this.width = width;
+  this.height = height;
+
   this.frames = new Image(width, height);
   this.frames.src = src;
   this.num_frames = num_frames;
@@ -83,6 +74,26 @@ Animation.prototype.update = function () {
     return 0;
   }
   return -1;
+};
+
+Animation.prototype.draw = function (x, y) {
+  c.clearRect(
+    x,
+    y,
+    this.frames.width,
+    this.frames.height
+  );
+  c.drawImage(
+    this.frames,
+    this.cur_frame * this.width,
+    0,
+    this.width,
+    this.height,
+    x,
+    y,
+    this.width,
+    this.height
+  );
 };
 
 //==============================================================================
