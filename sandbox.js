@@ -29,8 +29,8 @@ Actor.prototype.render = function () {
 
 //==============================================================================
 
-function SpriteDeck(anim) {
-  this.cur_anim = anim;     // the current animation to be rendered
+function SpriteDeck() {
+  this.cur_anim = null;
 }
 
 /**
@@ -125,7 +125,12 @@ controller = {
 
 //==============================================================================
 
-pierre = new Actor(canvas.width/2, canvas.height/2, new SpriteDeck(new Animation(32, 32, 'img/pierre_up.png', 4, 10)));
+pierre = new Actor(canvas.width/2, canvas.height/2, new SpriteDeck());
+pierre.sprite_deck.walk_left = new Animation(32, 32, 'img/pierre_left.png', 4, 10);
+pierre.sprite_deck.walk_up = new Animation(32, 32, 'img/pierre_up.png', 4, 10);
+pierre.sprite_deck.walk_right = new Animation(32, 32, 'img/pierre_right.png', 4, 10);
+pierre.sprite_deck.walk_down = new Animation(32, 32, 'img/pierre_down.png', 4, 10);
+pierre.sprite_deck.cur_anim = pierre.sprite_deck.walk_down;
 
 window.onload = function loop() {
   pierre.render();
