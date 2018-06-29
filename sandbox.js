@@ -103,8 +103,8 @@ Actor.prototype.move = function (controller) {
 
 Actor.prototype.render = function () {
   this.sprite_deck.update();
-  this.sprite_deck.draw(this.x, this.y);
   this.collision.draw();
+  this.sprite_deck.draw(this.x, this.y);
 };
 
 //==============================================================================
@@ -217,7 +217,7 @@ Animation.prototype.draw = function (x, y) {
 
 pierre = new Actor(canvas.width/2, canvas.height/2, new SpriteDeck(), new Box(canvas.width/2+2, canvas.height/2+20, 27, 12, true));
 pierre.sprite_deck.walk_left = new Animation(32, 32, 'img/pierre_left.png', 4, 10);
-pierre.sprite_deck.walk_up = new Animation(32, 32, 'img/pierre_up.png', 4, 10);
+pierre.sprite_deck.walk_up = new Animation(32, 32, 'img/pierre_walk_up.png', 4, 10);
 pierre.sprite_deck.walk_right = new Animation(32, 32, 'img/pierre_right.png', 4, 10);
 pierre.sprite_deck.walk_down = new Animation(32, 32, 'img/pierre_down.png', 4, 10);
 
