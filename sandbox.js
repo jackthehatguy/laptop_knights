@@ -95,6 +95,8 @@ Actor.prototype.move = function (controller) {
 
   this.x += this.x_vel;
   this.y += this.y_vel;
+  this.collision.x += this.x_vel;
+  this.collision.y += this.y_vel;
   this.x_vel *= FRICTION;
   this.y_vel *= FRICTION;
 };
@@ -102,13 +104,14 @@ Actor.prototype.move = function (controller) {
 Actor.prototype.render = function () {
   this.sprite_deck.update();
   this.sprite_deck.draw(this.x, this.y);
+  this.collision.draw();
 };
 
 //==============================================================================
 
 function Box(x, y, width, height, display) {
   this.sprite = new Image(width, height);
-  this.sprite.src = '/img/collide.png';
+  this.sprite.src = 'img/collide.png';
   this.display = display;
 
   this.x = x,
@@ -134,8 +137,9 @@ Box.prototype.overlaps = function (box) {
 };
 
 Box.prototype.draw = function () {
-  if (display) {
-    c.drawImage(this.sprite, this.x, this.y);
+  if (this.display) {
+    // c.drawImage(this.sprite, this.x, this.y);
+    c.drawImage(this.sprite, 0, 0, this.width, this.height, this.x, this.y, this.width, this.height);
   }
 }
 
@@ -211,7 +215,7 @@ Animation.prototype.draw = function (x, y) {
 
 //==============================================================================
 
-pierre = new Actor(canvas.width/2, canvas.height/2, new SpriteDeck(), new Box(canvas.width/2, canvas.height/2+16, 32, 16));
+pierre = new Actor(canvas.width/2, canvas.height/2, new SpriteDeck(), new Box(canvas.width/2+2, canvas.height/2+20, 27, 12, true));
 pierre.sprite_deck.walk_left = new Animation(32, 32, 'img/pierre_left.png', 4, 10);
 pierre.sprite_deck.walk_up = new Animation(32, 32, 'img/pierre_up.png', 4, 10);
 pierre.sprite_deck.walk_right = new Animation(32, 32, 'img/pierre_right.png', 4, 10);
