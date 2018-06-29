@@ -216,17 +216,17 @@ Animation.prototype.draw = function (x, y) {
 //==============================================================================
 
 pierre = new Actor(canvas.width/2, canvas.height/2, new SpriteDeck(), new Box(canvas.width/2+2, canvas.height/2+20, 27, 12, true));
-pierre.sprite_deck.walk_left = new Animation(32, 32, 'img/pierre_left.png', 4, 10);
-pierre.sprite_deck.walk_up = new Animation(32, 32, 'img/pierre_walk_up.png', 4, 10);
-pierre.sprite_deck.walk_right = new Animation(32, 32, 'img/pierre_right.png', 4, 10);
-pierre.sprite_deck.walk_down = new Animation(32, 32, 'img/pierre_down.png', 4, 10);
+pierre.sprite_deck.walk_left = new Animation(32, 32, 'img/pierre/pierre_walk_left.png', 4, 10);
+pierre.sprite_deck.walk_up = new Animation(32, 32, 'img/pierre/pierre_walk_up.png', 4, 10);
+pierre.sprite_deck.walk_right = new Animation(32, 32, 'img/pierre/pierre_walk_right.png', 4, 10);
+pierre.sprite_deck.walk_down = new Animation(32, 32, 'img/pierre/pierre_walk_down.png', 4, 10);
 
-pierre.sprite_deck.idle_left = new Animation(32, 32, 'img/pierre_idle_left.png', 1, 0);
-pierre.sprite_deck.idle_up = new Animation(32, 32, 'img/pierre_idle_up.png', 1, 0);
-pierre.sprite_deck.idle_right = new Animation(32, 32, 'img/pierre_idle_right.png', 1, 0);
-pierre.sprite_deck.idle_down = new Animation(32, 32, 'img/pierre_idle_down.png', 1, 0);
+pierre.sprite_deck.idle_left = new Animation(32, 32, 'img/pierre/pierre_idle_left.png', 1, 0);
+pierre.sprite_deck.idle_up = new Animation(32, 32, 'img/pierre/pierre_idle_up.png', 1, 0);
+pierre.sprite_deck.idle_right = new Animation(32, 32, 'img/pierre/pierre_idle_right.png', 1, 0);
+pierre.sprite_deck.idle_down = new Animation(32, 32, 'img/pierre/pierre_idle_down.png', 1, 0);
 
-pierre.sprite_deck.cur_anim = pierre.sprite_deck.walk_down;
+pierre.sprite_deck.cur_anim = pierre.sprite_deck.idle_down;
 
 var bg = new Image(640,480);
 bg.src = 'img/Tabletop Knights Cover.jpg';
