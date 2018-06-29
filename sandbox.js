@@ -33,11 +33,12 @@ controller = {
 }
 
 //==============================================================================
-function Actor(x, y, sprite_deck) {
+function Actor(x, y, sprite_deck, box) {
   this.x = x;
   this.y = y;
 
   this.sprite_deck = sprite_deck;
+  this.collision = box;
 
   this.spd = 2;
   this.x_vel = 0;
@@ -47,6 +48,7 @@ function Actor(x, y, sprite_deck) {
   this.sp = 0;
 
   this.status_fx = null;
+  this.position = 3;
 }
 
 Actor.prototype.move = function (controller) {
@@ -55,18 +57,40 @@ Actor.prototype.move = function (controller) {
   if(controller.left) {
     this.x_vel = -this.spd;
     this.sprite_deck.trade(this.sprite_deck.walk_left);
+    this.position = 0;
   }
   if (controller.up) {
     this.y_vel = -this.spd;
     this.sprite_deck.trade(this.sprite_deck.walk_up);
+    this.position = 1;
   }
   if (controller.right) {
     this.x_vel = this.spd;
     this.sprite_deck.trade(this.sprite_deck.walk_right);
+    this.position = 2;
   }
   if (controller.down) {
     this.y_vel = this.spd;
     this.sprite_deck.trade(this.sprite_deck.walk_down);
+    this.position = 3;
+  }
+  if (!controller.left && !controller.up && !controller.right && !controller.down) {
+    this.x_vel = 0;
+    this.y_vel = 0;
+    switch (this.position) {
+      case 0:
+        this.sprite_deck.trade(this.sprite_deck.idle_left);
+        break;
+      case 1:
+        this.sprite_deck.trade(this.sprite_deck.idle_up);
+        break;
+      case 2:
+        this.sprite_deck.trade(this.sprite_deck.idle_right);
+        break;
+      case 3:
+        this.sprite_deck.trade(this.sprite_deck.idle_down);
+        break;
+    }
   }
 
   this.x += this.x_vel;
@@ -80,10 +104,13 @@ Actor.prototype.render = function () {
   this.sprite_deck.draw(this.x, this.y);
 };
 
-
 //==============================================================================
 
-function Box(x, y, width, height) {
+function Box(x, y, width, height, display) {
+  this.sprite = new Image(width, height);
+  this.sprite.src = '/img/collide.png';
+  this.display = display;
+
   this.x = x,
   this.y = y,
 
@@ -105,6 +132,12 @@ Box.prototype.overlaps = function (box) {
   }
   return false;
 };
+
+Box.prototype.draw = function () {
+  if (display) {
+    c.drawImage(this.sprite, this.x, this.y);
+  }
+}
 
 //==============================================================================
 
@@ -178,17 +211,24 @@ Animation.prototype.draw = function (x, y) {
 
 //==============================================================================
 
-pierre = new Actor(canvas.width/2, canvas.height/2, new SpriteDeck());
+pierre = new Actor(canvas.width/2, canvas.height/2, new SpriteDeck(), new Box(canvas.width/2, canvas.height/2+16, 32, 16));
 pierre.sprite_deck.walk_left = new Animation(32, 32, 'img/pierre_left.png', 4, 10);
 pierre.sprite_deck.walk_up = new Animation(32, 32, 'img/pierre_up.png', 4, 10);
 pierre.sprite_deck.walk_right = new Animation(32, 32, 'img/pierre_right.png', 4, 10);
 pierre.sprite_deck.walk_down = new Animation(32, 32, 'img/pierre_down.png', 4, 10);
+
+pierre.sprite_deck.idle_left = new Animation(32, 32, 'img/pierre_idle_left.png', 1, 0);
+pierre.sprite_deck.idle_up = new Animation(32, 32, 'img/pierre_idle_up.png', 1, 0);
+pierre.sprite_deck.idle_right = new Animation(32, 32, 'img/pierre_idle_right.png', 1, 0);
+pierre.sprite_deck.idle_down = new Animation(32, 32, 'img/pierre_idle_down.png', 1, 0);
+
 pierre.sprite_deck.cur_anim = pierre.sprite_deck.walk_down;
 
 var bg = new Image(640,480);
 bg.src = 'img/Tabletop Knights Cover.jpg';
 
 function loop() {
+  c.clearRect(0,0,640,480);
   c.drawImage(bg, 0, 0, 1200, 1800, 0, 0, canvas.width, canvas.height);
   pierre.move(controller);
   pierre.render();
