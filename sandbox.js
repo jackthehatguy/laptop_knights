@@ -1,11 +1,34 @@
+/* thinking about the code
+need:
+  canvas & context (to draw the whole thing)
+  loop
+  event listeners
+  controller
+  characters (NPCs and actors [PCs])
+  menus
+  views
+  items
+  layering system ?will we have specific layers for specific instance groups?
+  ?instances (doors, rocks, etc)
+
+controller possibilities:
+  wasd &| directional keys &| gamepad?
+  free-movement || grid-based
+instance possibilities:
+  all charaters are of prototype instance
+  are separate from characters
+views:
+  open-world || AC[DnM](NGC) || SMB
+*/
+
+// canvas
 var canvas = document.getElementById('game');
 canvas.width = 640;
 canvas.height = 480;
 var c = canvas.getContext('2d');
-const FRICTION = 0; //what has Jack done now?? daijoubu desuyo!
 
 //==============================================================================
-
+// controller
 controller = {
   left: false,
   up: false,
@@ -33,6 +56,7 @@ controller = {
 }
 
 //==============================================================================
+// actor
 function Actor(x, y, sprite_deck, box) {
   this.x = x;
   this.y = y;
@@ -53,52 +77,6 @@ function Actor(x, y, sprite_deck, box) {
 
 Actor.prototype.move = function (controller) {
   // console.log(controller);
-  // this code is Jack's fault, lol; don't worry about it, Spencer will fix it
-  if(controller.left) {
-    this.x_vel = -this.spd;
-    this.sprite_deck.trade(this.sprite_deck.walk_left);
-    this.position = 0;
-  }
-  if (controller.up) {
-    this.y_vel = -this.spd;
-    this.sprite_deck.trade(this.sprite_deck.walk_up);
-    this.position = 1;
-  }
-  if (controller.right) {
-    this.x_vel = this.spd;
-    this.sprite_deck.trade(this.sprite_deck.walk_right);
-    this.position = 2;
-  }
-  if (controller.down) {
-    this.y_vel = this.spd;
-    this.sprite_deck.trade(this.sprite_deck.walk_down);
-    this.position = 3;
-  }
-  if (!controller.left && !controller.up && !controller.right && !controller.down) {
-    this.x_vel = 0;
-    this.y_vel = 0;
-    switch (this.position) {
-      case 0:
-        this.sprite_deck.trade(this.sprite_deck.idle_left);
-        break;
-      case 1:
-        this.sprite_deck.trade(this.sprite_deck.idle_up);
-        break;
-      case 2:
-        this.sprite_deck.trade(this.sprite_deck.idle_right);
-        break;
-      case 3:
-        this.sprite_deck.trade(this.sprite_deck.idle_down);
-        break;
-    }
-  }
-
-  this.x += this.x_vel;
-  this.y += this.y_vel;
-  this.collision.x += this.x_vel;
-  this.collision.y += this.y_vel;
-  this.x_vel *= FRICTION;
-  this.y_vel *= FRICTION;
 };
 
 Actor.prototype.render = function () {
@@ -108,43 +86,7 @@ Actor.prototype.render = function () {
 };
 
 //==============================================================================
-
-function Box(x, y, width, height, display) {
-  this.sprite = new Image(width, height);
-  this.sprite.src = 'img/collide.png';
-  this.display = display;
-
-  this.x = x,
-  this.y = y,
-
-  this.width = width,
-  this.height = height
-}
-
-Box.prototype.overlaps = function (box) {
-  if (
-      (this.x >= box.x && this.x <= box.x+box.width)
-      &&
-      (this.y >= box.y && this.y <= box.y+box.height)
-    ||
-      (this.x+this.width >= box.x && this.x+this.width <= box.x+box.width)
-      &&
-      (this.y+this.height >= box.y && this.y+this.height <= box.y+box.height)
-  ) {
-    return true;;
-  }
-  return false;
-};
-
-Box.prototype.draw = function () {
-  if (this.display) {
-    // c.drawImage(this.sprite, this.x, this.y);
-    c.drawImage(this.sprite, 0, 0, this.width, this.height, this.x, this.y, this.width, this.height);
-  }
-}
-
-//==============================================================================
-
+// Sprite Deck
 function SpriteDeck() {
   this.cur_anim = null;
 }
@@ -167,7 +109,7 @@ SpriteDeck.prototype.draw = function (x, y) {
 };
 
 //==============================================================================
-
+// Animation
 function Animation(width, height, src, num_frames, delay) {
   this.width = width;
   this.height = height;
@@ -214,7 +156,7 @@ Animation.prototype.draw = function (x, y) {
 };
 
 //==============================================================================
-
+// engine
 pierre = new Actor(canvas.width/2, canvas.height/2, new SpriteDeck(), new Box(canvas.width/2+2, canvas.height/2+20, 27, 12, true));
 pierre.sprite_deck.walk_left = new Animation(32, 32, 'img/pierre/pierre_walk_left.png', 4, 10);
 pierre.sprite_deck.walk_up = new Animation(32, 32, 'img/pierre/pierre_walk_up.png', 4, 10);
@@ -232,7 +174,9 @@ var bg = new Image(640,480);
 bg.src = 'img/Tabletop Knights Cover.jpg';
 
 function loop() {
-  c.clearRect(0,0,640,480);
+  canvas.width = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) - 17;
+  canvas.height = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) - 17;
+  c.clearRect(0,0,canvas.width,canvas.height);
   c.drawImage(bg, 0, 0, 1200, 1800, 0, 0, canvas.width, canvas.height);
   pierre.move(controller);
   pierre.render();
