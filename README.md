@@ -13,8 +13,8 @@
 * implementing a pause menu
 
 # Push Key
-* + adds
-* - removes
+* \+ adds
+* \- removes
 * ^ updates
 * ! adds testing
 * ~ changes
