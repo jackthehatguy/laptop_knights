@@ -11,3 +11,10 @@
 * placing collision boxes in room
     1. add collision physics
 * implementing a pause menu
+
+# Push Key
+* + adds
+* - removes
+* ^ updates
+* ! adds testing
+* ~ changes
