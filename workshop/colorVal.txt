@@ -1,0 +1,32 @@
+Sayuri
+skin - 239,233,211; #efe9d3
+hair - 26,230,216; #1ae6d8
+blade/eye 1 - 93,246,58; #5df63a
+blade/eye 2 - 223,230,26; #dfe61a
+outfit - 255,255,255; #ffffff
+
+Arisdar
+skin 1 - 170,139,78; #aa8b4e
+skin 2 - 193,178,146; #c1b292
+hair - 279,279,279; #d9d9d9
+eyes - 31,85,181; #1f55b5
+claws/horns - 31,30,27; #1f1e1b
+armor 1 - 92,75,55; #5c4b37
+armor 2 - 146,131,47; #92832f
+blade - 222,222,222; #dedede
+cloth 1 - 195,156,65; #c39c41
+cloth 2 - 195,176,65; #c3b041
+
+Estella
+hat 1 - 254,218,58; #feda3a
+hair - 58,58,58; #3a3a3a
+skin - 165,120,80; #a57850
+eyes - 52,35,30; #34231e
+cloth 1 - 224,224,224; #e0e0e0
+cloth 2 - 146,42,42; #922a2a
+belt/boots - 103,65,33; #674121
+buckle - 220,220,220; #dcdcdc
+book 1 - 107,72,73; #6b4849
+book 2 - 239,239,211; #efefd3
+gun 1 - 176,176,176; #b0b0b0
+gun 2 - 38,38,38; #262626

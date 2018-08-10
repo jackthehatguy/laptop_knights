@@ -1,26 +1,3 @@
-/* thinking about the code
-need:
-  canvas & context (to draw the whole thing)
-  loop
-  event listeners
-  controller
-  characters (NPCs and actors [PCs])
-  menus
-  views
-  items
-  layering system ?will we have specific layers for specific instance groups?
-  ?instances (doors, rocks, etc)
-
-controller possibilities:
-  wasd &| directional keys &| gamepad?
-  free-movement || grid-based
-instance possibilities:
-  all charaters are of prototype instance
-  are separate from characters
-views:
-  open-world || AC[DnM](NGC) || SMB
-*/
-
 // canvas
 var canvas = document.getElementById('game');
 canvas.width = 640;
@@ -57,12 +34,11 @@ controller = {
 
 //==============================================================================
 // actor
-function Actor(x, y, sprite_deck, box) {
+function Actor(x, y, sprite_deck) {
   this.x = x;
   this.y = y;
 
   this.sprite_deck = sprite_deck;
-  this.collision = box;
 
   this.spd = 2;
   this.x_vel = 0;
@@ -81,7 +57,6 @@ Actor.prototype.move = function (controller) {
 
 Actor.prototype.render = function () {
   this.sprite_deck.update();
-  this.collision.draw();
   this.sprite_deck.draw(this.x, this.y);
 };
 
@@ -136,28 +111,22 @@ Animation.prototype.update = function () {
 };
 
 Animation.prototype.draw = function (x, y) {
-  // c.clearRect(
-  //   x,
-  //   y,
-  //   this.frames.width,
-  //   this.frames.height
-  // );
   c.drawImage(
-    this.frames,
-    this.cur_frame * this.width,
-    0,
-    this.width,
-    this.height,
-    x,
-    y,
-    this.width,
-    this.height
+    this.frames,                  // the image
+    this.cur_frame * this.width,  // x_start
+    0,                            // y_start
+    this.width,                   // x_end
+    this.height,                  // y_end
+    x,                            // where to draw hori
+    y,                            // where to draw vert
+    this.width,                   // size
+    this.height                   // size
   );
 };
 
 //==============================================================================
 // engine
-pierre = new Actor(canvas.width/2, canvas.height/2, new SpriteDeck(), new Box(canvas.width/2+2, canvas.height/2+20, 27, 12, true));
+pierre = new Actor(canvas.width/2, canvas.height/2, new SpriteDeck());
 pierre.sprite_deck.walk_left = new Animation(32, 32, 'img/pierre/pierre_walk_left.png', 4, 10);
 pierre.sprite_deck.walk_up = new Animation(32, 32, 'img/pierre/pierre_walk_up.png', 4, 10);
 pierre.sprite_deck.walk_right = new Animation(32, 32, 'img/pierre/pierre_walk_right.png', 4, 10);
@@ -171,13 +140,9 @@ pierre.sprite_deck.idle_down = new Animation(32, 32, 'img/pierre/pierre_idle_dow
 pierre.sprite_deck.cur_anim = pierre.sprite_deck.idle_down;
 
 var bg = new Image(640,480);
-bg.src = 'img/Tabletop Knights Cover.jpg';
 
 function loop() {
-  canvas.width = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) - 17;
-  canvas.height = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) - 17;
   c.clearRect(0,0,canvas.width,canvas.height);
-  c.drawImage(bg, 0, 0, 1200, 1800, 0, 0, canvas.width, canvas.height);
   pierre.move(controller);
   pierre.render();
   requestAnimationFrame(loop);
@@ -186,3 +151,29 @@ function loop() {
 window.addEventListener('keydown', controller.keyListener);
 window.addEventListener('keyup', controller.keyListener);
 window.requestAnimationFrame(loop);
+
+//==============================================================================
+
+function drawSpotlight(x, y, r) {
+  c.beginPath();
+  c.fillStyle = "rgba(255,255,255,0.15)";
+  c.arc(x, y, r, 0, 2*Math.PI, false);
+  c.fill();
+  c.closePath();
+}
+
+//==============================================================================
+
+/**
+ * generates an array of num length filled with random letters
+ * @param  {Number} num   the number of randomized letters in the array
+ * @return {String Array} the resulting filled array
+ */
+function genRandLetters(num) {
+  let in_set = 'qwertyuiopasdfghjklzxcvbnm';
+  let out_set = [];
+  for (var i = 0; i < num; i++) { out_set.push(in_set.charAt(Math.floor(Math.random()*in_set.length))); }
+  return out_set;
+}
+
+//==============================================================================

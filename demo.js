@@ -10,6 +10,8 @@ need:
   items
   layering system ?will we have specific layers for specific instance groups?
   ?instances (doors, rocks, etc)
+  music
+  sound
 
 controller possibilities:
   wasd &| directional keys &| gamepad?
@@ -34,7 +36,7 @@ controller = {
   up: false,
   right: false,
   down: false,
-  keyListener: function(e) {
+  keyListener: (e) => {
     // console.log('e',e);
     var key_state = (e.type == 'keydown');
 
@@ -56,12 +58,12 @@ controller = {
 }
 
 //==============================================================================
-function Actor(x, y, sprite_deck, box) {
+function Actor(x, y, sprite_deck) {
   this.x = x;
   this.y = y;
 
   this.sprite_deck = sprite_deck;
-  this.collision = box;
+  this.collision = new Box(x, y+20, 30, 12, true);
 
   this.spd = 2;
   this.x_vel = 0;
@@ -74,7 +76,7 @@ function Actor(x, y, sprite_deck, box) {
   this.position = 3;
 }
 
-Actor.prototype.move = function (controller) {
+Actor.prototype.move = (controller) => {
   // console.log(controller);
   // this code is Jack's fault, lol; don't worry about it, Spencer will fix it
   if(controller.left) {
@@ -120,6 +122,25 @@ Actor.prototype.move = function (controller) {
   this.y += this.y_vel;
   this.collision.x += this.x_vel;
   this.collision.y += this.y_vel;
+
+  if (this.x < 0) {
+    this.x = 0;
+    this.collision.x = 0;
+  }
+  if (this.x > canvas.width-32) {
+    this.x = canvas.width-32;
+    this.collision.x = canvas.width-32;
+  }
+
+  if (this.y < -20) {
+    this.y = -20;
+    this.collision.y = 0;
+  }
+  if (this.y > canvas.height-32) {
+    this.y = canvas.height-32;
+    this.collision.y = canvas.height-12;
+  }
+
   this.x_vel *= FRICTION;
   this.y_vel *= FRICTION;
 };
@@ -132,7 +153,7 @@ Actor.prototype.render = function () {
 
 //==============================================================================
 
-function Box(x, y, width, height, display) {
+function Box (x, y, width, height, display) {
   this.sprite = new Image(width, height);
   this.sprite.src = 'img/collide.png';
   this.display = display;
@@ -144,7 +165,7 @@ function Box(x, y, width, height, display) {
   this.height = height
 }
 
-Box.prototype.overlaps = function (box) {
+Box.prototype.overlaps = (box) => {
   if (
       (this.x >= box.x && this.x <= box.x+box.width)
       &&
@@ -159,10 +180,10 @@ Box.prototype.overlaps = function (box) {
   return false;
 };
 
-Box.prototype.draw = function () {
+Box.prototype.draw = () => {
   if (this.display) {
-    // c.drawImage(this.sprite, this.x, this.y);
-    c.drawImage(this.sprite, 0, 0, this.width, this.height, this.x, this.y, this.width, this.height);
+    c.fillStyle = "rgba(255, 110, 250, 0.6)";
+    c.fillRect(this.x, this.y, this.width, this.height);
   }
 }
 
@@ -175,17 +196,17 @@ function SpriteDeck() {
 /**
 * moves the current anim to the next frame if possible
 */
-SpriteDeck.prototype.update = function () {
+SpriteDeck.prototype.update = () => {
   return this.cur_anim.update();
 };
 
-SpriteDeck.prototype.trade = function (animation) {
+SpriteDeck.prototype.trade = (animation) => {
   this.cur_anim = animation;
   // this.cur_anim.cur_frame = 0;
   // this.cur_anim.tick = 0;
 };
 
-SpriteDeck.prototype.draw = function (x, y) {
+SpriteDeck.prototype.draw = (x, y) => {
   this.cur_anim.draw(x, y);
 };
 
@@ -203,7 +224,7 @@ function Animation(width, height, src, num_frames, delay) {
   this.cur_frame = 0;
 }
 
-Animation.prototype.update = function () {
+Animation.prototype.update = () => {
   if (this.tick++ >= this.delay) {
     this.tick = 0;
     this.cur_frame++;
@@ -216,7 +237,7 @@ Animation.prototype.update = function () {
   return -1;
 };
 
-Animation.prototype.draw = function (x, y) {
+Animation.prototype.draw = (x, y) => {
   // c.clearRect(
   //   x,
   //   y,
@@ -238,18 +259,18 @@ Animation.prototype.draw = function (x, y) {
 
 //==============================================================================
 
-pierre = new Actor(canvas.width/2, canvas.height/2, new SpriteDeck(), new Box(canvas.width/2+2, canvas.height/2+20, 27, 12, true));
-pierre.sprite_deck.walk_left = new Animation(32, 32, 'img/pierre/pierre_walk_left.png', 4, 10);
-pierre.sprite_deck.walk_up = new Animation(32, 32, 'img/pierre/pierre_walk_up.png', 4, 10);
-pierre.sprite_deck.walk_right = new Animation(32, 32, 'img/pierre/pierre_walk_right.png', 4, 10);
-pierre.sprite_deck.walk_down = new Animation(32, 32, 'img/pierre/pierre_walk_down.png', 4, 10);
+var sd = new SpriteDeck();
+sd.walk_left = new Animation(32, 32, 'img/pierre/pierre_walk_left.png', 4, 10);
+sd.walk_up = new Animation(32, 32, 'img/pierre/pierre_walk_up.png', 4, 10);
+sd.walk_right = new Animation(32, 32, 'img/pierre/pierre_walk_right.png', 4, 10);
+sd.walk_down = new Animation(32, 32, 'img/pierre/pierre_walk_down.png', 4, 10);
 
-pierre.sprite_deck.idle_left = new Animation(32, 32, 'img/pierre/pierre_idle_left.png', 1, 0);
-pierre.sprite_deck.idle_up = new Animation(32, 32, 'img/pierre/pierre_idle_up.png', 1, 0);
-pierre.sprite_deck.idle_right = new Animation(32, 32, 'img/pierre/pierre_idle_right.png', 1, 0);
-pierre.sprite_deck.idle_down = new Animation(32, 32, 'img/pierre/pierre_idle_down.png', 1, 0);
+sd.idle_left = new Animation(32, 32, 'img/pierre/pierre_idle_left.png', 1, 0);
+sd.idle_up = new Animation(32, 32, 'img/pierre/pierre_idle_up.png', 1, 0);
+sd.idle_right = new Animation(32, 32, 'img/pierre/pierre_idle_right.png', 1, 0);
+sd.cur_anim = sd.idle_down = new Animation(32, 32, 'img/pierre/pierre_idle_down.png', 1, 0);
 
-pierre.sprite_deck.cur_anim = pierre.sprite_deck.idle_down;
+pierre = new Actor(canvas.width/2, canvas.height/2, sd);
 
 var bg = new Image(canvas.width,canvas.height);
 bg.src = 'img/Tabletop Knights Cover.jpg';
@@ -258,7 +279,7 @@ function loop() {
   canvas.width = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) - 17;
   canvas.height = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) - 17;
   c.clearRect(0,0,canvas.width,canvas.height);
-  c.drawImage(bg, 0, 0, 1200, 1800, 0, 0, canvas.width, canvas.height);
+  // c.drawImage(bg, 0, 0, 1200, 1800, 0, 0, canvas.width, canvas.height);
   pierre.move(controller);
   pierre.render();
   requestAnimationFrame(loop);
