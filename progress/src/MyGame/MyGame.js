@@ -1,21 +1,12 @@
 "use strict";
 
-function MyGame(htmlCanvasID) {
-  // variables of the constant color shader
-  this.mConstColorShader = null;
-
+function MyGame() {
   // variables for squares
   this.mWhiteSq = null;     // these are renderable objects
   this.mRedSq = null;
 
   // the camera to view the scene
   this.mCamera = null;
-
-  // init webGL context
-  gEngine.Core.initializeEngineCore(htmlCanvasID);
-
-  // init game
-  this.initialize();
 }
 
 MyGame.prototype.initialize = function () {
@@ -27,16 +18,11 @@ MyGame.prototype.initialize = function () {
   );
   this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
 
-  // b: create shader
-  this.mConstColorShader = new SimpleShader(
-    'src/GLSLShaders/SimpleVS.glsl',  // path to vertex shader
-    'src/GLSLShaders/SimpleFS.glsl'   // path to fragment shader
-  );
-
   // c: create renderables
-  this.mWhiteSq = new Renderable(this.mConstColorShader);
+  var constColorShader = gEngine.DefaultResources.getConstColorShader();
+  this.mWhiteSq = new Renderable(constColorShader);
   this.mWhiteSq.setColor([1, 1, 1, 1]);
-  this.mRedSq = new Renderable(this.mConstColorShader);
+  this.mRedSq = new Renderable(constColorShader);
   this.mRedSq.setColor([1, 0, 0, 1]);
 
   // d: intit white square
@@ -66,28 +52,24 @@ MyGame.prototype.update = function () {
       whiteXform.setXPos(10);
     }
     whiteXform.incXPosBy(deltaDist);
-    console.log(Math.trunc(whiteXform.getXPos()));
   }
   if (gEngine.Input.isKeyPressed(gEngine.Input.keys.W)) {
     if (whiteXform.getYPos() > 65) {
       whiteXform.setYPos(55);
     }
     whiteXform.incYPosBy(deltaDist);
-    console.log(Math.trunc(whiteXform.getYPos()));
   }
   if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A)) {
     if (whiteXform.getXPos() < 10) {
       whiteXform.setXPos(30);
     }
     whiteXform.incXPosBy(-deltaDist);
-    console.log(Math.trunc(whiteXform.getXPos()));
   }
   if (gEngine.Input.isKeyPressed(gEngine.Input.keys.S)) {
     if (whiteXform.getYPos() < 55) {
       whiteXform.setYPos(65);
     }
     whiteXform.incYPosBy(-deltaDist);
-    console.log(Math.trunc(whiteXform.getYPos()));
   }
 
   // b: test white square rotation

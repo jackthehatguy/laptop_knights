@@ -14,8 +14,58 @@ gEngine.ResourceMap = (function () {
 
   var mLoadCompleteCallback = null;
 
-  var mPublic = {
+  var _checkForAllLoadCompleted = function () {
+    if ((mNumOutstandingLoads === 0) && (mLoadCompleteCallback !== null)) {
+      // ensures the load complete call back will only be called once
+      var funToCall = mLoadCompleteCallback;
+      mLoadCompleteCallback = null;
+      funToCall();
+    }
+  };
 
+  // make sure to set the callback _AFTER_ all load commands are issued
+  var setLoadCompleteCallback = function (funct) {
+    mLoadCompleteCallback = funct;
+    _checkForAllLoadCompleted();
+  };
+
+  var asyncLoadRequested = function (rName) {
+    mResourceMap[rName] = new MapEntry(rName);
+    ++mNumOutstandingLoads;
+  };
+
+  var asyncLoadCompleted = function (rName, loadedAsset) {
+    if (!isAssetLoaded(rName)) console.error(`gEngine.asyncLoadCompleted: [${rName}] not in map!`);
+
+    mResourceMap[rName].mAsset = loadedAsset;
+    --mNumOutstandingLoads;
+    _checkForAllLoadCompleted();
+  };
+
+  var isAssetLoaded = function (rName) {
+    return (rName in mResourceMap);
+  };
+
+  var retrieveAsset = function (rName) {
+    var r = null;
+    if (rName in mResourceMap) r = mResourceMap[rName].mAsset;
+    return r;
+  };
+
+  var unloadAsset = function (rName) {
+    if (rName in mResourceMap) delete mResourceMap[rName];
+  }
+
+  var mPublic = {
+    // async resource loading support
+    asyncLoadRequested,
+    asyncLoadCompleted,
+    setLoadCompleteCallback,
+
+    // resource storage
+    retrieveAsset,
+    unloadAsset,
+    isAssetLoaded
   };
   return mPublic;
 }());

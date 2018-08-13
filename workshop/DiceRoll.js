@@ -33,7 +33,7 @@ const Dice = (numSides=6, numRolls=1, resultModifier=0) => {
       }
     } else {
       total = getTotal();
-      rolls = '[' + rolls.join(', ') + ']';
+      rolls = `[${rolls.join(', ')}]`;
     }
 
     return rolls
@@ -52,7 +52,7 @@ const Dice = (numSides=6, numRolls=1, resultModifier=0) => {
   }
 
   return {
-    getTotal: getTotal,
-    getResultString: getResultString
+    getTotal,
+    getResultString
   };
 }

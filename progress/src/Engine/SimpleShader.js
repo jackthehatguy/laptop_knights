@@ -12,8 +12,8 @@ function SimpleShader(vertexShaderID, fragmentShaderID) {
   //-----start constructor------------------------------------------------------
 
   // 0: load and compile vert & frag shaders
-  var vertexShader = this._loadAndCompileShader(vertexShaderID, gl.VERTEX_SHADER);
-  var fragmentShader = this._loadAndCompileShader(fragmentShaderID, gl.FRAGMENT_SHADER);
+  var vertexShader = this._compileShader(vertexShaderID, gl.VERTEX_SHADER);
+  var fragmentShader = this._compileShader(fragmentShaderID, gl.FRAGMENT_SHADER);
 
   // 1: create and link shaders
   this.mCompiledShader = gl.createProgram();
@@ -52,24 +52,16 @@ function SimpleShader(vertexShaderID, fragmentShaderID) {
 }
 
 // returns compiled shader from shader in DOM:: id: script id
-SimpleShader.prototype._loadAndCompileShader = function (filePath, shaderType) {
-  var xmlReq, shaderSource, compiledShader;
+SimpleShader.prototype._compileShader = function (filePath, shaderType) {
   var gl = gEngine.Core.getGL();
+  var shaderSource = null;
+  var compiledShader = null;
 
   // 0: get shader source
-  xmlReq = new XMLHttpRequest();
-  xmlReq.open('GET', filePath, false);
-  xmlReq.overrideMimeType('text/plain; charset=utf-8'); // to get rid of the pesky error messages
-  try {
-    xmlReq.send();
-  } catch (error) {
-    console.error('Failed to load shader: ' + filePath);
-    return null;
-  }
-  shaderSource = xmlReq.responseText;
+  shaderSource = gEngine.ResourceMap.retrieveAsset(filePath);
 
   if (shaderSource === null) {
-    console.error('WARNING: Loading of: ' + filePath + ' Failed!');
+    console.error(`WARNING: Loading of: ${filePath} Failed!`);
     return null;
   }
 

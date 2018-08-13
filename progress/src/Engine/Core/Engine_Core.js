@@ -27,11 +27,18 @@ gEngine.Core = (function() {
     mGL.clear(mGL.COLOR_BUFFER_BIT);
   }
 
-  var initializeEngineCore = function (htmlCanvasID) {
+  var initializeEngineCore = function (htmlCanvasID, myGame) {
     _initializeWebGL(htmlCanvasID);
     gEngine.VertexBuffer.initialize();
     gEngine.Input.initialize();
+
+    gEngine.DefaultResources.initialize(function () { startScene(myGame); });
   };
+
+  var startScene = function (myGame) {
+    myGame.initialize.call(myGame); // called in this way to keep correct context
+    gEngine.GameLoop.start(myGame);
+  }
 
   // make public
   var mPublic = {
