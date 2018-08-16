@@ -1,56 +1,58 @@
 {
-  "name": "Sparrow",
-  "hair": "#caa472",
-  "skin": "#f6efdf",
-  "leather/staff": "#6b5048",
-  "tunic 1": "#fff",
-  "tunic 2": "#4f4f4f",
-  "buckle": "#b8b8b8",
-  "effect 1": "#74f1f5",
-  "effect 2": "#2bdee5",
-  "effect 3": "#cafafb",
-  "eyes": "#1045c1"
-}
+  "sp": {
+    "name": "Sparrow",
+    "hair": "#caa472",
+    "skin": "#f6efdf",
+    "leather/staff": "#6b5048",
+    "tunic 1": "#fff",
+    "tunic 2": "#4f4f4f",
+    "buckle": "#b8b8b8",
+    "effect 1": "#74f1f5",
+    "effect 2": "#2bdee5",
+    "effect 3": "#cafafb",
+    "eyes": "#1045c1"
+  },
 
-{
-  "name": "Elucia"
-}
+  "el": {
+    "name": "Elucia"
+  },
 
-{
-  "name"        : "Sayuri",
-  "skin"        : ["rgba(239,233,211,1.0)", "#efe9d3"],
-  "hair"        : ["rgba(26,230,216,1.0)",  "#1ae6d8"],
-  "blade/eye 1" : ["rgba(93,246,58,1.0)",   "#5df63a"],
-  "blade/eye 2" : ["rgba(223,230,26,1.0)",  "#dfe61a"],
-  "outfit"      : ["rgba(255,255,255,1.0)", "#fff"]
-}
+  "sa": {
+    "name"        : "Sayuri",
+    "skin"        : ["rgba(239,233,211,1.0)", "#efe9d3"],
+    "hair"        : ["rgba(26,230,216,1.0)",  "#1ae6d8"],
+    "blade/eye 1" : ["rgba(93,246,58,1.0)",   "#5df63a"],
+    "blade/eye 2" : ["rgba(223,230,26,1.0)",  "#dfe61a"],
+    "outfit"      : ["rgba(255,255,255,1.0)", "#fff"]
+  },
 
-{
-  "name"        : "Arisdar",
-  "skin 1"      : ["rgba(170,139,78,1.0)",  "#aa8b4e"],
-  "skin 2"      : ["rgba(193,178,146,1.0)", "#c1b292"],
-  "hair"        : ["rgba(217,217,217,1.0)", "#d9d9d9"],
-  "eyes"        : ["rgba(31,85,181,1.0)",   "#1f55b5"],
-  "claws/horns" : ["rgba(31,30,27,1.0)",    "#1f1e1b"],
-  "armor 1"     : ["rgba(92,75,55,1.0)",    "#5c4b37"],
-  "armor 2"     : ["rgba(146,131,47,1.0)",  "#92832f"],
-  "blade"       : ["rgba(222,222,222,1.0)", "#dedede"],
-  "cloth 1"     : ["rgba(195,156,65,1.0)",  "#c39c41"],
-  "cloth 2"     : ["rgba(195,176,65,1.0)",  "#c3b041"]
-}
+  "ar": {
+    "name"        : "Arisdar",
+    "skin 1"      : ["rgba(170,139,78,1.0)",  "#aa8b4e"],
+    "skin 2"      : ["rgba(193,178,146,1.0)", "#c1b292"],
+    "hair"        : ["rgba(217,217,217,1.0)", "#d9d9d9"],
+    "eyes"        : ["rgba(31,85,181,1.0)",   "#1f55b5"],
+    "claws/horns" : ["rgba(31,30,27,1.0)",    "#1f1e1b"],
+    "armor 1"     : ["rgba(92,75,55,1.0)",    "#5c4b37"],
+    "armor 2"     : ["rgba(146,131,47,1.0)",  "#92832f"],
+    "blade"       : ["rgba(222,222,222,1.0)", "#dedede"],
+    "cloth 1"     : ["rgba(195,156,65,1.0)",  "#c39c41"],
+    "cloth 2"     : ["rgba(195,176,65,1.0)",  "#c3b041"]
+  },
 
-{
-  "name"       : "Estella",
-  "hat 1"      : ["rgba(254,218,58,1.0)",  "#feda3a"],
-  "hair"       : ["rgba(58,58,58,1.0)",    "#3a3a3a"],
-  "skin"       : ["rgba(165,120,80,1.0)",  "#a57850"],
-  "eyes"       : ["rgba(52,35,30,1.0)",    "#34231e"],
-  "cloth 1"    : ["rgba(224,224,224,1.0)", "#e0e0e0"],
-  "cloth 2"    : ["rgba(146,42,42,1.0)",   "#922a2a"],
-  "belt/boots" : ["rgba(103,65,33,1.0)",   "#674121"],
-  "buckle"     : ["rgba(220,220,220,1.0)", "#dcdcdc"],
-  "book 1"     : ["rgba(107,72,73,1.0)",   "#6b4849"],
-  "book 2"     : ["rgba(239,239,211,1.0)", "#efefd3"],
-  "gun 1"      : ["rgba(176,176,176,1.0)", "#b0b0b0"],
-  "gun 2"      : ["rgba(38,38,38,1.0)",    "#262626"]
+  "es": {
+    "name"       : "Estella",
+    "hat 1"      : ["rgba(254,218,58,1.0)",  "#feda3a"],
+    "hair"       : ["rgba(58,58,58,1.0)",    "#3a3a3a"],
+    "skin"       : ["rgba(165,120,80,1.0)",  "#a57850"],
+    "eyes"       : ["rgba(52,35,30,1.0)",    "#34231e"],
+    "cloth 1"    : ["rgba(224,224,224,1.0)", "#e0e0e0"],
+    "cloth 2"    : ["rgba(146,42,42,1.0)",   "#922a2a"],
+    "belt/boots" : ["rgba(103,65,33,1.0)",   "#674121"],
+    "buckle"     : ["rgba(220,220,220,1.0)", "#dcdcdc"],
+    "book 1"     : ["rgba(107,72,73,1.0)",   "#6b4849"],
+    "book 2"     : ["rgba(239,239,211,1.0)", "#efefd3"],
+    "gun 1"      : ["rgba(176,176,176,1.0)", "#b0b0b0"],
+    "gun 2"      : ["rgba(38,38,38,1.0)",    "#262626"]
+  }
 }

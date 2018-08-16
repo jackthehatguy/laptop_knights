@@ -36,15 +36,15 @@ gEngine.Core = (function() {
   };
 
   var startScene = function (myGame) {
-    myGame.initialize.call(myGame); // called in this way to keep correct context
+    myGame.loadScene.call(myGame); // called in this way to keep correct context
     gEngine.GameLoop.start(myGame);
   }
 
   // make public
   var mPublic = {
-    getGL: getGL,
-    initializeEngineCore: initializeEngineCore,
-    clearCanvas, clearCanvas
+    getGL,
+    initializeEngineCore,
+    clearCanvas
   };
   return mPublic;
 }());

@@ -1,3 +1,11 @@
+// @ts-check
+
+/**
+ * 
+ * @param {number?} numSides 
+ * @param {number?} numRolls 
+ * @param {number?} resultModifier 
+ */
 const Dice = (numSides=6, numRolls=1, resultModifier=0) => {
   let rolls = [];
 
@@ -11,7 +19,7 @@ const Dice = (numSides=6, numRolls=1, resultModifier=0) => {
   }
 
   const roll = _ => {
-    for (var i = 0; i < numRolls; i++) with (Math) rolls.push(ceil(random()*numSides));
+    for (var i = 0; i < numRolls; i++) rolls.push(Math.ceil(Math.random()*numSides));
     return rolls;
   }
 
@@ -33,10 +41,9 @@ const Dice = (numSides=6, numRolls=1, resultModifier=0) => {
       }
     } else {
       total = getTotal();
-      rolls = `[${rolls.join(', ')}]`;
     }
 
-    return rolls
+    return `[${rolls.join(', ')}]`
     + (
       resultModifier === 0
       ? ''
