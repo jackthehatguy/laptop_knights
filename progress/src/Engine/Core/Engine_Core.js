@@ -25,7 +25,7 @@ gEngine.Core = (function() {
   var clearCanvas = function(color) {
     mGL.clearColor(color[0], color[1], color[2], color[3]); // set color
     mGL.clear(mGL.COLOR_BUFFER_BIT);
-  }
+  };
 
   var initializeEngineCore = function (htmlCanvasID, myGame) {
     _initializeWebGL(htmlCanvasID);
@@ -38,13 +38,21 @@ gEngine.Core = (function() {
   var startScene = function (myGame) {
     myGame.loadScene.call(myGame); // called in this way to keep correct context
     gEngine.GameLoop.start(myGame);
-  }
+  };
+
+  var inheritPrototype = function (subClass, superClass) {
+    var prototype = Object.create(superClass.prototype);
+    prototype.constructor = subClass;
+    subClass.prototype = prototype;
+  };
 
   // make public
   var mPublic = {
+    clearCanvas,
     getGL,
+    inheritPrototype,
     initializeEngineCore,
-    clearCanvas
+    startScene
   };
   return mPublic;
 }());

@@ -20,9 +20,9 @@ priority than pretty much everything else).
 * game camera, view, viewport, and projection
 * async loading of resources
 * scene file loading
+* scene swapping (basically level switching)
 
 ## What We Are Working On
-* scene swapping
 * audio
 
 ## What We Are Doing Next

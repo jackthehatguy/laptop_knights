@@ -32,7 +32,7 @@ gEngine.GameLoop = (function () {
 
       // c: update the game the appropriate number of times
       //  update only milliseconds per frame
-      //  if lag larger then update frames, update until caught up.
+      //  lag > update frames ? update until caught up
       while ((mLagTime >= kMPF) && mIsLoopRunning) {
         gEngine.Input.update();
         this.update();  // call MyGame.update()
@@ -41,6 +41,8 @@ gEngine.GameLoop = (function () {
 
       // d: draw
       this.draw();  // call MyGame.draw()
+    } else {
+      mMyGame.unloadScene();
     }
   };
 
@@ -66,8 +68,13 @@ gEngine.GameLoop = (function () {
     );
   };
 
+  var stop = function () {
+    mIsLoopRunning = false;
+  };
+
   var mPublic = {
-    start
+    start,
+    stop
   };
   return mPublic;
 }());
