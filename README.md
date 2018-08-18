@@ -21,9 +21,9 @@ priority than pretty much everything else).
 * async loading of resources
 * scene file loading
 * scene swapping (basically level switching)
+* audio
 
 ## What We Are Working On
-* audio
 
 ## What We Are Doing Next
 * texture mapping

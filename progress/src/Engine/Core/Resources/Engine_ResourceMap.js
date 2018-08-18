@@ -5,6 +5,7 @@ var gEngine = gEngine || { };
 gEngine.ResourceMap = (function () {
   var MapEntry = function (rName) {
     this.mAsset = rName;
+    this.mRefCount = 1;
   };
 
   // resource storage
@@ -53,8 +54,20 @@ gEngine.ResourceMap = (function () {
   };
 
   var unloadAsset = function (rName) {
-    if (rName in mResourceMap) delete mResourceMap[rName];
-  }
+    var cnt = 0;
+    if (rName in mResourceMap) {
+      mResourceMap[rName].mRefCount -= 1;
+      cnt = mResourceMap[rName].mRefCount;
+      if (cnt === 0) {
+        delete mResourceMap[rName];
+      }
+    }
+    return cnt;
+  };
+
+  var incAssetRefCount = function (rName) {
+    ++mResourceMap[rName].mRefCount;
+  };
 
   var mPublic = {
     // async resource loading support
@@ -65,7 +78,8 @@ gEngine.ResourceMap = (function () {
     // resource storage
     retrieveAsset,
     unloadAsset,
-    isAssetLoaded
+    isAssetLoaded,
+    incAssetRefCount
   };
   return mPublic;
 }());

@@ -6,11 +6,17 @@ function BlueLevel() {
   this.mSqSet = [];
 
   this.mCamera = null;
+
+  this.kBgClip = 'assets/sounds/BGClip.mp3';
+  this.kCue = 'assets/sounds/BlueLevel_cue.wav';
 }
 gEngine.Core.inheritPrototype(BlueLevel, Scene);
 
 BlueLevel.prototype.loadScene = function () {
   gEngine.TextFileLoader.loadTextFile(this.kSceneFile, gEngine.TextFileLoader.eTextFileType.eXMLFile);
+
+  gEngine.AudioClips.loadAudio(this.kBgClip);
+  gEngine.AudioClips.loadAudio(this.kCue);
 };
 
 BlueLevel.prototype.initialize = function () {
@@ -21,6 +27,8 @@ BlueLevel.prototype.initialize = function () {
 
   // b: parse all squares
   sceneParser.parseSquares(this.mSqSet);
+
+  gEngine.AudioClips.playBackgroundAudio(this.kBgClip);
 };
 
 // do NOT change any states in this function
@@ -71,10 +79,19 @@ BlueLevel.prototype.update = function () {
           xform.setYPos(63.5);
         }
     }
+
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.F)) {
+      gEngine.AudioClips.playACue(this.kCue);
+    }
 };
 
 BlueLevel.prototype.unloadScene = function () {
+  gEngine.AudioClips.stopBackgroundAudio();
+
   gEngine.TextFileLoader.unloadTextFile(this.kSceneFile);
+
+  gEngine.AudioClips.unloadAudio(this.kBgClip);
+  gEngine.AudioClips.unloadAudio(this.kCue);
 
   var nextLevel = new MyGame();
   gEngine.Core.startScene(nextLevel);

@@ -8,11 +8,18 @@ function MyGame() {
   // all squares
   this.mHero = null;
   this.mSupport = null;
+
+  // audio
+  this.kBgClip = 'assets/sounds/BGClip.mp3';
+  this.kCue = 'assets/sounds/MyGame_cue.wav';
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
 MyGame.prototype.loadScene = function () {
   gEngine.TextFileLoader.loadTextFile(this.kSceneFile, gEngine.TextFileLoader.eTextFileType.eXMLFile);
+
+  gEngine.AudioClips.loadAudio(this.kBgClip);
+  gEngine.AudioClips.loadAudio(this.kCue);
 };
 
 MyGame.prototype.initialize = function () {
@@ -22,10 +29,10 @@ MyGame.prototype.initialize = function () {
 
   let sqSet = [];
   sceneParser.parseSquares(sqSet);
-
   this.mSupport = sqSet[0];
-
   this.mHero = sqSet[1];
+
+  gEngine.AudioClips.playBackgroundAudio(this.kBgClip);
 };
 
 // do NOT change any states in this function
@@ -79,11 +86,16 @@ MyGame.prototype.update = function () {
 
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.F)) {
       console.log(xform.getPosition());
+      gEngine.AudioClips.playACue(this.kCue);
     }
 };
 
 MyGame.prototype.unloadScene = function () {
   gEngine.TextFileLoader.unloadTextFile(this.kSceneFile);
+
+  gEngine.AudioClips.stopBackgroundAudio();
+  // gEngine.AudioClips.unloadAudio(this.kBgClip);  // the book says to comment this out?
+  gEngine.AudioClips.unloadAudio(this.kCue);
 
   var nextLevel = new BlueLevel();
   gEngine.Core.startScene(nextLevel);
