@@ -24,14 +24,20 @@ priority than pretty much everything else).
 * audio
 
 ## What We Are Working On
-
-## What We Are Doing Next
 * texture mapping
 * texture coordinates
 * sprite sheets
 * sprite animation
 * fonts
+* text rendering
+
+## What We Are Doing Next
 * game objects
+* super basic game AI
+* collisions
+* precision collisions
+* 'generalized' collisions
+* sprite collisions
 
 # Push Key
 * \+ adds
