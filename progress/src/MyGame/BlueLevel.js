@@ -1,20 +1,30 @@
-"use strict";
+'use strict';
 
 function BlueLevel() {
   this.kSceneFile = 'assets/BlueLevel.xml';
 
   this.mSqSet = [];
 
+  // !: jpg doesn't support transparency
+  this.kPortal = 'assets/minion_portal.jpg';
+  this.kCollector = 'assets/minion_collector.jpg';
+
   this.mCamera = null;
 
-  this.kBgClip = 'assets/sounds/BGClip.mp3';
-  this.kCue = 'assets/sounds/BlueLevel_cue.wav';
+  // audio
+  this.kBgClip = 'assets/sounds/AHiT_MainTheme.mp3';
+  this.kCue = 'assets/sounds/0x56.wav';
 }
 gEngine.Core.inheritPrototype(BlueLevel, Scene);
 
 BlueLevel.prototype.loadScene = function () {
   gEngine.TextFileLoader.loadTextFile(this.kSceneFile, gEngine.TextFileLoader.eTextFileType.eXMLFile);
 
+  // textures
+  gEngine.Textures.loadTexture(this.kPortal);
+  gEngine.Textures.loadTexture(this.kCollector);
+
+  // audio
   gEngine.AudioClips.loadAudio(this.kBgClip);
   gEngine.AudioClips.loadAudio(this.kCue);
 };
@@ -25,8 +35,9 @@ BlueLevel.prototype.initialize = function () {
   // a: parse cam
   this.mCamera = sceneParser.parseCamera();
 
-  // b: parse all squares
+  // b: parse all drawn objects
   sceneParser.parseSquares(this.mSqSet);
+  sceneParser.parseTextureSquares(this.mSqSet);
 
   gEngine.AudioClips.playBackgroundAudio(this.kBgClip);
 };
@@ -40,9 +51,7 @@ BlueLevel.prototype.draw = function () {
   this.mCamera.setupViewProjection();
 
   // c: draw all squares
-  for (var i = 0; i < this.mSqSet.length; i++) {
-    this.mSqSet[i].draw(this.mCamera.getVPMatrix());
-  }
+  for (var i = 0; i < this.mSqSet.length; i++) this.mSqSet[i].draw(this.mCamera.getVPMatrix());
 };
 
 // do NOT draw in this function
@@ -83,6 +92,12 @@ BlueLevel.prototype.update = function () {
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.F)) {
       gEngine.AudioClips.playACue(this.kCue);
     }
+
+    // continuously change texture tinting
+    var c = this.mSqSet[1].getColor();
+    var ca = c[3] + deltaV;
+    if (ca > 1) ca = 0;
+    c[3] = ca;
 };
 
 BlueLevel.prototype.unloadScene = function () {
@@ -90,6 +105,11 @@ BlueLevel.prototype.unloadScene = function () {
 
   gEngine.TextFileLoader.unloadTextFile(this.kSceneFile);
 
+  // textures
+  gEngine.Textures.unloadTexture(this.kPortal);
+  gEngine.Textures.unloadTexture(this.kCollector);
+
+  // audio
   gEngine.AudioClips.unloadAudio(this.kBgClip);
   gEngine.AudioClips.unloadAudio(this.kCue);
 

@@ -1,30 +1,41 @@
+'use strict';
+
 var gEngine = gEngine || { };
 
 gEngine.DefaultResources = (function () {
-  // Simple Shader file paths
   const kSimpleVS = 'src/GLSLShaders/SimpleVS.glsl';
   const kSimpleFS = 'src/GLSLShaders/SimpleFS.glsl';
-
   var mConstColorShader = null;
-  var _getConstColorShader = function () { return mConstColorShader; };
 
-  // callback function after loadings are done
+  const kTextureVS = 'src/GLSLShaders/TextureVS.glsl';
+  const kTextureFS = 'src/GLSLShaders/TextureFS.glsl';
+  var mTextureShader = null;
+
   var _createShaders = function (callbackFunction) {
     mConstColorShader = new SimpleShader(kSimpleVS, kSimpleFS);
+    mTextureShader = new TextureShader(kTextureVS, kTextureFS);
     callbackFunction();
   };
 
-  // init async loading of GLSL files
-  var _initialize = function (callbackFunction) {
-    gEngine.TextFileLoader.loadTextFile(kSimpleVS,gEngine.TextFileLoader.eTextFileType.eTextFile);
-    gEngine.TextFileLoader.loadTextFile(kSimpleFS,gEngine.TextFileLoader.eTextFileType.eTextFile);
+  var getConstColorShader = function () { return mConstColorShader; };
+  var getTextureShader = function () { return mTextureShader; }
+
+  var initialize = function (callbackFunction) {
+    // constant color shader
+    gEngine.TextFileLoader.loadTextFile(kSimpleVS, gEngine.TextFileLoader.eTextFileType.eTextFile);
+    gEngine.TextFileLoader.loadTextFile(kSimpleFS, gEngine.TextFileLoader.eTextFileType.eTextFile);
+
+    // texture shader
+    gEngine.TextFileLoader.loadTextFile(kTextureVS, gEngine.TextFileLoader.eTextFileType.eTextFile);
+    gEngine.TextFileLoader.loadTextFile(kTextureFS, gEngine.TextFileLoader.eTextFileType.eTextFile);
 
     gEngine.ResourceMap.setLoadCompleteCallback(function () { _createShaders(callbackFunction); });
   };
 
   var mPublic = {
-    initialize: _initialize,
-    getConstColorShader: _getConstColorShader
+    initialize,
+    getConstColorShader,
+    getTextureShader
   };
   return mPublic;
 }());

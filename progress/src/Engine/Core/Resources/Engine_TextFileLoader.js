@@ -17,7 +17,7 @@ gEngine.TextFileLoader = (function () {
       req.onreadystatechange = function () {
         if ((req.readyState === 4) && (req.status !== 200)) {
           console.error(`${fileName}: loading failed!
-            [Hint: you cannot double click index.html to fun this project.
+            [Hint: you cannot double click index.html to run this project.
             The index.html file must be loaded by a web-server.]`);
         }
       };

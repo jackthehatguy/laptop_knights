@@ -7,7 +7,6 @@ gEngine.AudioClips = (function () {
   var mBgAudioNode = null;
 
   var initAudioContext = function () {
-    console.log('here');
     try {
       var AudioContext = window.AudioContext || window.webkitAudioContext;
       mAudioContext = new AudioContext();

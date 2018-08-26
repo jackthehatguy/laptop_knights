@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var gEngine = gEngine || { }; // no redef
 
@@ -14,7 +14,14 @@ gEngine.Core = (function() {
     var canvas = document.getElementById(htmlCanvasID);
 
     // get & bind webgl :: store in mGL
-    mGL = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    mGL = canvas.getContext('webgl', {alpha: false}) || canvas.getContext('experimental-webgl', {alpha: false});
+
+    // allows transparency w/ textures
+    mGL.blendFunc(mGL.SRC_ALPHA, mGL.ONE_MINUS_SRC_ALPHA);
+    mGL.enable(mGL.BLEND);
+
+    // invert img y-axis to match coord space
+    mGL.pixelStorei(mGL.UNPACK_FLIP_Y_WEBGL, true);
 
     if (mGL === null) {
       document.write('<br /><strong>WebGL is not supported!</strong>');
