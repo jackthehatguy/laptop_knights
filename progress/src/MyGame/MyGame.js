@@ -1,36 +1,58 @@
-"use strict";
+'use strict';
 
 function MyGame() {
-  this.kSceneFile = 'assets/WhiteLevel.xml';
+  // textures
+  this.kPortal = 'assets/minion_portal.png';
+  this.kCollector = 'assets/minion_collector.png';
+
+  // all renderable objects
+  this.mHero = null;
+  this.mPortal = null;
+  this.mCollector = null;
 
   this.mCamera = null;
 
-  // all squares
-  this.mHero = null;
-  this.mSupport = null;
-
   // audio
-  this.kBgClip = 'assets/sounds/BGClip.mp3';
-  this.kCue = 'assets/sounds/MyGame_cue.wav';
+  this.kBgClip = 'assets/sounds/AHiT_MainTheme.mp3';
+  this.kCue = 'assets/sounds/0x53.wav';
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
 MyGame.prototype.loadScene = function () {
-  gEngine.TextFileLoader.loadTextFile(this.kSceneFile, gEngine.TextFileLoader.eTextFileType.eXMLFile);
+  // textures
+  gEngine.Textures.loadTexture(this.kPortal);
+  gEngine.Textures.loadTexture(this.kCollector);
 
+  // audio
   gEngine.AudioClips.loadAudio(this.kBgClip);
   gEngine.AudioClips.loadAudio(this.kCue);
 };
 
 MyGame.prototype.initialize = function () {
-  var sceneParser = new SceneFileParser(this.kSceneFile);
+  console.log('pog');
+  // a: camera
+  this.mCamera = new Camera(
+    vec2.fromValues(20, 60),
+    20,
+    [20, 40, 600, 300]
+  );
+  this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
 
-  this.mCamera = sceneParser.parseCamera();
+  // b: game objects
+  this.mPortal = new TextureRenderable(this.kPortal);
+  this.mPortal.setColor([1, 0, 0, 0.2]);
+  this.mPortal.getXform().setPosition(25, 60);
+  this.mPortal.getXform().setSize(3, 3);
 
-  let sqSet = [];
-  sceneParser.parseSquares(sqSet);
-  this.mSupport = sqSet[0];
-  this.mHero = sqSet[1];
+  this.mCollector = new TextureRenderable(this.kCollector);
+  this.mCollector.setColor([0, 0, 0, 0]);
+  this.mCollector.getXform().setPosition(15, 60);
+  this.mCollector.getXform().setSize(3, 3);
+
+  this.mHero = new Renderable();
+  this.mHero.setColor([0, 0, 1, 1]);
+  this.mHero.getXform().setPosition(20, 60);
+  this.mHero.getXform().setSize(2, 3);
 
   gEngine.AudioClips.playBackgroundAudio(this.kBgClip);
 };
@@ -45,9 +67,9 @@ MyGame.prototype.draw = function () {
 
   // c: draw all objects
   let vp = this.mCamera.getVPMatrix();
-
-  this.mSupport.draw(vp);
+  this.mPortal.draw(vp);
   this.mHero.draw(vp);
+  this.mCollector.draw(vp);
 };
 
 // do NOT draw in this function
@@ -88,14 +110,22 @@ MyGame.prototype.update = function () {
       console.log(xform.getPosition());
       gEngine.AudioClips.playACue(this.kCue);
     }
+
+    let c = this.mPortal.getColor();
+    let ca = c[3] + deltaV;
+    if (ca > 1) ca = 0;
+    c[3] = ca;
 };
 
 MyGame.prototype.unloadScene = function () {
-  gEngine.TextFileLoader.unloadTextFile(this.kSceneFile);
-
+  // audio
   gEngine.AudioClips.stopBackgroundAudio();
   // gEngine.AudioClips.unloadAudio(this.kBgClip);  // the book says to comment this out?
   gEngine.AudioClips.unloadAudio(this.kCue);
+
+  // textures
+  gEngine.Textures.unloadTexture(this.kPortal);
+  gEngine.Textures.unloadTexture(this.kCollector);
 
   var nextLevel = new BlueLevel();
   gEngine.Core.startScene(nextLevel);

@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 function SceneFileParser(sceneFilePath) {
   this.mSceneXml = gEngine.ResourceMap.retrieveAsset(sceneFilePath);
@@ -45,15 +45,43 @@ SceneFileParser.prototype.parseSquares = function (sqSet) {
     h = +(elm.item(i).attributes.getNamedItem('Height').value);
     r = +(elm.item(i).attributes.getNamedItem('Rotation').value);
     c = elm.item(i).attributes.getNamedItem('Color').value.split(' ');
-    sq = new Renderable(gEngine.DefaultResources.getConstColorShader());
+    sq = new Renderable();
 
     for (var j = 0; j < 4; j++) c[j] = +c[j];
 
     sq.setColor(c);
+
     let sqX = sq.getXform();
     sqX.setPosition(x, y);
     sqX.setRotationInDegree(r);
     sqX.setSize(w, h);
+
+    sqSet.push(sq);
+  }
+};
+
+SceneFileParser.prototype.parseTextureSquares = function (sqSet) {
+  var elm = this._getElm('TextureSquare');
+  var x, y, w, h, r, c, t, sq;
+  for (var i = 0; i < elm.length; i++) {
+    x = +(elm.item(i).attributes.getNamedItem('PosX').value);
+    y = +(elm.item(i).attributes.getNamedItem('PosY').value);
+    w = +(elm.item(i).attributes.getNamedItem('Width').value);
+    h = +(elm.item(i).attributes.getNamedItem('Height').value);
+    r = +(elm.item(i).attributes.getNamedItem('Rotation').value);
+    c = elm.item(i).attributes.getNamedItem('Color').value.split(' ');
+    t = elm.item(i).attributes.getNamedItem('Texture').value;
+    sq = new TextureRenderable(t);
+
+    for (var j = 0; j < 4; j++) c[j] = +c[j];
+
+    sq.setColor(c);
+
+    let sqX = sq.getXform();
+    sqX.setPosition(x, y);
+    sqX.setRotationInDegree(r);
+    sqX.setSize(w, h);
+
     sqSet.push(sq);
   }
 };
