@@ -29,7 +29,6 @@ MyGame.prototype.loadScene = function () {
 };
 
 MyGame.prototype.initialize = function () {
-  console.log('pog');
   // a: camera
   this.mCamera = new Camera(
     vec2.fromValues(20, 60),

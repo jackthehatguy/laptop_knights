@@ -22,10 +22,10 @@ priority than pretty much everything else).
 * scene file loading
 * scene swapping (basically level switching)
 * audio
-
-## What We Are Working On
 * texture mapping
 * texture coordinates
+
+## What We Are Working On
 * sprite sheets
 * sprite animation
 * fonts
