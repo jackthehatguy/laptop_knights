@@ -45,3 +45,5 @@ priority than pretty much everything else).
 * ^ updates
 * ! adds testing
 * ~ changes
+* & fixes
+* $ cleans up

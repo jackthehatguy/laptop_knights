@@ -63,6 +63,13 @@ function* fWave(array) {
   }
 }
 
+function genRandLetters(num) {
+  let in_set = 'qwertyuiopasdfghjklzxcvbnm';
+  let out_set = [];
+  for (var i = 0; i < num; i++) { out_set.push(in_set.charAt(Math.floor(Math.random()*in_set.length))); }
+  return out_set;
+}
+
 //==============================================================================
 
 const Pig = function () {

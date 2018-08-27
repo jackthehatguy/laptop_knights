@@ -24,8 +24,8 @@ views:
 */
 
 var canvas = document.getElementById('game');
-canvas.width = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) - 17;
-canvas.height = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) - 17;
+canvas.width = 640;
+canvas.height = 480;
 var c = canvas.getContext('2d');
 const FRICTION = 0; //what has Jack done now?? daijoubu desuyo!
 
@@ -36,7 +36,7 @@ controller = {
   up: false,
   right: false,
   down: false,
-  keyListener: (e) => {
+  keyListener: function(e) {
     // console.log('e',e);
     var key_state = (e.type == 'keydown');
 
@@ -76,7 +76,7 @@ function Actor(x, y, sprite_deck) {
   this.position = 3;
 }
 
-Actor.prototype.move = (controller) => {
+Actor.prototype.move = function (controller) {
   // console.log(controller);
   // this code is Jack's fault, lol; don't worry about it, Spencer will fix it
   if(controller.left) {
@@ -165,7 +165,7 @@ function Box (x, y, width, height, display) {
   this.height = height
 }
 
-Box.prototype.overlaps = (box) => {
+Box.prototype.overlaps = function (box) {
   if (
       (this.x >= box.x && this.x <= box.x+box.width)
       &&
@@ -180,7 +180,7 @@ Box.prototype.overlaps = (box) => {
   return false;
 };
 
-Box.prototype.draw = () => {
+Box.prototype.draw = function () {
   if (this.display) {
     c.fillStyle = "rgba(255, 110, 250, 0.6)";
     c.fillRect(this.x, this.y, this.width, this.height);
@@ -196,17 +196,17 @@ function SpriteDeck() {
 /**
 * moves the current anim to the next frame if possible
 */
-SpriteDeck.prototype.update = () => {
+SpriteDeck.prototype.update = function () {
   return this.cur_anim.update();
 };
 
-SpriteDeck.prototype.trade = (animation) => {
+SpriteDeck.prototype.trade = function (animation) {
   this.cur_anim = animation;
   // this.cur_anim.cur_frame = 0;
   // this.cur_anim.tick = 0;
 };
 
-SpriteDeck.prototype.draw = (x, y) => {
+SpriteDeck.prototype.draw = function (x, y) {
   this.cur_anim.draw(x, y);
 };
 
@@ -224,7 +224,7 @@ function Animation(width, height, src, num_frames, delay) {
   this.cur_frame = 0;
 }
 
-Animation.prototype.update = () => {
+Animation.prototype.update = function () {
   if (this.tick++ >= this.delay) {
     this.tick = 0;
     this.cur_frame++;
@@ -237,7 +237,7 @@ Animation.prototype.update = () => {
   return -1;
 };
 
-Animation.prototype.draw = (x, y) => {
+Animation.prototype.draw = function (x, y) {
   // c.clearRect(
   //   x,
   //   y,
@@ -279,7 +279,7 @@ function loop() {
   canvas.width = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) - 17;
   canvas.height = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) - 17;
   c.clearRect(0,0,canvas.width,canvas.height);
-  // c.drawImage(bg, 0, 0, 1200, 1800, 0, 0, canvas.width, canvas.height);
+  c.drawImage(bg, 0, 0, 1200, 1800, 0, 0, canvas.width, canvas.height);
   pierre.move(controller);
   pierre.render();
   requestAnimationFrame(loop);
