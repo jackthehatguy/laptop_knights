@@ -24,9 +24,9 @@ priority than pretty much everything else).
 * audio
 * texture mapping
 * texture coordinates
+* sprite sheets
 
 ## What We Are Working On
-* sprite sheets
 * sprite animation
 * fonts
 * text rendering
