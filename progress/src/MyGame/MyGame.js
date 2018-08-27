@@ -3,7 +3,7 @@
 function MyGame() {
   // textures
   this.kPortal = 'assets/minion_portal.png';
-  this.kPortal = 'assets/minion_collector.png';
+  this.kCollector = 'assets/minion_collector.png';
 
   // all renderable objects
   this.mHero = null;
@@ -66,10 +66,10 @@ MyGame.prototype.draw = function () {
   this.mCamera.setupViewProjection();
 
   // c: draw all objects
-  let vp = this.mCamera.getVPMatrix;
-  this.mPortal.draw(vp());
-  this.mHero.draw(vp());
-  this.mCollector.draw(vp());
+  let vp = this.mCamera.getVPMatrix();
+  this.mPortal.draw(vp);
+  this.mHero.draw(vp);
+  this.mCollector.draw(vp);
 };
 
 // do NOT draw in this function

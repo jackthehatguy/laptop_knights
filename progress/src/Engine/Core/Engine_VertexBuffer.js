@@ -24,7 +24,7 @@ gEngine.VertexBuffer = (function() {
     0.0, 1.0,
     1.0, 0.0,
     0.0, 0.0
-  ]
+  ];
 
   var initialize = function() {
     var gl = gEngine.Core.getGL();

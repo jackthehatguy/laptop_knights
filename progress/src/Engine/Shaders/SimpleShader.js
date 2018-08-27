@@ -1,6 +1,6 @@
 'use strict';
 
-function SimpleShader(vertexShaderID, fragmentShaderID) {
+function SimpleShader(vertexShaderPath, fragmentShaderPath) {
   this.mCompiledShader = null;
   this.mShaderVertexPositionAttribute = null;
   this.mPixelColor = null;                      // in SimpleFS
@@ -12,8 +12,8 @@ function SimpleShader(vertexShaderID, fragmentShaderID) {
   //-----start constructor------------------------------------------------------
 
   // 0: load and compile vert & frag shaders
-  var vertexShader = this._compileShader(vertexShaderID, gl.VERTEX_SHADER);
-  var fragmentShader = this._compileShader(fragmentShaderID, gl.FRAGMENT_SHADER);
+  var vertexShader = this._compileShader(vertexShaderPath, gl.VERTEX_SHADER);
+  var fragmentShader = this._compileShader(fragmentShaderPath, gl.FRAGMENT_SHADER);
 
   // 1: create and link shaders
   this.mCompiledShader = gl.createProgram();

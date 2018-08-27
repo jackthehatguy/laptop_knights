@@ -3,11 +3,11 @@
 function BlueLevel() {
   this.kSceneFile = 'assets/BlueLevel.xml';
 
-  this.mSqSet = [];
-
   // !: jpg doesn't support transparency
   this.kPortal = 'assets/minion_portal.jpg';
   this.kCollector = 'assets/minion_collector.jpg';
+
+  this.mSqSet = [];
 
   this.mCamera = null;
 
@@ -57,7 +57,7 @@ BlueLevel.prototype.draw = function () {
 // do NOT draw in this function
 BlueLevel.prototype.update = function () {
     // For this very simple game, let's move the first square
-    var xform = this.mSqSet[1].getXform();
+    var xform = this.mSqSet[0].getXform();
     var deltaV = 0.05;
 
     // Support hero movements
@@ -94,8 +94,8 @@ BlueLevel.prototype.update = function () {
     }
 
     // continuously change texture tinting
-    var c = this.mSqSet[1].getColor();
-    var ca = c[3] + deltaV;
+    let c = this.mSqSet[1].getColor();
+    let ca = c[3] + deltaV;
     if (ca > 1) ca = 0;
     c[3] = ca;
 };

@@ -11,8 +11,6 @@ function TextureShader(vertexShaderPath, fragmentShaderPath) {
   var gl = gEngine.Core.getGL();
   this.mShaderTextureCoordAttribute = gl.getAttribLocation(this.mCompiledShader, 'aTextureCoordinate');
 }
-
-// inherit all functions
 gEngine.Core.inheritPrototype(TextureShader, SimpleShader);
 
 TextureShader.prototype.activateShader = function (pixelColor, vpMatrix) {
