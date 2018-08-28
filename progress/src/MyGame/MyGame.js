@@ -10,7 +10,8 @@ function MyGame() {
   this.mPortal = null;
   this.mCollector = null;
   this.mFontImage = null;
-  this.mMinion = null;
+  this.mRightMinion = null;
+  this.mLeftMinion = null;
 
   // camera
   this.mCamera = null;
@@ -53,16 +54,42 @@ MyGame.prototype.initialize = function () {
   this.mCollector.getXform().setSize(3, 3);
   this.mCollector.setElementPixelPositions(315, 495, 0, 180);
 
-  // whole sheets
+  // font sample
   this.mFontImage = new SpriteRenderable(this.kFontImage);
   this.mFontImage.setColor([1, 1, 1, 0]);
   this.mFontImage.getXform().setPosition(13, 62);
   this.mFontImage.getXform().setSize(4, 4);
 
-  this.mMinion = new SpriteRenderable(this.kMinionSprite);
-  this.mMinion.setColor([1, 1, 1, 0]);
-  this.mMinion.getXform().setPosition(26, 56);
-  this.mMinion.getXform().setSize(5, 2.5);
+  // animated
+  this.mRightMinion = new SpriteAnimateRenderable(this.kMinionSprite);
+  this.mRightMinion.setColor([1, 1, 1, 0]);
+  this.mRightMinion.getXform().setPosition(26, 56.5);
+  this.mRightMinion.getXform().setSize(4, 3.2);
+  this.mRightMinion.setSpriteSequence(
+    512,
+    0,
+    204,
+    164,
+    5,
+    0
+  );
+  this.mRightMinion.setAnimationType(SpriteAnimateRenderable.eAnimationType.eAnimateRight);
+  this.mRightMinion.setAnimationSpeed(50);
+
+  this.mLeftMinion = new SpriteAnimateRenderable(this.kMinionSprite);
+  this.mLeftMinion.setColor([1, 1, 1, 0]);
+  this.mLeftMinion.getXform().setPosition(15, 56.5);
+  this.mLeftMinion.getXform().setSize(4, 3.2);
+  this.mLeftMinion.setSpriteSequence(
+    348,
+    0,
+    204,
+    164,
+    5,
+    0
+  );
+  this.mLeftMinion.setAnimationType(SpriteAnimateRenderable.eAnimationType.eAnimateRight);
+  this.mLeftMinion.setAnimationSpeed(50);
 
   // hero
   this.mHero = new SpriteRenderable(this.kMinionSprite);
@@ -88,7 +115,8 @@ MyGame.prototype.draw = function () {
   this.mCollector.draw(vp);
   this.mHero.draw(vp);
   this.mFontImage.draw(vp);
-  this.mMinion.draw(vp);
+  this.mRightMinion.draw(vp);
+  this.mLeftMinion.draw(vp);
 };
 
 // do NOT draw in this function
@@ -152,19 +180,34 @@ MyGame.prototype.update = function () {
       texCoord[SpriteRenderable.eTexCoordArray.eTop]
     );
 
-    // minion image
-    texCoord = this.mMinion.getElementUVCoordinateArray();
-    var t = texCoord[SpriteRenderable.eTexCoordArray.eTop] - deltaT;
-    var l = texCoord[SpriteRenderable.eTexCoordArray.eLeft] + deltaT;
+    // remeber to update the animation state!
+    this.mRightMinion.updateAnimation();
+    this.mLeftMinion.updateAnimation();
 
-    if (l > 0.5) l = 0;
-    if (t < 0.5) t = 1.0;
-    this.mMinion.setElementUVCoordinate(
-      l,
-      texCoord[SpriteRenderable.eTexCoordArray.eRight],
-      texCoord[SpriteRenderable.eTexCoordArray.eBottom],
-      t
-    );
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.One)) {
+      this.mRightMinion.setAnimationType(SpriteAnimateRenderable.eAnimationType.eAnimateLeft);
+      this.mLeftMinion.setAnimationType(SpriteAnimateRenderable.eAnimationType.eAnimateLeft);
+    }
+
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Two)) {
+      this.mRightMinion.setAnimationType(SpriteAnimateRenderable.eAnimationType.eAnimateSwing);
+      this.mLeftMinion.setAnimationType(SpriteAnimateRenderable.eAnimationType.eAnimateSwing);
+    }
+
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Three)) {
+      this.mRightMinion.setAnimationType(SpriteAnimateRenderable.eAnimationType.eAnimateRight);
+      this.mLeftMinion.setAnimationType(SpriteAnimateRenderable.eAnimationType.eAnimateRight);
+    }
+
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Four)) {
+      this.mRightMinion.incAnimationSpeed(-2);
+      this.mLeftMinion.incAnimationSpeed(-2);
+    }
+
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Five)) {
+      this.mRightMinion.incAnimationSpeed(2);
+      this.mLeftMinion.incAnimationSpeed(2);
+    }
 };
 
 MyGame.prototype.unloadScene = function () {
