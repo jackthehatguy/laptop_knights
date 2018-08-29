@@ -81,6 +81,23 @@ const SlidePuzzle = sideLength => {
   const getArray = _ => array;
   const getNumInversions = _ => cntNumInversions(array);
 
+  const equals = ([h1, ...t1], [h2, ...t2]) =>
+  h1 === undefined && h2 === undefined
+  ? true
+  : h1 === h2
+  ? true && equals(t1, t2)
+  : false;
+
+  const sort = ([h, ...t]) => h === undefined ? [] : sort(t.filter(x => x <= h)).concat(h).concat(sort(t.filter(x => x > h)));
+
+  const solve = _ => {
+    array = sort(array);
+    array.shift();
+    array.push(0);
+  }
+
+  const isSolved = _ => equals(array.slice(0, -1), sort(array.slice(0, -1))) && array[array.length-1] === 0;
+
   const init = _ => {
     array = genRandSet(sideLength ** 2 - 1);
     if (!isSolvable()) jenny();
@@ -92,7 +109,7 @@ const SlidePuzzle = sideLength => {
     let puzzle = [];
     for (var i = 0; i < sideLength; i++) puzzle.push(array.slice(sideLength*i,sideLength*i+sideLength));
     return puzzle;
-  }
+  };
 
   const left = _ => {
     let empty = array.indexOf(0);
@@ -102,7 +119,7 @@ const SlidePuzzle = sideLength => {
       return true;
     }
     return false;
-  }
+  };
 
   const right = _ => {
     let empty = array.indexOf(0);
@@ -112,7 +129,7 @@ const SlidePuzzle = sideLength => {
       return true;
     }
     return false;
-  }
+  };
 
   const down = _ => {
     let empty = array.indexOf(0);
@@ -122,7 +139,7 @@ const SlidePuzzle = sideLength => {
       return true;
     }
     return false;
-  }
+  };
 
   const up = _ => {
     let empty = array.indexOf(0);
@@ -132,14 +149,16 @@ const SlidePuzzle = sideLength => {
       return true;
     }
     return false;
-  }
+  };
 
   const debug = {
     getArray,
     getNumInversions,
     isSolvable,
     jenny,
-    mirror
+    mirror,
+    sort,
+    solve
   };
 
   const slide = {
@@ -153,7 +172,8 @@ const SlidePuzzle = sideLength => {
     init,
     getPuzzle,
     slide,
-    debug,
+    isSolved,
+    debug
   };
 };
 
