@@ -13,6 +13,7 @@ before the project is completed (the game is a lower
 priority than pretty much everything else).
 
 ## What We've Done
+### Game Engine
 * draw geometric shapes
 * transform operator
 * created game loop
@@ -28,10 +29,12 @@ priority than pretty much everything else).
 * sprite animation
 
 ## What We Are Working On
+### Game Engine
 * fonts
 * text rendering
 
 ## What We Are Doing Next
+### Game Engine
 * game objects
 * super basic game AI
 * collisions
@@ -43,7 +46,8 @@ priority than pretty much everything else).
 * \+ adds
 * \- removes
 * ^ updates
-* ! adds testing
+* ! breaks
 * ~ changes
 * & fixes
 * $ cleans up
+* % tests

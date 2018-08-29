@@ -11,14 +11,6 @@ const range = (n, m) =>
       ? push(range(n, m-1),m)
       : push(range(n, m+1),m);
 
-// reverse :: Array -> Array
-const reverse = ([h, ...t]) =>
-  h === undefined
-  ? []
-  : push(reverse(t), h);
-
-const compose = (x, [h, ...t]) => h === undefined ? x : h(compose(x,t));
-
 // teddy :: Integer -> Boolean
 const teddy = n => {
   console.log(n);
@@ -33,35 +25,7 @@ const teddy = n => {
   return false;
 }
 
-const cntLessThan = (n, [h, ...t]) =>
-  h === undefined
-  ? 0
-  : n > h
-    ? 1 + cntLessThan(n, t)
-    : cntLessThan(n, t);
-
-const cntNumInversions = ([h, ...t]) =>
-  h === undefined
-  ? 0
-  : cntLessThan(h, t) + cntNumInversions(t);
-
-const pickRandSet = n => range(n).sort(_ => 0.5 - Math.random());
-
-const isEven = n => n % 2 === 0;
-
-const rotateLeft = ([h, ...t]) => push(t, h);
-
-function* fWave(array) {
-  let n = 0;
-  while (true) {
-    while (n < array.length-1) {
-      yield array[n++];
-    }
-    while (n > 0) {
-      yield array[n--];
-    }
-  }
-}
+const genRandSet = n => range(n).sort(_ => 0.5 - Math.random());
 
 function genRandLetters(num) {
   let in_set = 'qwertyuiopasdfghjklzxcvbnm';
@@ -72,12 +36,135 @@ function genRandLetters(num) {
 
 //==============================================================================
 
+const SlidePuzzle = sideLength => {
+  'use strict';
+
+  sideLength = sideLength || 3;
+  let array = [];
+
+  const cntLessThan = (n, [h, ...t]) =>
+    h === undefined
+    ? 0
+    : n > h
+      ? 1 + cntLessThan(n, t)
+      : cntLessThan(n, t);
+
+  const cntNumInversions = ([h, ...t]) =>
+    h === undefined
+    ? 0
+    : cntLessThan(h, t) + cntNumInversions(t);
+
+  const isEven = n => !(n % 2);
+
+  // FIXME: only works on a 3x3 grid; on other sizes, assumes to be solvable
+  const isSolvable = _ => sideLength === 3 ? isEven(cntNumInversions(array)) : true;
+
+  const rotateLeft = ([h, ...t]) => t.push(h) && t;
+
+  /*
+  * couldn't think of a good name (thakfully this will be a private function)
+  * if the number of inversions is even, this function makes it odd and vice vera
+  * the name comes from the "My Life as a Teenage Robot" episode with the Rubix cube
+  * the other students cheat by swapping a couple of the stickers on the cube
+  * making the cube unsolvable (much like the slide puzzle)
+  * all it took was to swap the stickers back, and it was solvable again
+  */
+  const jenny = _ => (array = rotateLeft(array)) && array;
+
+  const reverse = ([h, ...t]) =>
+    h === undefined
+    ? []
+    : reverse(t).concat(h);
+
+  const mirror = _ => (array = reverse(array)) && array;
+
+  const getArray = _ => array;
+  const getNumInversions = _ => cntNumInversions(array);
+
+  const init = _ => {
+    array = genRandSet(sideLength ** 2 - 1);
+    if (!isSolvable()) jenny();
+    if (cntNumInversions(array) < 11) mirror();
+    array.push(0);
+  };
+
+  const getPuzzle = _ => {
+    let puzzle = [];
+    for (var i = 0; i < sideLength; i++) puzzle.push(array.slice(sideLength*i,sideLength*i+sideLength));
+    return puzzle;
+  }
+
+  const left = _ => {
+    let empty = array.indexOf(0);
+    if (empty !== -1 && empty % sideLength !== sideLength-1) {
+      array[empty] = array[empty+1];
+      array[empty+1] = 0;
+      return true;
+    }
+    return false;
+  }
+
+  const right = _ => {
+    let empty = array.indexOf(0);
+    if (empty !== -1 && empty % sideLength !== 0) {
+      array[empty] = array[empty-1];
+      array[empty-1] = 0;
+      return true;
+    }
+    return false;
+  }
+
+  const down = _ => {
+    let empty = array.indexOf(0);
+    if (empty !== -1 && empty - sideLength >= 0) {
+      array[empty] = array[empty-sideLength];
+      array[empty-sideLength] = 0;
+      return true;
+    }
+    return false;
+  }
+
+  const up = _ => {
+    let empty = array.indexOf(0);
+    if (empty !== -1 && empty < sideLength*(sideLength-1)) {
+      array[empty] = array[empty+sideLength];
+      array[empty+sideLength] = 0;
+      return true;
+    }
+    return false;
+  }
+
+  const debug = {
+    getArray,
+    getNumInversions,
+    isSolvable,
+    jenny,
+    mirror
+  };
+
+  const slide = {
+    right,
+    up,
+    left,
+    down
+  }
+
+  return {
+    init,
+    getPuzzle,
+    slide,
+    debug,
+  };
+};
+
+//==============================================================================
+
 const Pig = function () {
   var first;
 
   const isVowel = char => ['a','e','i','o','u','y'].includes(char);
 
-  const rotate = ([h, ...t]) => t.concat(h);
+  const rotate = ([h, ...t]) => t.push(h) && t;
 
   const translate = word =>
     ([first] = word)
