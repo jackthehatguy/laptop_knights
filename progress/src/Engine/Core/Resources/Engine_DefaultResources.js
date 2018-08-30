@@ -3,15 +3,22 @@
 var gEngine = gEngine || { };
 
 gEngine.DefaultResources = (function () {
+  // const color shader
   const kSimpleVS = 'src/GLSLShaders/SimpleVS.glsl';
   const kSimpleFS = 'src/GLSLShaders/SimpleFS.glsl';
   var mConstColorShader = null;
 
+  // texture shader
   const kTextureVS = 'src/GLSLShaders/TextureVS.glsl';
   const kTextureFS = 'src/GLSLShaders/TextureFS.glsl';
   var mTextureShader = null;
 
+  // sprite shader
   var mSpriteShader = null;
+
+  // default font
+  var kDefaultFont = 'assets/fonts/system-default-font';
+  var getDefaultFont = function () { return kDefaultFont; };
 
   var _createShaders = function (callbackFunction) {
     gEngine.ResourceMap.setLoadCompleteCallback(null);
@@ -34,14 +41,33 @@ gEngine.DefaultResources = (function () {
     gEngine.TextFileLoader.loadTextFile(kTextureVS, gEngine.TextFileLoader.eTextFileType.eTextFile);
     gEngine.TextFileLoader.loadTextFile(kTextureFS, gEngine.TextFileLoader.eTextFileType.eTextFile);
 
+    // default font
+    gEngine.Fonts.loadFont(kDefaultFont);
+
     gEngine.ResourceMap.setLoadCompleteCallback(function () { _createShaders(callbackFunction); });
+  };
+
+  var cleanUp = function () {
+    mConstColorShader.cleanUp();
+    mTextureShader.cleanUp();
+    mSpriteShader.cleanUp();
+
+    gEngine.TextFileLoader.unloadTextFile(kSimpleVS);
+    gEngine.TextFileLoader.unloadTextFile(kSimpleFS);
+
+    gEngine.TextFileLoader.unloadTextFile(kTextureVS);
+    gEngine.TextFileLoader.unloadTextFile(kTextureFS);
+
+    gEngine.Fonts.unloadFont(kDefaultFont);
   };
 
   var mPublic = {
     initialize,
     getConstColorShader,
     getTextureShader,
-    getSpriteShader
+    getSpriteShader,
+    getDefaultFont,
+    cleanUp
   };
   return mPublic;
 }());

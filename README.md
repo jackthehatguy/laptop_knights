@@ -27,13 +27,10 @@ priority than pretty much everything else).
 * texture coordinates
 * sprite sheets
 * sprite animation
-
-## What We Are Working On
-### Game Engine
 * fonts
 * text rendering
 
-## What We Are Doing Next
+## What We Are Working On
 ### Game Engine
 * game objects
 * super basic game AI
@@ -42,11 +39,19 @@ priority than pretty much everything else).
 * 'generalized' collisions
 * sprite collisions
 
+## What We Are Doing Next
+### Game Engine
+* camera manipulations
+* interpolation
+* camera shake
+* multiple cameras
+* mouse input through cameras
+
 ## Push Key
 * \+ adds
 * \- removes
 * ^ updates
-* ! breaks
+* ! TODO
 * ~ changes
 * & fixes
 * $ cleans up

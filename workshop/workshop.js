@@ -40,6 +40,8 @@ const SlidePuzzle = sideLength => {
   'use strict';
 
   sideLength = sideLength || 3;
+  if (sideLength < 3) sideLength = 3;
+
   let array = [];
 
   const cntLessThan = (n, [h, ...t]) =>
@@ -56,8 +58,9 @@ const SlidePuzzle = sideLength => {
 
   const isEven = n => !(n % 2);
 
-  // FIXME: only works on a 3x3 grid; on other sizes, assumes to be solvable
-  const isSolvable = _ => sideLength === 3 ? isEven(cntNumInversions(array)) : true;
+  // TODO: check for accuracy on larger grids [definitely works on 3; seems to work on 4 & 5]
+  // needs proof!
+  const isSolvable = _ => isEven(cntNumInversions(array));
 
   const rotateLeft = ([h, ...t]) => t.push(h) && t;
 
