@@ -3,11 +3,12 @@
   <head>
     <meta charset="utf-8">
     <title>Game Engine Progress 6.1</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
   </head>
   <body onload="
   var myGame = new MyGame();
   gEngine.Core.initializeEngineCore('GLCanvas', myGame);"
-  style="background: #333;">
+  style="background: #333; color: #eee;">
     <!-- Libraries -->
     <script type="text/javascript" src="src/lib/gl-matrix-min.js"></script>
     <!-- Engine Code -->
@@ -50,5 +51,16 @@
       <script type="text/javascript" src="src/MyGame/Util/SceneFileParser.js"></script>
     <!-- Canvas -->
     <canvas id="GLCanvas" width="640" height="480"></canvas>
+
+    <div class="panel">
+      <div class="heading1">Controls:</div>
+      <div class="normal_text">
+        <div>W: move hero up</div>
+        <div>A: move hero left</div>
+        <div>S: move hero down</div>
+        <div>D: move hero right</div>
+        <div>F: print hero position to console</div>
+      </div>
+    </div>
   </body>
 </html>
