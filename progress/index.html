@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Game Engine Progress 5.4</title>
+    <title>Game Engine Progress 6.1</title>
   </head>
   <body onload="
   var myGame = new MyGame();
@@ -23,6 +23,9 @@
         <script type="text/javascript" src="src/Engine/Core/Resources/Engine_ResourceMap.js"></script>
         <script type="text/javascript" src="src/Engine/Core/Resources/Engine_TextFileLoader.js"></script>
         <script type="text/javascript" src="src/Engine/Core/Resources/Engine_Fonts.js"></script>
+      <!-- GameObjects -->
+      <script type="text/javascript" src="src/Engine/GameObjects/GameObject.js"></script>
+      <script type="text/javascript" src="src/Engine/GameObjects/GameObjectSet.js"></script>
       <!-- Renderables -->
       <script type="text/javascript" src="src/Engine/Renderables/Renderable.js"></script>
       <script type="text/javascript" src="src/Engine/Renderables/TextureRenderable.js"></script>
@@ -38,9 +41,11 @@
       <script type="text/javascript" src="src/Engine/Scene.js"></script>
       <script type="text/javascript" src="src/Engine/Transform.js"></script>
     <!-- Game Client Code -->
-    <!-- <script type="text/javascript" src="src/MyGame/BlueLevel.js"></script> -->
     <script type="text/javascript" src="src/MyGame/MyGame.js"></script>
-    <script type="text/javascript" src="src/MyGame/GameOver.js"></script>
+      <!-- Objects -->
+      <script type="text/javascript" src="src/MyGame/Objects/DyePack.js"></script>
+      <script type="text/javascript" src="src/MyGame/Objects/Hero.js"></script>
+      <script type="text/javascript" src="src/MyGame/Objects/Minion.js"></script>
       <!-- Util -->
       <script type="text/javascript" src="src/MyGame/Util/SceneFileParser.js"></script>
     <!-- Canvas -->

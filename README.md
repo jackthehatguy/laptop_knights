@@ -29,10 +29,10 @@ priority than pretty much everything else).
 * sprite animation
 * fonts
 * text rendering
+* game objects
 
 ## What We Are Working On
 ### Game Engine
-* game objects
 * super basic game AI
 * collisions
 * precision collisions

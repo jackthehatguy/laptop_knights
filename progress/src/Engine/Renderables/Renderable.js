@@ -6,9 +6,9 @@ function Renderable() {
   this.mColor = [1, 1, 1, 1];
 }
 
-Renderable.prototype.draw = function (vpMatrix) {
+Renderable.prototype.draw = function (aCamera) {
   var gl = gEngine.Core.getGL();
-  this.mShader.activateShader(this.mColor, vpMatrix);
+  this.mShader.activateShader(this.mColor, aCamera);
   this.mShader.loadObjectTransform(this.mXform.getXform());
   gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 };
