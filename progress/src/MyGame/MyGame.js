@@ -44,7 +44,7 @@ MyGame.prototype.initialize = function () {
 
   this.mMinionSet = new GameObjectSet();
   for (var i = 0; i < 5; i++) {
-    let randY = Math.random() * 65;
+    let randY = Math.random() * 63 + 6;
     let aMinion = new Minion(this.kMinionSprite, randY);
     this.mMinionSet.addToSet(aMinion);
   }
@@ -87,4 +87,11 @@ MyGame.prototype.update = function () {
   this.mHero.update();
   this.mMinionSet.update();
   this.mDyePack.update();
+};
+
+MyGame.prototype.unloadScene = function () {
+    gEngine.Textures.unloadTexture(this.kMinionSprite);
+
+    var nextLevel = new GameOver();  // next level to be loaded
+    gEngine.Core.startScene(nextLevel);
 };
