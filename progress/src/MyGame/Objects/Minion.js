@@ -20,6 +20,7 @@ Minion.prototype.update = function () {
 
   if (xform.getXPos() < -5) {
     this.kDelta = (Math.trunc(Math.random() * 3) + 1)/10;
+    this.mMinion.setAnimationSpeed(30/(this.kDelta*10));
     xform.setXPos(105);
     xform.setYPos(65 * Math.random());
   }
