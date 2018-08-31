@@ -18,4 +18,5 @@ Hero.prototype.update = function () {
   if (gEngine.Input.isKeyPressed(gEngine.Input.keys.A)) xform.getXPos() < -5 ? xform.setXPos(105) : xform.incXPosBy(-this.kDelta);
   if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D)) xform.getXPos() > 105 ? xform.setXPos(-5) : xform.incXPosBy(this.kDelta);
   if (gEngine.Input.isKeyClicked(gEngine.Input.keys.F)) console.log(xform.getPosition());
+  if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Esc)) gEngine.GameLoop.stop();
 };
