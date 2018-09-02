@@ -11,13 +11,21 @@ function MyGame() {
 
   // renderables
   this.mHero = null;
-  this.mMinionSet = null;
-  this.mDyePack = null;
+  this.mBrain = null;
+  // this.mMinionSet = null;
+  // this.mDyePack = null;
 
   // text renderables
   this.mMsg = null;
 
   // audio
+
+
+  // brain mode:
+  //  h: player
+  //  j: follow, imm orient
+  //  k: follow, curve
+  this.mMode = 'H';
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -40,14 +48,16 @@ MyGame.prototype.initialize = function () {
   this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
 
   // game objects
-  this.mDyePack = new DyePack(this.kMinionSprite);
+  // this.mDyePack = new DyePack(this.kMinionSprite);
 
-  this.mMinionSet = new GameObjectSet();
-  for (var i = 0; i < 5; i++) {
-    let randY = Math.random() * 63 + 6;
-    let aMinion = new Minion(this.kMinionSprite, randY);
-    this.mMinionSet.addToSet(aMinion);
-  }
+  // this.mMinionSet = new GameObjectSet();
+  // for (var i = 0; i < 5; i++) {
+  //   let randY = Math.random() * 63 + 6;
+  //   let aMinion = new Minion(this.kMinionSprite, randY);
+  //   this.mMinionSet.addToSet(aMinion);
+  // }
+
+  this.mBrain = new Brain(this.kMinionSprite);
 
   this.mHero = new Hero(this.kMinionSprite);
 
@@ -76,17 +86,39 @@ MyGame.prototype.draw = function () {
   this.mCamera.setupViewProjection();
 
   // renderables
-  this.mDyePack.draw(this.mCamera);
+  // this.mDyePack.draw(this.mCamera);
   this.mHero.draw(this.mCamera);
-  this.mMinionSet.draw(this.mCamera);
+  this.mBrain.draw(this.mCamera);
+  // this.mMinionSet.draw(this.mCamera);
   this.mMsg.draw(this.mCamera);
 };
 
 // do NOT draw in this function
 MyGame.prototype.update = function () {
+  var msg = 'Brain modes [H:keys, J:imm, K:gradual]: ';
+  var rate = 1;
+
   this.mHero.update();
-  this.mMinionSet.update();
-  this.mDyePack.update();
+
+  switch (this.mMode) {
+    case 'H':
+      this.mBrain.update();
+      break;
+    case 'K':
+      rate = 0.02;
+    case 'J':
+      this.mBrain.rotateObjPointTo(this.mHero.getXform().getPosition(), rate);
+      GameObject.prototype.update.call(this.mBrain);
+      break;
+  }
+
+  if (gEngine.Input.isKeyClicked(gEngine.Input.keys.H)) this.mMode = 'H';
+  if (gEngine.Input.isKeyClicked(gEngine.Input.keys.J)) this.mMode = 'J';
+  if (gEngine.Input.isKeyClicked(gEngine.Input.keys.K)) this.mMode = 'K';
+
+  this.mMsg.setText(msg + this.mMode);
+  // this.mMinionSet.update();
+  // this.mDyePack.update();
 };
 
 MyGame.prototype.unloadScene = function () {

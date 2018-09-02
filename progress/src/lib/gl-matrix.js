@@ -487,6 +487,18 @@ vec2.cross = function(out, a, b) {
     return out;
 };
 
+vec2.rotate = function (out, a, c) {
+  var r = [];
+
+  r[0] = a[0]*Math.cos(c) - a[1]*Math.sin(c);
+  r[1] = a[0]*Math.sin(c) + a[1]*Math.cos(c);
+
+  out[0] = r[0];
+  out[1] = r[1];
+
+  return r;
+};
+
 /**
  * Performs a linear interpolation between two vec2's
  *
