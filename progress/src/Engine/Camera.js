@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 function Camera(wcCenter, wcWidth, viewportArray) {
   // WorldCoordinate and viewport pos and size
@@ -24,6 +24,9 @@ Camera.prototype.setWCCenter = function (xPos, yPos) {
 Camera.prototype.getWCCenter = function () { return this.mWCCenter; };
 
 Camera.prototype.setWCWidth = function (width) { this.mWCWidth = width; };
+Camera.prototype.getWCWidth = function () { return this.mWCWidth; };
+
+Camera.prototype.getWCHeight = function () { return this.mWCWidth * this.mViewport[3] / this.mViewport[2]; };
 
 Camera.prototype.setViewport = function (viewportArray) { this.mViewport = viewportArray; };
 Camera.prototype.getViewport = function () { return this.mViewport; };
@@ -90,4 +93,12 @@ Camera.prototype.setupViewProjection = function () {
 
   // concat view & proj matrices
   mat4.multiply(this.mVPMatrix, this.mProjMatrix, this.mViewMatrix);
+};
+
+Camera.prototype.collideWCBound = function (aXform, zone) {
+  var bbox = new BoundingBox(aXform.getPosition(), aXform.getWidth(), aXform.getHeight());
+  var w = zone * this.getWCWidth();
+  var h = zone * this.getWCHeight();
+  var cameraBound = new BoundingBox(this.getWCCenter(), w, h);
+  return cameraBound.boundCollideStatus(bbox);
 };

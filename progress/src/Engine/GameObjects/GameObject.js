@@ -20,6 +20,12 @@ GameObject.prototype.getCurrentFrontDir = function () { return this.mCurrentFron
 
 GameObject.prototype.getRenderable = function () { return this.mRenderComponent; };
 
+GameObject.prototype.getBBox = function () {
+  var xform = this.getXform();
+  var b = new BoundingBox(xform.getPosition(), xform.getWidth(), xform.getHeight());
+  return b;
+};
+
 GameObject.prototype.update = function () {
   // simple default behavior
   var pos = this.getXform().getPosition();

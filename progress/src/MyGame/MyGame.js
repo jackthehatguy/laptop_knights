@@ -100,6 +100,9 @@ MyGame.prototype.update = function () {
 
   this.mHero.update();
 
+  var hBbox = this.mHero.getBBox();
+  var bBbox = this.mBrain.getBBox();
+
   switch (this.mMode) {
     case 'H':
       this.mBrain.update();
@@ -107,16 +110,20 @@ MyGame.prototype.update = function () {
     case 'K':
       rate = 0.02;
     case 'J':
-      this.mBrain.rotateObjPointTo(this.mHero.getXform().getPosition(), rate);
-      GameObject.prototype.update.call(this.mBrain);
+      if (!hBbox.intersectsBound(bBbox)) {
+        this.mBrain.rotateObjPointTo(this.mHero.getXform().getPosition(), rate);
+        GameObject.prototype.update.call(this.mBrain);
+      }
       break;
   }
+
+  var status = this.mCamera.collideWCBound(this.mHero.getXform(), 0.8)
 
   if (gEngine.Input.isKeyClicked(gEngine.Input.keys.H)) this.mMode = 'H';
   if (gEngine.Input.isKeyClicked(gEngine.Input.keys.J)) this.mMode = 'J';
   if (gEngine.Input.isKeyClicked(gEngine.Input.keys.K)) this.mMode = 'K';
 
-  this.mMsg.setText(msg + this.mMode);
+  this.mMsg.setText(msg + this.mMode + ' [Hero bound=' + status + ']');
   // this.mMinionSet.update();
   // this.mDyePack.update();
 };
