@@ -95,7 +95,7 @@ MyGame.prototype.draw = function () {
 
 // do NOT draw in this function
 MyGame.prototype.update = function () {
-  var msg = 'Brain modes [H:keys, J:imm, K:gradual]: ';
+  var msg = 'Brain [H:keys, J:imm, K:gradual]: ';
   var rate = 1;
 
   this.mHero.update();
@@ -123,7 +123,7 @@ MyGame.prototype.update = function () {
   if (gEngine.Input.isKeyClicked(gEngine.Input.keys.J)) this.mMode = 'J';
   if (gEngine.Input.isKeyClicked(gEngine.Input.keys.K)) this.mMode = 'K';
 
-  this.mMsg.setText(msg + this.mMode + ' [Hero bound=' + status + ']');
+  this.mMsg.setText(`${msg}${this.mMode} [Hero bound=${status}]`);
   // this.mMinionSet.update();
   // this.mDyePack.update();
 };
