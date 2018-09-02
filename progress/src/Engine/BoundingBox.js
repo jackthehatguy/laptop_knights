@@ -1,3 +1,5 @@
+'use strict';
+
 function BoundingBox(centerPos, w, h) {
   this.mLL = vec2.fromValues(0, 0);
   this.setBounds(centerPos, w, h);
@@ -36,7 +38,7 @@ BoundingBox.prototype.boundCollideStatus = function (otherBound) {
     if (otherBound.minY() < this.minY()) status |= BoundingBox.eBoundCollideStatus.eCollideBottom;
     if (otherBound.maxY() > this.maxY()) status |= BoundingBox.eBoundCollideStatus.eCollideTop;
 
-    if (status === BoundingBox.eBoundCollideStatus.eOutside) staus = BoundingBox.eBoundCollideStatus.eInside;
+    if (status === BoundingBox.eBoundCollideStatus.eOutside) status = BoundingBox.eBoundCollideStatus.eInside;
   }
   return status;
 };
