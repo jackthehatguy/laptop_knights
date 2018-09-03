@@ -8,7 +8,7 @@ function GameObject(renderableObj) {
 }
 
 GameObject.prototype.getXform = function () { return this.mRenderComponent.getXform(); };
-GameObject.prototype.setVisiblility = function (f) { this.mVisible = f; };
+GameObject.prototype.setVisibility = function (f) { this.mVisible = f; };
 GameObject.prototype.isVisible = function () { return this.mVisible; };
 
 GameObject.prototype.setSpeed = function (s) { this.mSpeed = s; };

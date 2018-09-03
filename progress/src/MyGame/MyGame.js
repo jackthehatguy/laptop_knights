@@ -3,38 +3,32 @@
 function MyGame() {
   // textures
   this.kMinionSprite = 'assets/minion_sprite.png';
+  this.kMinionCollector = 'assets/minion_collector.png';
+  this.kMinionPortal = 'assets/minion_portal.png';
+
+  // fonts
 
   // camera
   this.mCamera = null;
 
-  // fonts
-
   // renderables
-  this.mHero = null;
-  this.mBrain = null;
-  // this.mMinionSet = null;
-  // this.mDyePack = null;
+  this.mPortal = null;
+  this.mCollector = null;
 
   // text renderables
   this.mMsg = null;
 
   // audio
-
-
-  // brain mode:
-  //  h: player
-  //  j: follow, imm orient
-  //  k: follow, curve
-  this.mMode = 'H';
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
 MyGame.prototype.loadScene = function () {
   // textures
   gEngine.Textures.loadTexture(this.kMinionSprite);
+  gEngine.Textures.loadTexture(this.kMinionCollector);
+  gEngine.Textures.loadTexture(this.kMinionPortal);
 
   // fonts
-
   // audio
 };
 
@@ -48,18 +42,11 @@ MyGame.prototype.initialize = function () {
   this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
 
   // game objects
-  // this.mDyePack = new DyePack(this.kMinionSprite);
+  this.mDyePack = new DyePack(this.kMinionSprite);
+  this.mDyePack.setVisibility(false);
 
-  // this.mMinionSet = new GameObjectSet();
-  // for (var i = 0; i < 5; i++) {
-  //   let randY = Math.random() * 63 + 6;
-  //   let aMinion = new Minion(this.kMinionSprite, randY);
-  //   this.mMinionSet.addToSet(aMinion);
-  // }
-
-  this.mBrain = new Brain(this.kMinionSprite);
-
-  this.mHero = new Hero(this.kMinionSprite);
+  this.mCollector = new TextureObject(this.kMinionCollector, 50, 30, 30, 30);
+  this.mPortal = new TextureObject(this.kMinionPortal, 70, 30, 10, 10);
 
   // text renderables
   this.mMsg = new FontRenderable('Status Message');
@@ -86,50 +73,39 @@ MyGame.prototype.draw = function () {
   this.mCamera.setupViewProjection();
 
   // renderables
-  // this.mDyePack.draw(this.mCamera);
-  this.mHero.draw(this.mCamera);
-  this.mBrain.draw(this.mCamera);
-  // this.mMinionSet.draw(this.mCamera);
+  this.mCollector.draw(this.mCamera);
+  this.mPortal.draw(this.mCamera);
+  this.mDyePack.draw(this.mCamera);
   this.mMsg.draw(this.mCamera);
 };
 
 // do NOT draw in this function
 MyGame.prototype.update = function () {
-  var msg = 'Brain [H:keys, J:imm, K:gradual]: ';
-  var rate = 1;
+  var msg = 'No Collision';
 
-  this.mHero.update();
+  let keys = gEngine.Input.keys;
 
-  var hBbox = this.mHero.getBBox();
-  var bBbox = this.mBrain.getBBox();
+  this.mCollector.update(keys.W, keys.S, keys.A, keys.D);
+  this.mPortal.update(keys.Up, keys.Down, keys.Left, keys.Right);
 
-  switch (this.mMode) {
-    case 'H':
-      this.mBrain.update();
-      break;
-    case 'K':
-      rate = 0.02;
-    case 'J':
-      if (!hBbox.intersectsBound(bBbox)) {
-        this.mBrain.rotateObjPointTo(this.mHero.getXform().getPosition(), rate);
-        GameObject.prototype.update.call(this.mBrain);
-      }
-      break;
+  var h = [];
+
+  // check the small sprite, not the big one
+  if (this.mPortal.pixelTouches(this.mCollector, h)) {
+    msg = `Collided!: (${h[0].toPrecision(4)} ${h[1].toPrecision(4)})`;
+    this.mDyePack.setVisibility(true);
+    this.mDyePack.getXform().setPosition(h[0], h[1]);
+  } else {
+    this.mDyePack.setVisibility(false);
   }
 
-  var status = this.mCamera.collideWCBound(this.mHero.getXform(), 0.8)
-
-  if (gEngine.Input.isKeyClicked(gEngine.Input.keys.H)) this.mMode = 'H';
-  if (gEngine.Input.isKeyClicked(gEngine.Input.keys.J)) this.mMode = 'J';
-  if (gEngine.Input.isKeyClicked(gEngine.Input.keys.K)) this.mMode = 'K';
-
-  this.mMsg.setText(`${msg}${this.mMode} [Hero bound=${status}]`);
-  // this.mMinionSet.update();
-  // this.mDyePack.update();
+  this.mMsg.setText(msg);
 };
 
 MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kMinionSprite);
+    gEngine.Textures.unloadTexture(this.kMinionPortal);
+    gEngine.Textures.unloadTexture(this.kMinionCollector);
 
     var nextLevel = new GameOver();  // next level to be loaded
     gEngine.Core.startScene(nextLevel);

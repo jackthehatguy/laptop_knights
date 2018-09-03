@@ -5,6 +5,7 @@ function TextureInfo(name, w, h, id) {
   this.mWidth = w;
   this.mHeight = h;
   this.mGLTexID = id;
+  this.mColorArray = null;
 }
 
 var gEngine = gEngine || { };
@@ -86,12 +87,34 @@ gEngine.Textures = (function () {
 
   var getTextureInfo = function (textureName) { return gEngine.ResourceMap.retrieveAsset(textureName); };
 
+  var getColorArray = function (textureName) {
+    var texInfo = getTextureInfo(textureName);
+    if (texInfo.mColorArray === null) {
+      var gl = gEngine.Core.getGL();
+      var fb = gl.createFramebuffer();
+      gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texInfo.mGLTexID, 0);
+      if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE) {
+        var pixels = new Uint8Array(texInfo.mWidth * texInfo.mHeight * 4);
+        gl.readPixels(0, 0, texInfo.mWidth, texInfo.mHeight, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+        texInfo.mColorArray = pixels;
+      } else {
+        console.error('WARNING: gEngine.Textures.getColorArray() failed!');
+      }
+
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      gl.deleteFramebuffer(fb);
+    }
+    return texInfo.mColorArray;
+  };
+
   var mPublic = {
     loadTexture,
     unloadTexture,
     activateTexture,
     deactivateTexture,
-    getTextureInfo
+    getTextureInfo,
+    getColorArray
   };
   return mPublic;
 }());
