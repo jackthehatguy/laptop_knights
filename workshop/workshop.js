@@ -1,6 +1,11 @@
 // push :: (Array, Value) -> Array
 const push = (a, x) => a.push(x) && a;
 
+const fibonacci = n => { switch (n) {
+    case 0: case 1: return n;
+    default: return fibonacci(n-2)+fibonacci(n-1);
+}};
+
 // range :: (Number, Number) -> Array
 const range = (n, m) =>
   m === undefined
@@ -27,6 +32,7 @@ const teddy = n => {
 
 const genRandSet = n => range(n).sort(_ => 0.5 - Math.random());
 
+// TODO: functionize this
 function genRandLetters(num) {
   let in_set = 'qwertyuiopasdfghjklzxcvbnm';
   let out_set = [];
@@ -34,33 +40,30 @@ function genRandLetters(num) {
   return out_set;
 }
 
+const sigma = (f, index, bounds) => summation(range(n, top).map(f));
+
 //==============================================================================
 
 const SlidePuzzle = sideLength => {
   'use strict';
 
   sideLength = sideLength || 3;
-  if (sideLength < 3) sideLength = 3;
+  if (sideLength < 3) {
+    console.log(`Puzzle side length cannot be less than 3`);
+    return;
+  }
 
   let array = [];
+  const getArray = _ => array;
 
-  const cntLessThan = (n, [h, ...t]) =>
-    h === undefined
-    ? 0
-    : n > h
-      ? 1 + cntLessThan(n, t)
-      : cntLessThan(n, t);
-
-  const cntNumInversions = ([h, ...t]) =>
-    h === undefined
-    ? 0
-    : cntLessThan(h, t) + cntNumInversions(t);
+  const sum = (a, b) => a + b;
+  const summation = a => a.reduce(sum);
+  const cntLessThan = (x, a) => a.filter(h => h < x).length;
+  const cntNumInversions = a => summation(a.map((x, n) => cntLessThan(x, a.slice(n+1))));
+  const getNumInversions = _ => cntNumInversions(array.slice(0, -1));
 
   const isEven = n => !(n % 2);
-
-  // TODO: check for accuracy on larger grids [definitely works on 3; seems to work on 4 & 5]
-  // needs proof!
-  const isSolvable = _ => isEven(cntNumInversions(array));
+  const isSolvable = _ => isEven(getNumInversions()); // TODO: check accuracy
 
   const rotateLeft = ([h, ...t]) => t.push(h) && t;
 
@@ -74,39 +77,18 @@ const SlidePuzzle = sideLength => {
   */
   const jenny = _ => (array = rotateLeft(array)) && array;
 
-  const reverse = ([h, ...t]) =>
-    h === undefined
-    ? []
-    : reverse(t).concat(h);
-
-  const mirror = _ => (array = reverse(array)) && array;
-
-  const getArray = _ => array;
-  const getNumInversions = _ => cntNumInversions(array);
-
-  const equals = ([h1, ...t1], [h2, ...t2]) =>
-  h1 === undefined && h2 === undefined
-  ? true
-  : h1 === h2
-  ? true && equals(t1, t2)
-  : false;
-
-  const sort = ([h, ...t]) => h === undefined ? [] : sort(t.filter(x => x <= h)).concat(h).concat(sort(t.filter(x => x > h)));
-
-  const solve = _ => {
-    array = sort(array);
-    array.shift();
-    array.push(0);
-  }
-
-  const isSolved = _ => equals(array.slice(0, -1), sort(array.slice(0, -1))) && array[array.length-1] === 0;
+  const dif = (a, b) => a - b;
+  const solve = _ => array.push(array.sort(dif).shift()) && getPuzzle();
+  const equals = (a1, a2) => a1.every((n, i) => n === a2[i]);
+  const isSolved = _ => equals(array.slice(0, -1), array.slice(0, -1).sort()) && array[array.length-1] === 0;
 
   const init = _ => {
     array = genRandSet(sideLength ** 2 - 1);
-    if (!isSolvable()) jenny();
-    if (cntNumInversions(array) < 11) mirror();
+    while (!isSolvable()) jenny();
+    while (getNumInversions() < 11) array.reverse();
     array.push(0);
   };
+  init();
 
   const getPuzzle = _ => {
     let puzzle = [];
@@ -159,8 +141,6 @@ const SlidePuzzle = sideLength => {
     getNumInversions,
     isSolvable,
     jenny,
-    mirror,
-    sort,
     solve
   };
 
@@ -227,6 +207,7 @@ const Pig = function () {
 
   const splice = (body, graft, index) => body.slice(0, index).concat(graft).concat(body.slice(index));
 
+  // HACK: use built-in?
   const reverse = ([h, ...t]) =>
     t.length === 0
     ? h
@@ -248,62 +229,40 @@ const Pig = function () {
 
 //==============================================================================
 
-// feels a bit clunky
-const Dice = (numSides=6, numRolls=1, resultModifier=0) => {
-  let rolls = [];
+const Dice = (numSides, numRolls, resultModifier) => {
+  'use strict';
 
-  if (numRolls < 1) {
-    numRolls = 1;
-    console.log('A dice roll cannot have less than one die.');
-  }
+  numSides = numSides || 6;
   if (numSides < 2) {
-    numSides = 2;
-    console.log('A die cannot lave less than two sides');
+    console.log(`A die cannot have fewer than two sides.`);
+    return;
   }
 
-  const roll = _ => {
-    for (var i = 0; i < numRolls; i++) rolls.push(Math.ceil(Math.random()*numSides));
-    return rolls;
+  numRolls = numRolls || 1;
+  if (numRolls < 1) {
+    console.log(`A dice roll cannot have fewer than one die.`);
+    return;
   }
 
-  // there's probably a more terse way of doing this
-  const sum = _ => (rolls.reduce(((a, b) => a + b), 0) + resultModifier);
+  resultModifier = resultModifier || 0;
 
-  const getTotal = _ => {
-    rolls = [];
-    roll();
-    return sum();
-  }
+  let rolls = new Array(numRolls);
 
-  const getResultString = _ => {
-    let total;
+  const roll = _ => Math.ceil(Math.random() * numSides);
+  const rollDice = _ => rolls = rolls.fill(0).map(roll);
+  rollDice();
 
-    if (numRolls === 1) {
-      total = getTotal();
-      if (resultModifier === 0) {
-        return total.toString();
-      }
-    } else {
-      total = getTotal();
-    }
+  const sum = (a, b) => a + b;
+  const summation = a => a.reduce(sum);
+  const getTotal = _ => summation(rolls) + resultModifier;
 
-    return `[${rolls.join(', ')}]`
-    + (
-      resultModifier === 0
-      ? ''
-      : (
-        resultModifier > 0
-        ? ' +'
-        : ' -'
-      )
-      + resultModifier
-    )
-    + ' = '
-    + total;
-  }
+  const toResultString = _ => `[${rolls.join(', ')}] `
+    + `${resultModifier ? resultModifier > 0 ? `+${resultModifier} ` : `${resultModifier} ` : ``}`
+    + `= ${getTotal()}`;
 
   return {
+    roll: rollDice,
     getTotal,
-    getResultString
+    toResultString
   };
 };
