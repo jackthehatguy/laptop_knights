@@ -85,8 +85,8 @@ MyGame.prototype.update = function () {
 
   let keys = gEngine.Input.keys;
 
-  this.mCollector.update(keys.W, keys.S, keys.A, keys.D);
-  this.mPortal.update(keys.Up, keys.Down, keys.Left, keys.Right);
+  this.mCollector.update(keys.W, keys.S, keys.A, keys.D, keys.Q, keys.E);
+  this.mPortal.update(keys.I, keys.K, keys.J, keys.L, keys.U, keys.O);
 
   var h = [];
 
