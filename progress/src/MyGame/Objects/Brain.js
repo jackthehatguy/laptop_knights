@@ -22,14 +22,16 @@ Brain.prototype.update = function () {
   var xf = this.getXform();
   var fdir = this.getCurrentFrontDir();
 
-  if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Left)) {
+  let input = gEngine.Input;
+  let keys = input.keys;
+  if (input.isKeyPressed(keys.Left)) {
     xf.incRotationByDegree(this.kDeltaDegree);
     vec2.rotate(fdir, fdir, this.kDeltaRad);
   }
-  if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Right)) {
+  if (input.isKeyPressed(keys.Right)) {
     xf.incRotationByRad(-this.kDeltaRad);
     vec2.rotate(fdir, fdir, -this.kDeltaRad);
   }
-  if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Up)) this.incSpeedBy(this.kDeltaSpeed);
-  if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Down)) this.incSpeedBy(-this.kDeltaSpeed);
+  if (input.isKeyClicked(keys.Up)) this.incSpeedBy(this.kDeltaSpeed);
+  if (input.isKeyClicked(keys.Down)) this.incSpeedBy(-this.kDeltaSpeed);
 };
