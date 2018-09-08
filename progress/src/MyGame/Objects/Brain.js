@@ -12,7 +12,7 @@ function Brain(spriteTexture) {
 
   GameObject.call(this, this.mBrain);
 
-  this.setSpeed(0.05);
+  this.setSpeed(0.3);
 }
 gEngine.Core.inheritPrototype(Brain, GameObject);
 

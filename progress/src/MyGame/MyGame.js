@@ -4,38 +4,40 @@ function MyGame() {
   // textures
   this.kMinionSprite = 'assets/minion_sprite.png';
   this.kMinionPortal = 'assets/minion_portal.png';
+  this.kBg = 'assets/bg.png'
 
   // fonts
 
   // camera
   this.mCamera = null;
+  this.mBg = null;
 
-  // renderables
+  // text
+  this.mMsg = null;
+
+  // game objects
   this.mHero = null;
-  this.mBrain = null;
-  this.mPortalHit = null;
-  this.mHeroHit = null;
 
+  this.mBrain = null;
   this.mPortal = null;
   this.mLMinion = null;
   this.mRMinion = null;
 
-  this.mCollide = null;
-
-  // text renderables
-  this.mMsg = null;
+  this.mFocusObj = null;
 
   // audio
+
   // settings
-  this.mChoice = 'H';
+  this.mChoice = 'D';
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
 MyGame.prototype.loadScene = function () {
   // textures
-  gEngine.Textures.loadTexture(this.kMinionSprite);
-  gEngine.Textures.loadTexture(this.kMinionPortal);
-
+  let texture = gEngine.Textures.loadTexture;
+  texture(this.kMinionSprite);
+  texture(this.kMinionPortal);
+  texture(this.kBg);
   // fonts
   // audio
 };
@@ -49,29 +51,30 @@ MyGame.prototype.initialize = function () {
   );
   this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
 
-  // game objects
-  this.mBrain = new Brain(this.kMinionSprite);
+  // bg img
+  var bgR = new SpriteRenderable(this.kBg);
+  bgR.setElementPixelPositions(0, 1024, 0, 1024);
+  bgR.getXform().setSize(150, 150);
+  bgR.getXform().setPosition(50,35);
+  this.mBg = new GameObject(bgR);
 
+  // game objects
   this.mHero = new Hero(this.kMinionSprite);
 
-  this.mPortalHit = new DyePack(this.kMinionSprite);
-  this.mPortalHit.setVisibility(false);
-
-  this.mHeroHit = new DyePack(this.kMinionSprite);
-  this.mHeroHit.setVisibility(false);
+  this.mBrain = new Brain(this.kMinionSprite);
 
   this.mPortal = new TextureObject(this.kMinionPortal, 50, 30, 10, 10);
 
   this.mLMinion = new Minion(this.kMinionSprite, 30, 30);
   this.mRMinion = new Minion(this.kMinionSprite, 70, 30);
 
+  this.mFocusObj = this.mHero;
+
   // text renderables
   this.mMsg = new FontRenderable('Status Message');
-  this.mMsg.setColor([0, 0, 0, 1]);
-  this.mMsg.getXform().setPosition(1, 2);
+  this.mMsg.setColor([1, 1, 1, 1]);
+  this.mMsg.getXform().setPosition(2, 4);
   this.mMsg.setTextHeight(3);
-
-  this.mCollide = this.mHero;
 
   // audio
 };
@@ -86,25 +89,27 @@ MyGame.prototype._initText = function (font, posX, posY, color, textH) {
 // do NOT change any states in this function
 MyGame.prototype.draw = function () {
   // a: clear canvas
-  gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1.0]);
+  gEngine.Core.clearCanvas([0, 1, 0, 1.0]);
 
   // camera
   this.mCamera.setupViewProjection();
 
   // renderables
-  this.mHero.draw(this.mCamera);
-  this.mBrain.draw(this.mCamera);
-  this.mPortal.draw(this.mCamera);
-  this.mLMinion.draw(this.mCamera);
-  this.mRMinion.draw(this.mCamera);
-  this.mPortalHit.draw(this.mCamera);
-  this.mHeroHit.draw(this.mCamera);
-  this.mMsg.draw(this.mCamera);
+  let cam = this.mCamera;
+  this.mBg.draw(cam);
+  this.mHero.draw(cam);
+  this.mBrain.draw(cam);
+  this.mPortal.draw(cam);
+  this.mLMinion.draw(cam);
+  this.mRMinion.draw(cam);
+  this.mMsg.draw(cam);
 };
 
 // do NOT draw in this function
 MyGame.prototype.update = function () {
-  var msg = '[L/R: Left/Right Minion; H: Hero; B: Brain]: ';
+  var zoomDelta = 0.05;
+  var msg = '[L/R: Left/Right Minion; H: Hero; P: Portal]: ';
+  let cam = this.mCamera;
 
   this.mLMinion.update();
   this.mRMinion.update();
@@ -112,53 +117,59 @@ MyGame.prototype.update = function () {
   this.mHero.update();
 
   let keys = gEngine.Input.keys;
-
-  this.mPortal.update(keys.Up, keys.Down, keys.Left, keys.Right, keys.U, keys.O);
-
-  var h = [];
+  this.mPortal.update(
+    keys.Up,
+    keys.Down,
+    keys.Left,
+    keys.Right
+  );
 
   // check the small sprite, not the big one
-  if (this.mPortal.pixelTouches(this.mCollide, h)) {
-    this.mPortalHit.setVisibility(true);
-    this.mPortalHit.getXform().setPosition(h[0], h[1]);
-  } else {
-    this.mPortalHit.setVisibility(false);
-  }
-
+  var h = [];
   if (!this.mHero.pixelTouches(this.mBrain, h)) {
-    this.mBrain.rotateObjPointTo(this.mHero.getXform().getPosition(), 0.05);
+    this.mBrain.rotateObjPointTo(this.mHero.getXform().getPosition(), 0.01);
     GameObject.prototype.update.call(this.mBrain);
-    this.mHeroHit.setVisibility(false);
-  } else {
-    this.mHeroHit.setVisibility(true);
-    this.mHeroHit.getXform().setPosition(h[0], h[1]);
   }
 
-  let input = gEngine.Input;
-  if (input.isKeyClicked(keys.L)) {
-    this.mCollide = this.mLMinion;
+  let clicked = gEngine.Input.isKeyClicked;
+  if (clicked(keys.L)) {
+    this.mFocusObj = this.mLMinion;
     this.mChoice = 'L';
+    cam.panTo(this.mLMinion.getXform().getXPos(), this.mLMinion.getXform().getYPos());
   }
-  if (input.isKeyClicked(keys.R)) {
-    this.mCollide = this.mRMinion;
+  if (clicked(keys.R)) {
+    this.mFocusObj = this.mRMinion;
     this.mChoice = 'R';
+    cam.panTo(this.mRMinion.getXform().getXPos(), this.mRMinion.getXform().getYPos());
   }
-  if (input.isKeyClicked(keys.B)) {
-    this.mCollide = this.mBrain;
-    this.mChoice = 'B';
+  if (clicked(keys.P)) {
+    this.mFocusObj = this.mPortal;
+    this.mChoice = 'P';
   }
-  if (input.isKeyClicked(keys.H)) {
-    this.mCollide = this.mHero;
+  if (clicked(keys.H)) {
+    this.mFocusObj = this.mHero;
     this.mChoice = 'H';
   }
+
+  // zoom
+  if (clicked(keys.N)) cam.zoomBy(1 - zoomDelta);
+  if (clicked(keys.M)) cam.zoomBy(1 + zoomDelta);
+  if (clicked(keys.J)) cam.zoomTowards(this.mFocusObj.getXform().getPosition(), 1 - zoomDelta);
+  if (clicked(keys.K)) cam.zoomTowards(this.mFocusObj.getXform().getPosition(), 1 + zoomDelta);
+
+  cam.clampAtBoundary(this.mBrain.getXform(), 0.9);
+  cam.clampAtBoundary(this.mPortal.getXform(), 0.8);
+  cam.panWith(this.mHero.getXform(), 0.9);
 
   this.mMsg.setText(msg + this.mChoice);
 };
 
 MyGame.prototype.unloadScene = function () {
-    gEngine.Textures.unloadTexture(this.kMinionSprite);
-    gEngine.Textures.unloadTexture(this.kMinionPortal);
+  let texture = gEngine.Textures.unloadTexture;
+  texture(this.kMinionSprite);
+  texture(this.kMinionPortal);
+  texture(this.kBg);
 
-    var nextLevel = new GameOver();  // next level to be loaded
-    gEngine.Core.startScene(nextLevel);
+  var nextLevel = new GameOver();  // next level to be loaded
+  gEngine.Core.startScene(nextLevel);
 };
