@@ -149,6 +149,7 @@ MyGame.prototype.update = function () {
   if (clicked(keys.H)) {
     this.mFocusObj = this.mHero;
     this.mChoice = 'H';
+    cam.panTo(this.mHero.getXform().getXPos(), this.mHero.getXform().getYPos());
   }
 
   // zoom
@@ -159,7 +160,16 @@ MyGame.prototype.update = function () {
 
   cam.clampAtBoundary(this.mBrain.getXform(), 0.9);
   cam.clampAtBoundary(this.mPortal.getXform(), 0.8);
-  cam.panWith(this.mHero.getXform(), 0.9);
+  switch (this.mChoice) {
+    case 'L':
+      cam.panTo(this.mLMinion.getXform().getXPos(), this.mLMinion.getXform().getYPos());
+      break;
+    case 'R':
+      cam.panTo(this.mRMinion.getXform().getXPos(), this.mRMinion.getXform().getYPos());
+      break;
+    default:
+      cam.panWith(this.mHero.getXform(), 0.8);
+  }
 
   this.mMsg.setText(msg + this.mChoice);
 };
