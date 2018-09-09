@@ -168,7 +168,7 @@ MyGame.prototype.update = function () {
       cam.panTo(this.mRMinion.getXform().getXPos(), this.mRMinion.getXform().getYPos());
       break;
     default:
-      cam.panWith(this.mHero.getXform(), 0.8);
+      cam.panWith(this.mHero.getXform(), 0.65);
   }
 
   this.mMsg.setText(msg + this.mChoice);
