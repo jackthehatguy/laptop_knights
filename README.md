@@ -58,10 +58,10 @@ playing as the bombardier.
   * pan
   * zoom
   * interpolation
+  * shake
 
 ## What We Are Working On
 ### Game Engine
-* camera shake
 * multiple cameras
 * mouse input through cameras
 
