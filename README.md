@@ -5,7 +5,7 @@ pen-and-paper adventures we have had as a gaming group. The characters are
 designed as representations of our typical play-styles, and the wacky worlds
 express the storytelling of our GMs. Our goal with this game is not to produce
 an award-winning AAA-competing indie title. We just want to make something that
-we will enjoy creating, and _hopefully_, one day we will be able to play it.
+we will enjoy creating, and hopefully, one day, we will be able to play it.
 
 It's still heavily a work-in-progress, and it may be years before the project is
 completed (the game is a lower priority than pretty much everything else).
@@ -18,7 +18,7 @@ party small and the narrative fairly short. We are hoping to make the game
 replayable rather than a behemoth that is the satisfaction of a lifetime. The
 combat system will be in the same vein as __M&L__ via control input deciding the
 quality of player attacks and allowing for evasion of enemy attacks. As a
-___much___ later iteration goal, I (the programmer) hope to include different
+__much__ later iteration goal, the programmer hopes to include different
 player input combat styles for each of the individual characters -- ranging,
 possibly, from rhythm games to puzzle games. Where __The Cave__ inspiration is
 noticeable is within the limited party and story. We are hoping to create the
@@ -66,7 +66,7 @@ playing as the bombardier.
 * mouse input through cameras
 
 ## What We Are Doing Next
-### Game Engine
+### Game Engine _v0.7.4_
 * ambient light
 * light source
 * multiple light sources
@@ -79,16 +79,22 @@ playing as the bombardier.
 * shadow simulation
 
 ## TODO
-* use newest version of gl-matrix.js
+* __update to es6 and Spencer's standards__
+* $ README
+* use newest version of gl-matrix.js || ? build new library
 * ? use node.js for distribution
 * ? use the electron stack as a container
 
-## Push Key
-* \+ adds
-* \- removes
-* ^ updates
-* ! TODO
-* ~ changes
-* & fixes
-* $ cleans up
-* % tests
+## Glossary
+| Key | Value     |
+|:---:| --------- |
+| \+  | adds      |
+| \-  | removes   |
+| ^   | updates   |
+| !   | breaks / <em title="e.g. !$: needs to clean up">needs to</em> |
+| ~   | changes   |
+| &   | fixes     |
+| $   | cleans up |
+| %   | tests     |
+| ?   | asks      |
+| <em title="including this one">em</em>  | shows tool-tip |

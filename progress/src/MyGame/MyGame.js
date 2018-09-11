@@ -163,6 +163,9 @@ MyGame.prototype.update = function () {
   // shake
   if (clicked(keys.Q)) cam.shake(-2, -2, 20, 30);
 
+  // quit
+  if (clicked(keys.Esc)) gEngine.GameLoop.stop();
+
   cam.clampAtBoundary(this.mBrain.getXform(), 0.9);
   cam.clampAtBoundary(this.mPortal.getXform(), 0.8);
   switch (this.mChoice) {
