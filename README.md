@@ -57,10 +57,10 @@ playing as the bombardier.
 * camera manipulations
   * pan
   * zoom
+  * interpolation
 
 ## What We Are Working On
 ### Game Engine
-* interpolation
 * camera shake
 * multiple cameras
 * mouse input through cameras
