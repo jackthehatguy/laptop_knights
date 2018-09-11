@@ -3,6 +3,8 @@
 function Camera(wcCenter, wcWidth, viewportArray) {
   // WorldCoordinate and viewport pos and size
   this.mCameraState = new CameraState(wcCenter, wcWidth);
+  this.mCameraShake = null;
+
   this.mViewport = viewportArray; // [x, y, width, height]
   this.mNearPlane = 0;
   this.mFarPlane = 1000;
@@ -76,7 +78,13 @@ Camera.prototype.setupViewProjection = function () {
 
   // 1: define v-proj matrix
   // def view matrix
-  var center = this.getWCCenter();
+  var center = [];
+  if (this.mCameraShake !== null) {
+    center = this.mCameraShake.getCenter();
+  } else {
+    center = this.getWCCenter();
+  }
+
   mat4.lookAt(
     this.mViewMatrix,
     [center[0], center[1], 10], // WC center

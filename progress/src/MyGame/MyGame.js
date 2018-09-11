@@ -160,6 +160,9 @@ MyGame.prototype.update = function () {
   if (clicked(keys.J)) cam.zoomTowards(this.mFocusObj.getXform().getPosition(), 1 - zoomDelta);
   if (clicked(keys.K)) cam.zoomTowards(this.mFocusObj.getXform().getPosition(), 1 + zoomDelta);
 
+  // shake
+  if (clicked(keys.Q)) cam.shake(-2, -2, 20, 30);
+
   cam.clampAtBoundary(this.mBrain.getXform(), 0.9);
   cam.clampAtBoundary(this.mPortal.getXform(), 0.8);
   switch (this.mChoice) {

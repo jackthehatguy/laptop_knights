@@ -1,6 +1,16 @@
 'use strict';
 
-Camera.prototype.update = function () { this.mCameraState.updateCameraState(); };
+Camera.prototype.update = function () {
+  if (this.mCameraShake !== null) {
+    if (this.mCameraShake.shakeDone()) {
+      this.mCameraShake = null;
+    } else {
+      this.mCameraShake.setRefCenter(this.getWCCenter());
+      this.mCameraShake.updateShakeState();
+    }
+  }
+  this.mCameraState.updateCameraState();
+};
 
 Camera.prototype.panBy = function (dx, dy) {
   var newC = vec2.clone(this.getWCCenter());
@@ -46,4 +56,8 @@ Camera.prototype.zoomTowards = function (pos, zoom) {
 
 Camera.prototype.configInterpolation = function (stiffness, duration) {
   this.mCameraState.configInterpolation(stiffness, duration);
+};
+
+Camera.prototype.shake = function (xDelta, yDelta, shakeFrequency, duration) {
+  this.mCameraShake = new CameraShake(this.mCameraState, xDelta, yDelta, shakeFrequency, duration);
 };
