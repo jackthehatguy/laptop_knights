@@ -20,7 +20,7 @@ Interpolate.prototype.setFinalValue = function (v) {
   this.mCyclesLeft = this.mCycles;    // will trigger interpolation
 };
 
-Interpolate.prototype.configInterpotaion = function (stiffness, duration) {
+Interpolate.prototype.configInterpolation = function (stiffness, duration) {
   this.mRate = stiffness;
   this.mCycles = duration;
 };
@@ -28,7 +28,7 @@ Interpolate.prototype.configInterpotaion = function (stiffness, duration) {
 // HACK: make more terse?
 Interpolate.prototype.updateInterpolation = function () {
   if (this.mCyclesLeft <= 0) return;
-  
+
   this.mCyclesLeft--;
   if (this.mCyclesLeft === 0) {
     this.mCurrentValue = this.mFinalValue;

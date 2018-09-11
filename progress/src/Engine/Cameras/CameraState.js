@@ -18,7 +18,7 @@ CameraState.prototype.updateCameraState = function () {
   this.mWidth.updateInterpolation();
 };
 
-CameraState.prototype.configInterpotaion = function (stiffness, duration) {
-  this.mCenter.configInterpotaion(stiffness, duration);
-  this.mWidth.configInterpotaion(stiffness, duration);
+CameraState.prototype.configInterpolation = function (stiffness, duration) {
+  this.mCenter.configInterpolation(stiffness, duration);
+  this.mWidth.configInterpolation(stiffness, duration);
 };
