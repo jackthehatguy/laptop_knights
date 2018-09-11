@@ -111,6 +111,8 @@ MyGame.prototype.update = function () {
   var msg = '[L/R: Left/Right Minion; H: Hero; P: Portal]: ';
   let cam = this.mCamera;
 
+  cam.update();
+
   this.mLMinion.update();
   this.mRMinion.update();
 

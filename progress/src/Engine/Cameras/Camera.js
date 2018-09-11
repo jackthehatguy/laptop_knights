@@ -2,8 +2,7 @@
 
 function Camera(wcCenter, wcWidth, viewportArray) {
   // WorldCoordinate and viewport pos and size
-  this.mWCCenter = wcCenter;
-  this.mWCWidth = wcWidth;
+  this.mCameraState = new CameraState(wcCenter, wcWidth);
   this.mViewport = viewportArray; // [x, y, width, height]
   this.mNearPlane = 0;
   this.mFarPlane = 1000;
@@ -17,16 +16,25 @@ function Camera(wcCenter, wcWidth, viewportArray) {
   this.mBgColor = [0.8, 0.8, 0.8, 1]; // RGBA
 }
 
+Camera.eViewport = Object.freeze({
+  eOrgX: 0,
+  eOrgY: 1,
+  eWidth: 2,
+  eHeight: 3
+});
+
+// HACK: more terse?
 Camera.prototype.setWCCenter = function (xPos, yPos) {
-  this.mWCCenter[0] = xPos;
-  this.mWCCenter[1] = yPos;
+  var p = vec2.fromValues(xPos, yPos);
+  this.mCameraState.setCenter(p);
 };
-Camera.prototype.getWCCenter = function () { return this.mWCCenter; };
+Camera.prototype.getWCCenter = function () { return this.mCameraState.getCenter(); };
 
-Camera.prototype.setWCWidth = function (width) { this.mWCWidth = width; };
-Camera.prototype.getWCWidth = function () { return this.mWCWidth; };
+Camera.prototype.setWCWidth = function (width) { this.mCameraState.setWidth(width); };
+Camera.prototype.getWCWidth = function () { return this.mCameraState.getWidth(); };
 
-Camera.prototype.getWCHeight = function () { return this.mWCWidth * this.mViewport[3] / this.mViewport[2]; };
+// there is no setter for height (must keep ratio w/ width)
+Camera.prototype.getWCHeight = function () { return this.mCameraState.getWidth() * this.mViewport[Camera.eViewport.eHeight] / this.mViewport[Camera.eViewport.eWidth]; };
 
 Camera.prototype.setViewport = function (viewportArray) { this.mViewport = viewportArray; };
 Camera.prototype.getViewport = function () { return this.mViewport; };
@@ -40,7 +48,6 @@ Camera.prototype.setupViewProjection = function () {
   var gl = gEngine.Core.getGL();
 
   // 0: config vp; set up and clear the vp
-  // set up the area on the canvas
   gl.viewport(
     this.mViewport[0],  // x pos bottom left
     this.mViewport[1],  // y pos bottom right
@@ -48,7 +55,6 @@ Camera.prototype.setupViewProjection = function () {
     this.mViewport[3]   // height
   );
 
-  // scissor area
   gl.scissor(
     this.mViewport[0],  // x pos bottom left
     this.mViewport[1],  // y pos bottom right
@@ -56,7 +62,6 @@ Camera.prototype.setupViewProjection = function () {
     this.mViewport[3]   // height
   );
 
-  // color clear
   gl.clearColor(
     this.mBgColor[0], // r
     this.mBgColor[1], // g
@@ -71,16 +76,17 @@ Camera.prototype.setupViewProjection = function () {
 
   // 1: define v-proj matrix
   // def view matrix
+  var center = this.getWCCenter();
   mat4.lookAt(
     this.mViewMatrix,
-    [this.mWCCenter[0], this.mWCCenter[1], 10], // WC center
-    [this.mWCCenter[0], this.mWCCenter[1], 0],
-    [0, 1, 0]                                   // orientation
+    [center[0], center[1], 10], // WC center
+    [center[0], center[1], 0],
+    [0, 1, 0]                   // orientation
   );
 
   // def proj matrix
-  var halfWCWidth = 0.5 * this.mWCWidth;
-  var halfWCHeight = halfWCWidth * this.mViewport[3] / this.mViewport[2]; // wcH = wcW*vpH/vpW
+  var halfWCWidth = 0.5 * this.getWCWidth();
+  var halfWCHeight = 0.5 * this.getWCHeight();
   mat4.ortho(
     this.mProjMatrix,
     -halfWCWidth,     // dist left
