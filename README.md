@@ -59,14 +59,14 @@ playing as the bombardier.
   * zoom
   * interpolation
   * shake
+  * multiple
 
 ## What We Are Working On
-### Game Engine
-* multiple cameras
+### Game Engine <em title="matches book section">v0.7.5</em>
 * mouse input through cameras
 
 ## What We Are Doing Next
-### Game Engine _v0.7.4_
+### Game Engine
 * ambient light
 * light source
 * multiple light sources
