@@ -10,6 +10,8 @@ function MyGame() {
 
   // camera
   this.mCamera = null;
+  this.mHeroCam = null;
+  this.mBrainCam = null;
   this.mBg = null;
 
   // text
@@ -43,13 +45,30 @@ MyGame.prototype.loadScene = function () {
 };
 
 MyGame.prototype.initialize = function () {
-  // a: camera
+  // cameras
   this.mCamera = new Camera(
-    vec2.fromValues(50, 37.5),
+    vec2.fromValues(50, 36),
     100,
     [0, 0, 640, 480]
   );
   this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
+
+  this.mHeroCam = new Camera(
+    vec2.fromValues(50, 30),
+    20,
+    [490, 330, 150, 150],
+    2
+  );
+  this.mHeroCam.setBackgroundColor([0.5, 0.5, 0.5, 1]);
+
+  this.mBrainCam = new Camera(
+    vec2.fromValues(50, 30),
+    10,
+    [0, 330, 150, 150],
+    2
+  );
+  this.mBrainCam.setBackgroundColor([1, 1, 1, 1]);
+  this.mBrainCam.configInterpolation(0.7, 100);
 
   // bg img
   var bgR = new SpriteRenderable(this.kBg);
@@ -73,7 +92,7 @@ MyGame.prototype.initialize = function () {
   // text renderables
   this.mMsg = new FontRenderable('Status Message');
   this.mMsg.setColor([1, 1, 1, 1]);
-  this.mMsg.getXform().setPosition(2, 4);
+  this.mMsg.getXform().setPosition(1, 2);
   this.mMsg.setTextHeight(3);
 
   // audio
@@ -86,23 +105,27 @@ MyGame.prototype._initText = function (font, posX, posY, color, textH) {
   font.setTextHeight(textH);
 };
 
+MyGame.prototype.drawCamera = function (camera) {
+  camera.setupViewProjection();
+
+  this.mBg.draw(camera);
+  this.mHero.draw(camera);
+  this.mBrain.draw(camera);
+  this.mPortal.draw(camera);
+  this.mLMinion.draw(camera);
+  this.mRMinion.draw(camera);
+};
+
 // do NOT change any states in this function
 MyGame.prototype.draw = function () {
   // a: clear canvas
-  gEngine.Core.clearCanvas([0, 1, 0, 1.0]);
+  gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1.0]);
 
   // camera
-  this.mCamera.setupViewProjection();
-
-  // renderables
-  let cam = this.mCamera;
-  this.mBg.draw(cam);
-  this.mHero.draw(cam);
-  this.mBrain.draw(cam);
-  this.mPortal.draw(cam);
-  this.mLMinion.draw(cam);
-  this.mRMinion.draw(cam);
-  this.mMsg.draw(cam);
+  this.drawCamera(this.mCamera);
+  this.mMsg.draw(this.mCamera);
+  this.drawCamera(this.mHeroCam);
+  this.drawCamera(this.mBrainCam);
 };
 
 // do NOT draw in this function
@@ -112,6 +135,8 @@ MyGame.prototype.update = function () {
   let cam = this.mCamera;
 
   cam.update();
+  this.mHeroCam.update();
+  this.mBrainCam.update();
 
   this.mLMinion.update();
   this.mRMinion.update();
@@ -178,6 +203,20 @@ MyGame.prototype.update = function () {
     default:
       cam.panWith(this.mHero.getXform(), 0.65);
   }
+
+  let hero = this.mHero.getXform();
+  this.mHeroCam.panTo(hero.getXPos(), hero.getYPos());
+
+  let brain = this.mBrain.getXform();
+  this.mBrainCam.panTo(brain.getXPos(), brain.getYPos());
+
+  // show that viewport can be moved
+  var v = this.mHeroCam.getViewport();
+  v[0] += 1;
+  if (v[0] > 500) {
+    v[0] = 0;
+  }
+  this.mHeroCam.setViewport(v);
 
   this.mMsg.setText(msg + this.mChoice);
 };

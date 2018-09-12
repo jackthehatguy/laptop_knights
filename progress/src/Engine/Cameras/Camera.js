@@ -1,11 +1,18 @@
 'use strict';
 
-function Camera(wcCenter, wcWidth, viewportArray) {
+function Camera(wcCenter, wcWidth, viewportArray, bound) {
   // WorldCoordinate and viewport pos and size
   this.mCameraState = new CameraState(wcCenter, wcWidth);
   this.mCameraShake = null;
 
-  this.mViewport = viewportArray; // [x, y, width, height]
+  this.mViewport = []; // [x, y, width, height]
+  this.mViewportBound = 0;
+  if (bound !== undefined) {
+    this.mViewportBound = bound;
+  }
+  this.mScissorBound = [];
+  this.setViewport(viewportArray, this.mViewportBound);
+
   this.mNearPlane = 0;
   this.mFarPlane = 1000;
 
@@ -38,8 +45,29 @@ Camera.prototype.getWCWidth = function () { return this.mCameraState.getWidth();
 // there is no setter for height (must keep ratio w/ width)
 Camera.prototype.getWCHeight = function () { return this.mCameraState.getWidth() * this.mViewport[Camera.eViewport.eHeight] / this.mViewport[Camera.eViewport.eWidth]; };
 
-Camera.prototype.setViewport = function (viewportArray) { this.mViewport = viewportArray; };
-Camera.prototype.getViewport = function () { return this.mViewport; };
+Camera.prototype.setViewport = function (viewportArray, bound) {
+  if (bound === undefined) {
+    bound = this.mViewportBound;
+  }
+
+  this.mViewport[0] = viewportArray[0] + bound;         // x
+  this.mViewport[1] = viewportArray[1] + bound;         // y
+  this.mViewport[2] = viewportArray[2] - (2 * bound);   // width
+  this.mViewport[3] = viewportArray[3] - (2 * bound);   // height
+
+  this.mScissorBound[0] = viewportArray[0];   // x
+  this.mScissorBound[1] = viewportArray[1];   // y
+  this.mScissorBound[2] = viewportArray[2];   // width
+  this.mScissorBound[3] = viewportArray[3];   // height
+};
+Camera.prototype.getViewport = function () {
+  var out = [];
+  out[0] = this.mScissorBound[0];
+  out[1] = this.mScissorBound[1];
+  out[2] = this.mScissorBound[2];
+  out[3] = this.mScissorBound[3];
+  return out;
+};
 
 Camera.prototype.setBackgroundColor = function (newColor) { this.mBgColor = newColor; };
 Camera.prototype.getBackgroundColor = function () { return this.mBgColor; };
@@ -58,10 +86,10 @@ Camera.prototype.setupViewProjection = function () {
   );
 
   gl.scissor(
-    this.mViewport[0],  // x pos bottom left
-    this.mViewport[1],  // y pos bottom right
-    this.mViewport[2],  // width
-    this.mViewport[3]   // height
+    this.mScissorBound[0],  // x pos bottom left
+    this.mScissorBound[1],  // y pos bottom right
+    this.mScissorBound[2],  // width
+    this.mScissorBound[3]   // height
   );
 
   gl.clearColor(
