@@ -52,20 +52,55 @@ gEngine.Input = (function () {
     LastKeyCode: 222
   };
 
-  // prev key state
   var mKeyPreviousState = [];
-
-  // pressed keys
   var mIsKeyPressed = [];
-
-  // click: once set, ramain until polled
   var mIsKeyClicked = [];
+
+  // support mouse
+  var kMouseButton = {
+    Left: 0,
+    Middle: 1,
+    Right: 2
+  };
+
+  var mCanvas = null;
+  var mButtonPreviousState = [];
+  var mIsButtonPressed = [];
+  var mIsButtonClicked = [];
+  var mMousePosX = -1;
+  var mMousePosY = -1;
 
   // event service functions
   var _onKeyDown = function (event) { mIsKeyPressed[event.keyCode] = true; };
   var _onKeyUp = function (event) { mIsKeyPressed[event.keyCode] = false; };
 
-  var initialize = function () {
+  var _onMouseMove = function (event) {
+    var inside = false;
+    var bBox = mCanvas.getBoundingClientRect();
+
+    var x = Math.round((event.clientX - bBox.left) * (mCanvas.width / bBox.width));
+    var y = Math.round((event.clientY - bBox.top) * (mCanvas.width / bBox.width));
+
+    if (
+      (x >= 0) && (x < mCanvas.width) &&
+      (y >= 0) && (y < mCanvas.height)
+    ) {
+      mMousePosX = x;
+      mMousePosY = mCanvas.height - 1 - y;
+      inside = true;
+    }
+    return inside;
+  };
+
+  var _onMouseDown = function (event) { if (_onMouseMove(event)) mIsButtonPressed[event.button] = true; };
+
+  var _onMouseUp = function (event) {
+    _onMouseMove(event);
+    mIsButtonPressed[event.button] = false;
+  };
+
+  var initialize = function (canvasID) {
+    // keyboard support
     for (var i = 0; i < kKeys.LastKeyCode; i++) {
       mIsKeyPressed[i] = false;
       mKeyPreviousState[i] = false;
@@ -75,6 +110,19 @@ gEngine.Input = (function () {
     // reg handlers
     window.addEventListener('keyup', _onKeyUp);
     window.addEventListener('keydown', _onKeyDown);
+
+    // mouse support
+    for (var i = 0; i < 3; i++) {
+      mButtonPreviousState[i] = false;
+      mIsButtonPressed[i] = false;
+      mIsKeyClicked[i] = false;
+    }
+
+    window.addEventListener('mousedown', _onMouseDown);
+    window.addEventListener('mouseup', _onMouseUp);
+    window.addEventListener('mousemove', _onMouseMove);
+
+    mCanvas = document.getElementById(canvasID);
   };
 
   var update = function () {
@@ -82,18 +130,38 @@ gEngine.Input = (function () {
       mIsKeyClicked[i] = (!mKeyPreviousState[i]) && mIsKeyPressed[i];
       mKeyPreviousState[i] = mIsKeyPressed[i];
     }
+
+    for (var i = 0; i < 3; i++) {
+      mIsButtonClicked[i] = (!mButtonPreviousState[i] && mIsButtonPressed[i]);
+      mButtonPreviousState[i] = mIsButtonPressed[i];
+    }
   };
 
   // for Gameengine programmer to test if key is pressed down
   var isKeyPressed = function (keyCode) { return mIsKeyPressed[keyCode]; };
   var isKeyClicked = function (keyCode) { return mIsKeyClicked[keyCode]; };
 
+  var isButtonPressed = function (button) { return mIsButtonPressed[button]; };
+  var isButtonClicked = function (button) { return mIsButtonClicked[button]; };
+
+  var getMousePosX = function () { return mMousePosX; };
+  var getMousePosY = function () { return mMousePosY; };
+
   var mPublic = {
-    initialize: initialize,
-    update: update,
-    isKeyPressed: isKeyPressed,
-    isKeyClicked: isKeyClicked,
-    keys: kKeys
+    initialize,
+    update,
+
+    // keyboard
+    isKeyPressed,
+    isKeyClicked,
+    keys: kKeys,
+
+    // mouse
+    isButtonPressed,
+    isButtonClicked,
+    getMousePosX,
+    getMousePosY,
+    mouseButton: kMouseButton
   };
   return mPublic;
 }());

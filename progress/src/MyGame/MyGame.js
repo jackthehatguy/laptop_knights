@@ -59,7 +59,7 @@ MyGame.prototype.initialize = function () {
     [490, 330, 150, 150],
     2
   );
-  this.mHeroCam.setBackgroundColor([0.5, 0.5, 0.5, 1]);
+  this.mHeroCam.setBackgroundColor([0.85, 0.8, 0.8, 1]);
 
   this.mBrainCam = new Camera(
     vec2.fromValues(50, 30),
@@ -67,7 +67,7 @@ MyGame.prototype.initialize = function () {
     [0, 330, 150, 150],
     2
   );
-  this.mBrainCam.setBackgroundColor([1, 1, 1, 1]);
+  this.mBrainCam.setBackgroundColor([0.8, 0.8, 0.85, 1]);
   this.mBrainCam.configInterpolation(0.7, 100);
 
   // bg img
@@ -92,7 +92,7 @@ MyGame.prototype.initialize = function () {
   // text renderables
   this.mMsg = new FontRenderable('Status Message');
   this.mMsg.setColor([1, 1, 1, 1]);
-  this.mMsg.getXform().setPosition(1, 2);
+  this.mMsg.getXform().setPosition(1, 14);
   this.mMsg.setTextHeight(3);
 
   // audio
@@ -143,7 +143,9 @@ MyGame.prototype.update = function () {
 
   this.mHero.update();
 
-  let keys = gEngine.Input.keys;
+  let input = gEngine.Input;
+
+  let keys = input.keys;
   this.mPortal.update(
     keys.Up,
     keys.Down,
@@ -158,7 +160,7 @@ MyGame.prototype.update = function () {
     GameObject.prototype.update.call(this.mBrain);
   }
 
-  let clicked = gEngine.Input.isKeyClicked;
+  let clicked = input.isKeyClicked;
   if (clicked(keys.L)) {
     this.mFocusObj = this.mLMinion;
     this.mChoice = 'L';
@@ -210,15 +212,32 @@ MyGame.prototype.update = function () {
   let brain = this.mBrain.getXform();
   this.mBrainCam.panTo(brain.getXPos(), brain.getYPos());
 
-  // show that viewport can be moved
-  var v = this.mHeroCam.getViewport();
-  v[0] += 1;
-  if (v[0] > 500) {
-    v[0] = 0;
-  }
-  this.mHeroCam.setViewport(v);
+  let portal = this.mPortal.getXform();
 
-  this.mMsg.setText(msg + this.mChoice);
+  msg = '';
+
+  let button = input.mouseButton;
+  if (input.isButtonPressed(button.Left)) {
+    msg += '[L Down]';
+    if (cam.isMouseInViewport()) portal.setPosition(cam.mouseWCX(), cam.mouseWCY());
+  }
+
+  if (input.isButtonPressed(button.Middle)) {
+    msg += '[M Down]';
+    if (this.mHeroCam.isMouseInViewport()) hero.setPosition(this.mHeroCam.mouseWCX(), this.mHeroCam.mouseWCY());
+  }
+
+  if (input.isButtonClicked(button.Right)) {
+    console.log('right');
+    this.mPortal.setVisibility(false);
+  }
+  if (input.isButtonClicked(button.Middle)) {
+    console.log('middle');
+    this.mPortal.setVisibility(true);
+  }
+
+  msg += ` X=${input.getMousePosX()} Y=${input.getMousePosY()}`;
+  this.mMsg.setText(msg);
 };
 
 MyGame.prototype.unloadScene = function () {
