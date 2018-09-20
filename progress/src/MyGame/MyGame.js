@@ -49,7 +49,7 @@ MyGame.prototype.initialize = function () {
   this.mCamera = new Camera(
     vec2.fromValues(50, 36),
     100,
-    [0, 0, 640, 480]
+    [0, 0, 640, 330]
   );
   this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
 
@@ -92,7 +92,7 @@ MyGame.prototype.initialize = function () {
   // text renderables
   this.mMsg = new FontRenderable('Status Message');
   this.mMsg.setColor([1, 1, 1, 1]);
-  this.mMsg.getXform().setPosition(1, 14);
+  this.mMsg.getXform().setPosition(1, 16);
   this.mMsg.setTextHeight(3);
 
   // audio
@@ -227,14 +227,8 @@ MyGame.prototype.update = function () {
     if (this.mHeroCam.isMouseInViewport()) hero.setPosition(this.mHeroCam.mouseWCX(), this.mHeroCam.mouseWCY());
   }
 
-  if (input.isButtonClicked(button.Right)) {
-    console.log('right');
-    this.mPortal.setVisibility(false);
-  }
-  if (input.isButtonClicked(button.Middle)) {
-    console.log('middle');
-    this.mPortal.setVisibility(true);
-  }
+  if (input.isButtonClicked(button.Right)) this.mPortal.setVisibility(false);
+  if (input.isButtonClicked(button.Middle)) this.mPortal.setVisibility(true);
 
   msg += ` X=${input.getMousePosX()} Y=${input.getMousePosY()}`;
   this.mMsg.setText(msg);
