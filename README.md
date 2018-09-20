@@ -34,6 +34,7 @@ playing as the bombardier.
 * transform operator
 * created game loop
 * respond to user input
+  * mouse
 * game camera, view, viewport, and projection
 * async loading of resources
 * scene file loading
@@ -62,11 +63,7 @@ playing as the bombardier.
   * multiple
 
 ## What We Are Working On
-### Game Engine <em title="matches book section">v0.7.5</em>
-* mouse input through cameras
-
-## What We Are Doing Next
-### Game Engine
+### Game Engine <em title="matches book section">v0.8.1</em>
 * ambient light
 * light source
 * multiple light sources
@@ -77,6 +74,14 @@ playing as the bombardier.
 * materials
 * light source types
 * shadow simulation
+
+## What We Are Doing Next
+### Game Engine
+* physics
+* detecting collisions
+* resolving collisions
+* particle system
+* particle emitters
 
 ## TODO
 * __update to es6 and Spencer's standards__
