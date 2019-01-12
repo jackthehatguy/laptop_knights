@@ -260,20 +260,29 @@ Animation.prototype.draw = function (x, y) {
 //==============================================================================
 
 var sd = new SpriteDeck();
-sd.walk_left = new Animation(32, 32, 'img/pierre/pierre_walk_left.png', 4, 10);
-sd.walk_up = new Animation(32, 32, 'img/pierre/pierre_walk_up.png', 4, 10);
-sd.walk_right = new Animation(32, 32, 'img/pierre/pierre_walk_right.png', 4, 10);
-sd.walk_down = new Animation(32, 32, 'img/pierre/pierre_walk_down.png', 4, 10);
+// sd.walk_left = new Animation(32, 32, 'img/pierre/pierre_walk_left.png', 4, 10);
+// sd.walk_up = new Animation(32, 32, 'img/pierre/pierre_walk_up.png', 4, 10);
+// sd.walk_right = new Animation(32, 32, 'img/pierre/pierre_walk_right.png', 4, 10);
+// sd.walk_down = new Animation(32, 32, 'img/pierre/pierre_walk_down.png', 4, 10);
+sd.walk_left = new Animation(32, 32, '/old/pierre/walk/left', 4, 10);
+sd.walk_up = new Animation(32, 32, '/old/pierre/walk/up', 4, 10);
+sd.walk_right = new Animation(32, 32, '/old/pierre/walk/right', 4, 10);
+sd.walk_down = new Animation(32, 32, '/old/pierre/walk/down', 4, 10);
 
-sd.idle_left = new Animation(32, 32, 'img/pierre/pierre_idle_left.png', 1, 0);
-sd.idle_up = new Animation(32, 32, 'img/pierre/pierre_idle_up.png', 1, 0);
-sd.idle_right = new Animation(32, 32, 'img/pierre/pierre_idle_right.png', 1, 0);
-sd.cur_anim = sd.idle_down = new Animation(32, 32, 'img/pierre/pierre_idle_down.png', 1, 0);
+// sd.idle_left = new Animation(32, 32, 'img/pierre/pierre_idle_left.png', 1, 0);
+// sd.idle_up = new Animation(32, 32, 'img/pierre/pierre_idle_up.png', 1, 0);
+// sd.idle_right = new Animation(32, 32, 'img/pierre/pierre_idle_right.png', 1, 0);
+// sd.cur_anim = sd.idle_down = new Animation(32, 32, 'img/pierre/pierre_idle_down.png', 1, 0);
+sd.idle_left = new Animation(32, 32, '/old/pierre/idle/left', 1, 0);
+sd.idle_up = new Animation(32, 32, '/old/pierre/idle/up', 1, 0);
+sd.idle_right = new Animation(32, 32, '/old/pierre/idle/right', 1, 0);
+sd.cur_anim = sd.idle_down = new Animation(32, 32, '/old/pierre/idle/down', 1, 0);
 
 pierre = new Actor(canvas.width/2, canvas.height/2, sd);
 
 var bg = new Image(canvas.width,canvas.height);
-bg.src = 'img/Tabletop Knights Cover.jpg';
+// bg.src = 'img/TabletopKnightsCover.jpg';
+bg.src = '/ttkC';
 
 function loop() {
   canvas.width = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) - 17;
