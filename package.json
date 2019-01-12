@@ -1,0 +1,22 @@
+{
+  "name": "laptop_knights",
+  "version": "1.0.0",
+  "description": "PnP_RPG on computer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jackthehatguy/laptop_knights.git"
+  },
+  "author": "Spencer Dent",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jackthehatguy/laptop_knights/issues"
+  },
+  "homepage": "https://github.com/jackthehatguy/laptop_knights#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
