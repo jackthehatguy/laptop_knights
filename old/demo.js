@@ -175,7 +175,7 @@ Box.prototype.overlaps = function (box) {
       &&
       (this.y+this.height >= box.y && this.y+this.height <= box.y+box.height)
   ) {
-    return true;;
+    return true;
   }
   return false;
 };
