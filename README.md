@@ -87,7 +87,6 @@ playing as the bombardier.
 * __update to es6 and Spencer's standards__
 * $ README
 * use newest version of gl-matrix.js || ? build new library
-* ? use node.js for distribution
 * ? use the electron stack as a container
 
 ## Glossary
