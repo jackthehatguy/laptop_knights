@@ -23,7 +23,7 @@ app.get('/old', function(req, res, next) {
   });
 });
 
-app.get('/demo', (req, res, next) => {
+app.get('/old/demo', (req, res, next) => {
   const fileName = 'demo.js';
   options = {
     root: `${__dirname}/old/`,
@@ -80,6 +80,126 @@ app.get('/old/pierre/:action/:direction', (req, res, next) => {
       next();
     } else {
       console.log(`Sent: ${fileName}`);
+    }
+  });
+});
+
+app.get('/progress', (req, res) => {
+  const file = 'index.html',
+    options = {
+      root: `${__dirname}/progress/`,
+      dotfiles: 'deny',
+      headers: {
+        'x-timestamp': Date.now(),
+        'x-sent': true
+      }
+    };
+  res.sendFile(file, options, err => {
+    if (err) {
+      console.log(err);
+      // next();
+    } else {
+      console.log(`Sent: ${file}`);
+    }
+  });
+});
+
+app.get('/assets/:file', (req, res) => {
+  const {file} = req.params,
+    options = {
+      root: `${__dirname}/progress/assets/`,
+      dotfiles: 'deny',
+      headers: {
+        'x-timestamp': Date.now(),
+        'x-sent': true
+      }
+    };
+  res.sendFile(file, options, err => {
+    if (err) {
+      console.log(err);
+      // next();
+    } else {
+      console.log(`Sent: ${file}`);
+    }
+  });
+});
+
+app.get('/assets/:type/:file', (req, res) => {
+  const {type, file} = req.params,
+    options = {
+      root: `${__dirname}/progress/assets/${type}/`,
+      dotfiles: 'deny',
+      headers: {
+        'x-timestamp': Date.now(),
+        'x-sent': true
+      }
+    };
+  res.sendFile(file, options, err => {
+    if (err) {
+      console.log(err);
+      // next();
+    } else {
+      console.log(`Sent: ${file}`);
+    }
+  });
+});
+
+app.get('/src/:sector/:file', (req, res) => {
+  const {sector, file} = req.params,
+    options = {
+      root: `${__dirname}/progress/src/${sector}/`,
+      dotfiles: 'deny',
+      headers: {
+        'x-timestamp': Date.now(),
+        'x-sent': true
+      }
+    };
+  res.sendFile(file, options, err => {
+    if (err) {
+      console.log(err);
+      // next();
+    } else {
+      console.log(`Sent: ${file}`);
+    }
+  });
+});
+
+app.get('/src/:sector/:folder/:file', (req, res) => {
+  const {sector, folder, file} = req.params,
+    options = {
+      root: `${__dirname}/progress/src/${sector}/${folder}/`,
+      dotfiles: 'deny',
+      headers: {
+        'x-timestamp': Date.now(),
+        'x-sent': true
+      }
+    };
+  res.sendFile(file, options, err => {
+    if (err) {
+      console.log(err);
+      // next();
+    } else {
+      console.log(`Sent: ${file}`);
+    }
+  });
+});
+
+app.get('/src/:sector/:folder/:subfolder/:file', (req, res) => {
+  const {sector, subfolder, folder, file} = req.params,
+    options = {
+      root: `${__dirname}/progress/src/${sector}/${folder}/${subfolder}/`,
+      dotfiles: 'deny',
+      headers: {
+        'x-timestamp': Date.now(),
+        'x-sent': true
+      }
+    };
+  res.sendFile(file, options, err => {
+    if (err) {
+      console.log(err);
+      // next();
+    } else {
+      console.log(`Sent: ${file}`);
     }
   });
 });
