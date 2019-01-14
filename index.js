@@ -3,88 +3,87 @@ var app = express();
 
 const PORT = 8012;
 
-app.get('/old', function(req, res, next) {
-  const fileName = 'index.html';
-  options = {
-    root: `${__dirname}/old/`,
-    dotfiles: 'deny',
-    headers: {
-      'x-timestamp': Date.now(),
-      'x-sent': true
-    }
-  };
-  res.sendFile(fileName, options, err => {
+app.get('/old', (req, res, next) => {
+  const file = 'index.html',
+    options = {
+      root: `${__dirname}/old/`,
+      dotfiles: 'deny',
+      headers: {
+        'x-timestamp': Date.now(),
+        'x-sent': true
+      }
+    };
+  res.sendFile(file, options, err => {
     if (err) {
       console.log(err);
       next();
     } else {
-      console.log(`Sent: ${fileName}`);
+      console.log(`Sent: ${file}`);
     }
   });
 });
 
 app.get('/old/demo', (req, res, next) => {
-  const fileName = 'demo.js';
-  options = {
-    root: `${__dirname}/old/`,
-    dotfiles: 'deny',
-    headers: {
-      'x-timestamp': Date.now(),
-      'x-sent': true
-    }
-  };
-  res.sendFile(fileName, options, err => {
+  const file = 'demo.js',
+    options = {
+      root: `${__dirname}/old/`,
+      dotfiles: 'deny',
+      headers: {
+        'x-timestamp': Date.now(),
+        'x-sent': true
+      }
+    };
+  res.sendFile(file, options, err => {
     if (err) {
       console.log(err);
       next();
     } else {
-      console.log(`Sent: ${fileName}`);
+      console.log(`Sent: ${file}`);
     }
   });
 });
 
-
 app.get('/ttkC', (req, res, next) => {
-  const fileName = 'TabletopKnightsCover.jpg';
-  options = {
-    root: `${__dirname}/old/img/`,
-    dotfiles: 'deny',
-    headers: {
-      'x-timestamp': Date.now(),
-      'x-sent': true
-    }
-  };
-  res.sendFile(fileName, options, err => {
+  const file = 'TabletopKnightsCover.jpg',
+    options = {
+      root: `${__dirname}/old/img/`,
+      dotfiles: 'deny',
+      headers: {
+        'x-timestamp': Date.now(),
+        'x-sent': true
+      }
+    };
+  res.sendFile(file, options, err => {
     if (err) {
       console.log(err);
       next();
     } else {
-      console.log(`Sent: ${fileName}`);
+      console.log(`Sent: ${file}`);
     }
   });
 });
 
 app.get('/old/pierre/:action/:direction', (req, res, next) => {
-  const fileName = `pierre_${req.params.action}_${req.params.direction}.png`;
-  options = {
-    root: `${__dirname}/old/img/pierre/`,
-    dotfiles: 'deny',
-    headers: {
-      'x-timestamp': Date.now(),
-      'x-sent': true
-    }
-  };
-  res.sendFile(fileName, options, err => {
+  const file = `pierre_${req.params.action}_${req.params.direction}.png`,
+    options = {
+      root: `${__dirname}/old/img/pierre/`,
+      dotfiles: 'deny',
+      headers: {
+        'x-timestamp': Date.now(),
+        'x-sent': true
+      }
+    };
+  res.sendFile(file, options, err => {
     if (err) {
       console.log(err);
       next();
     } else {
-      console.log(`Sent: ${fileName}`);
+      console.log(`Sent: ${file}`);
     }
   });
 });
 
-app.get('/progress', (req, res) => {
+app.get('/progress', (req, res, next) => {
   const file = 'index.html',
     options = {
       root: `${__dirname}/progress/`,
@@ -97,14 +96,14 @@ app.get('/progress', (req, res) => {
   res.sendFile(file, options, err => {
     if (err) {
       console.log(err);
-      // next();
+      next();
     } else {
       console.log(`Sent: ${file}`);
     }
   });
 });
 
-app.get('/assets/:file', (req, res) => {
+app.get('/assets/:file', (req, res, next) => {
   const {file} = req.params,
     options = {
       root: `${__dirname}/progress/assets/`,
@@ -117,14 +116,14 @@ app.get('/assets/:file', (req, res) => {
   res.sendFile(file, options, err => {
     if (err) {
       console.log(err);
-      // next();
+      next();
     } else {
-      console.log(`Sent: ${file}`);
+      // console.log(`Sent: ${file}`);
     }
   });
 });
 
-app.get('/assets/:type/:file', (req, res) => {
+app.get('/assets/:type/:file', (req, res, next) => {
   const {type, file} = req.params,
     options = {
       root: `${__dirname}/progress/assets/${type}/`,
@@ -137,14 +136,14 @@ app.get('/assets/:type/:file', (req, res) => {
   res.sendFile(file, options, err => {
     if (err) {
       console.log(err);
-      // next();
+      next();
     } else {
-      console.log(`Sent: ${file}`);
+      // console.log(`Sent: ${file}`);
     }
   });
 });
 
-app.get('/src/:sector/:file', (req, res) => {
+app.get('/src/:sector/:file', (req, res, next) => {
   const {sector, file} = req.params,
     options = {
       root: `${__dirname}/progress/src/${sector}/`,
@@ -157,14 +156,14 @@ app.get('/src/:sector/:file', (req, res) => {
   res.sendFile(file, options, err => {
     if (err) {
       console.log(err);
-      // next();
+      next();
     } else {
-      console.log(`Sent: ${file}`);
+      // console.log(`Sent: ${file}`);
     }
   });
 });
 
-app.get('/src/:sector/:folder/:file', (req, res) => {
+app.get('/src/:sector/:folder/:file', (req, res, next) => {
   const {sector, folder, file} = req.params,
     options = {
       root: `${__dirname}/progress/src/${sector}/${folder}/`,
@@ -177,14 +176,14 @@ app.get('/src/:sector/:folder/:file', (req, res) => {
   res.sendFile(file, options, err => {
     if (err) {
       console.log(err);
-      // next();
+      next();
     } else {
-      console.log(`Sent: ${file}`);
+      // console.log(`Sent: ${file}`);
     }
   });
 });
 
-app.get('/src/:sector/:folder/:subfolder/:file', (req, res) => {
+app.get('/src/:sector/:folder/:subfolder/:file', (req, res, next) => {
   const {sector, subfolder, folder, file} = req.params,
     options = {
       root: `${__dirname}/progress/src/${sector}/${folder}/${subfolder}/`,
@@ -197,9 +196,9 @@ app.get('/src/:sector/:folder/:subfolder/:file', (req, res) => {
   res.sendFile(file, options, err => {
     if (err) {
       console.log(err);
-      // next();
+      next();
     } else {
-      console.log(`Sent: ${file}`);
+      // console.log(`Sent: ${file}`);
     }
   });
 });
