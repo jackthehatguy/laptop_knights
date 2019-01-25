@@ -7,6 +7,9 @@ function SimpleShader(vertexShaderPath, fragmentShaderPath) {
   this.mModelTransform = null;
   this.mViewProjTransform = null;
 
+  this.mGlobalAmbientColor = null;
+  this.mGlobalAmbientIntensity = null;
+
   var gl = gEngine.Core.getGL();
 
   //-----start constructor------------------------------------------------------
@@ -44,9 +47,11 @@ function SimpleShader(vertexShaderPath, fragmentShaderPath) {
   );
 
   // 6: get ref: uPixelColor in SimpleFS
-  this.mModelTransform = gl.getUniformLocation(this.mCompiledShader, 'uModelTransform');
   this.mPixelColor = gl.getUniformLocation(this.mCompiledShader, 'uPixelColor');
+  this.mModelTransform = gl.getUniformLocation(this.mCompiledShader, 'uModelTransform');
   this.mViewProjTransform = gl.getUniformLocation(this.mCompiledShader, 'uViewProjTransform');
+  this.mGlobalAmbientColor = gl.getUniformLocation(this.mCompiledShader, 'uGlobalAmbientColor');
+  this.mGlobalAmbientIntensity = gl.getUniformLocation(this.mCompiledShader, 'uGlobalAmbientIntensity');
 
   //-----end constructor--------------------------------------------------------
 }
@@ -94,6 +99,8 @@ SimpleShader.prototype.activateShader = function (pixelColor, aCamera) {
   );
   gl.enableVertexAttribArray(this.mShaderVertexPositionAttribute);
   gl.uniform4fv(this.mPixelColor, pixelColor);
+  gl.uniform4fv(this.mGlobalAmbientColor, gEngine.DefaultResources.getGlobalAmbientColor());
+  gl.uniform1f(this.mGlobalAmbientIntensity, gEngine.DefaultResources.getGlobalAmbientIntensity());
 };
 
 SimpleShader.prototype.getShader = function () { return this.mCompiledShader; };

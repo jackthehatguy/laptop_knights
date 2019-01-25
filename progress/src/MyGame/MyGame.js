@@ -3,15 +3,10 @@
 function MyGame() {
   // textures
   this.kMinionSprite = 'assets/minion_sprite.png';
-  this.kMinionPortal = 'assets/minion_portal.png';
   this.kBg = 'assets/bg.png'
-
-  // fonts
 
   // camera
   this.mCamera = null;
-  this.mHeroCam = null;
-  this.mBrainCam = null;
   this.mBg = null;
 
   // text
@@ -19,83 +14,54 @@ function MyGame() {
 
   // game objects
   this.mHero = null;
-
-  this.mBrain = null;
-  this.mPortal = null;
   this.mLMinion = null;
   this.mRMinion = null;
-
-  this.mFocusObj = null;
-
-  // audio
-
-  // settings
-  this.mChoice = 'D';
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
 MyGame.prototype.loadScene = function () {
-  // textures
-  let texture = gEngine.Textures.loadTexture;
-  texture(this.kMinionSprite);
-  texture(this.kMinionPortal);
-  texture(this.kBg);
-  // fonts
-  // audio
+  let loadTexture = gEngine.Textures.loadTexture;
+  loadTexture(this.kMinionSprite);
+  loadTexture(this.kBg);
+};
+
+MyGame.prototype.unloadScene = function () {
+  let unloadTexture = gEngine.Textures.unloadTexture;
+  unloadTexture(this.kMinionSprite);
+  unloadTexture(this.kBg);
+
+  // starts new level once current level is unloaded
+  var nextLevel = new GameOver();
+  gEngine.Core.startScene(nextLevel);
 };
 
 MyGame.prototype.initialize = function () {
   // cameras
   this.mCamera = new Camera(
-    vec2.fromValues(50, 36),
+    vec2.fromValues(50, 37.5),
     100,
-    [0, 0, 640, 330]
+    [0, 0, 640, 480]
   );
   this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
 
-  this.mHeroCam = new Camera(
-    vec2.fromValues(50, 30),
-    20,
-    [490, 330, 150, 150],
-    2
-  );
-  this.mHeroCam.setBackgroundColor([0.85, 0.8, 0.8, 1]);
-
-  this.mBrainCam = new Camera(
-    vec2.fromValues(50, 30),
-    10,
-    [0, 330, 150, 150],
-    2
-  );
-  this.mBrainCam.setBackgroundColor([0.8, 0.8, 0.85, 1]);
-  this.mBrainCam.configInterpolation(0.7, 100);
-
   // bg img
   var bgR = new SpriteRenderable(this.kBg);
-  bgR.setElementPixelPositions(0, 1024, 0, 1024);
-  bgR.getXform().setSize(150, 150);
+  bgR.setElementPixelPositions(0, 1900, 0, 1000);
+  bgR.getXform().setSize(190, 100);
   bgR.getXform().setPosition(50,35);
   this.mBg = new GameObject(bgR);
 
   // game objects
   this.mHero = new Hero(this.kMinionSprite);
 
-  this.mBrain = new Brain(this.kMinionSprite);
-
-  this.mPortal = new TextureObject(this.kMinionPortal, 50, 30, 10, 10);
-
   this.mLMinion = new Minion(this.kMinionSprite, 30, 30);
   this.mRMinion = new Minion(this.kMinionSprite, 70, 30);
-
-  this.mFocusObj = this.mHero;
 
   // text renderables
   this.mMsg = new FontRenderable('Status Message');
   this.mMsg.setColor([1, 1, 1, 1]);
-  this.mMsg.getXform().setPosition(1, 16);
+  this.mMsg.getXform().setPosition(1, 2);
   this.mMsg.setTextHeight(3);
-
-  // audio
 };
 
 // useless? I hope not...
@@ -110,8 +76,6 @@ MyGame.prototype.drawCamera = function (camera) {
 
   this.mBg.draw(camera);
   this.mHero.draw(camera);
-  this.mBrain.draw(camera);
-  this.mPortal.draw(camera);
   this.mLMinion.draw(camera);
   this.mRMinion.draw(camera);
 };
@@ -124,122 +88,42 @@ MyGame.prototype.draw = function () {
   // camera
   this.drawCamera(this.mCamera);
   this.mMsg.draw(this.mCamera);
-  this.drawCamera(this.mHeroCam);
-  this.drawCamera(this.mBrainCam);
 };
 
 // do NOT draw in this function
 MyGame.prototype.update = function () {
-  var zoomDelta = 0.05;
-  var msg = '[L/R: Left/Right Minion; H: Hero; P: Portal]: ';
-  let cam = this.mCamera;
-
-  cam.update();
-  this.mHeroCam.update();
-  this.mBrainCam.update();
+  var deltaAmbient = 0.01;
+  var msg = '[Current Ambient]: ';
+  
+  this.mCamera.update();
 
   this.mLMinion.update();
   this.mRMinion.update();
 
   this.mHero.update();
 
-  let input = gEngine.Input;
+  this.mCamera.panWith(this.mHero.getXform(), 0.8);
+  
+  let
+    dr = gEngine.DefaultResources,
+    input = gEngine.Input,
+    keys = input.keys,
+    button = input.mouseButton,
+    kpressed = input.isKeyPressed,
+    kclicked = input.isKeyClicked,
+    mpressed = input.isButtonPressed;
 
-  let keys = input.keys;
-  this.mPortal.update(
-    keys.Up,
-    keys.Down,
-    keys.Left,
-    keys.Right
-  );
+  var v = dr.getGlobalAmbientColor();
 
-  // check the small sprite, not the big one
-  var h = [];
-  if (!this.mHero.pixelTouches(this.mBrain, h)) {
-    this.mBrain.rotateObjPointTo(this.mHero.getXform().getPosition(), 0.01);
-    GameObject.prototype.update.call(this.mBrain);
-  }
+  if (mpressed(button.Left)) v[0] += deltaAmbient;
+  if (mpressed(button.Middle)) v[0] -= deltaAmbient;
 
-  let clicked = input.isKeyClicked;
-  if (clicked(keys.L)) {
-    this.mFocusObj = this.mLMinion;
-    this.mChoice = 'L';
-    cam.panTo(this.mLMinion.getXform().getXPos(), this.mLMinion.getXform().getYPos());
-  }
-  if (clicked(keys.R)) {
-    this.mFocusObj = this.mRMinion;
-    this.mChoice = 'R';
-    cam.panTo(this.mRMinion.getXform().getXPos(), this.mRMinion.getXform().getYPos());
-  }
-  if (clicked(keys.P)) {
-    this.mFocusObj = this.mPortal;
-    this.mChoice = 'P';
-  }
-  if (clicked(keys.H)) {
-    this.mFocusObj = this.mHero;
-    this.mChoice = 'H';
-    cam.panTo(this.mHero.getXform().getXPos(), this.mHero.getXform().getYPos());
-  }
-
-  // zoom
-  if (clicked(keys.N)) cam.zoomBy(1 - zoomDelta);
-  if (clicked(keys.M)) cam.zoomBy(1 + zoomDelta);
-  if (clicked(keys.J)) cam.zoomTowards(this.mFocusObj.getXform().getPosition(), 1 - zoomDelta);
-  if (clicked(keys.K)) cam.zoomTowards(this.mFocusObj.getXform().getPosition(), 1 + zoomDelta);
-
-  // shake
-  if (clicked(keys.Q)) cam.shake(-2, -2, 20, 30);
+  if (kpressed(keys.Left)) dr.setGlobalAmbientIntensity(dr.getGlobalAmbientIntensity() - deltaAmbient);
+  if (kpressed(keys.Right)) dr.setGlobalAmbientIntensity(dr.getGlobalAmbientIntensity() + deltaAmbient);
 
   // quit
-  if (clicked(keys.Esc)) gEngine.GameLoop.stop();
+  if (kclicked(keys.Esc)) gEngine.GameLoop.stop();
 
-  cam.clampAtBoundary(this.mBrain.getXform(), 0.9);
-  cam.clampAtBoundary(this.mPortal.getXform(), 0.8);
-  switch (this.mChoice) {
-    case 'L':
-      cam.panTo(this.mLMinion.getXform().getXPos(), this.mLMinion.getXform().getYPos());
-      break;
-    case 'R':
-      cam.panTo(this.mRMinion.getXform().getXPos(), this.mRMinion.getXform().getYPos());
-      break;
-    default:
-      cam.panWith(this.mHero.getXform(), 0.65);
-  }
-
-  let hero = this.mHero.getXform();
-  this.mHeroCam.panTo(hero.getXPos(), hero.getYPos());
-
-  let brain = this.mBrain.getXform();
-  this.mBrainCam.panTo(brain.getXPos(), brain.getYPos());
-
-  let portal = this.mPortal.getXform();
-
-  msg = '';
-
-  let button = input.mouseButton;
-  if (input.isButtonPressed(button.Left)) {
-    msg += '[L Down]';
-    if (cam.isMouseInViewport()) portal.setPosition(cam.mouseWCX(), cam.mouseWCY());
-  }
-
-  if (input.isButtonPressed(button.Middle)) {
-    msg += '[M Down]';
-    if (this.mHeroCam.isMouseInViewport()) hero.setPosition(this.mHeroCam.mouseWCX(), this.mHeroCam.mouseWCY());
-  }
-
-  if (input.isButtonClicked(button.Right)) this.mPortal.setVisibility(false);
-  if (input.isButtonClicked(button.Middle)) this.mPortal.setVisibility(true);
-
-  msg += ` X=${input.getMousePosX()} Y=${input.getMousePosY()}`;
+  msg += ` Red=${v[0].toPrecision(3)} Intensity=${dr.getGlobalAmbientIntensity().toPrecision(3)}`;
   this.mMsg.setText(msg);
-};
-
-MyGame.prototype.unloadScene = function () {
-  let texture = gEngine.Textures.unloadTexture;
-  texture(this.kMinionSprite);
-  texture(this.kMinionPortal);
-  texture(this.kBg);
-
-  var nextLevel = new GameOver();  // next level to be loaded
-  gEngine.Core.startScene(nextLevel);
 };

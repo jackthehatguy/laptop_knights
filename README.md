@@ -61,10 +61,10 @@ playing as the bombardier.
   * interpolation
   * shake
   * multiple
+* ambient light
 
 ## What We Are Working On
-### Game Engine <em title="matches book section">v0.8.1</em>
-* ambient light
+### Game Engine <em title="matches book section">v0.8.2</em>
 * light source
 * multiple light sources
 * distance attenuation

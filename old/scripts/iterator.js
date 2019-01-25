@@ -1,32 +1,48 @@
-const iterator = (start, end, type) => {
-  if (start === end) {
-    console.log(`start (${start}) and end (${end}) cannot be the same...`);
+/**
+ * /!\ all repeating iterations continue from beginning of range, not start input
+ * /!\ range from 0 (inclusive) to length (exclusive)
+ * @param {Number} length: number of iterations per cycle
+ * @param {String || Number} type: which cycle function to execute
+ * @param {Number} step: vector from one value to the next
+ * @param {Number} start: the inital position of the return value
+ */
+const iterator = (length, type, step = 1, start = 0) => {
+  if (!length || isNaN(length)) {
+    console.log(`Must be a number other than 0`);
     return;
   }
-  if (end === undefined) {
-    end = start;
-    start = 0;
-  }
+  if (start >= length) start = length-1;
 
-  let cur = start,
-    times,
-    next;
+  let
+    cur = start,      // the curent value of incrementer
+    times = type,     // numbers of complete loops left in the complete run
+    next = null,      // the function to acuire the proceeding value in the iterator
+    started = false;  // flag signifying the firs iteration value in the loop
 
-  const once = _ =>
-    start < end
-    ? cur <= end
-      ? {value: cur++, done: false}
-      : {value: cur, done: true}
-    : cur >= end
-      ? {value: cur--, done: false}
-      : {value: cur, done: true};
+  const once = _ => {
+    let result = {
+      value: cur,
+      done: false
+    };
+    if (!started) {
+      started = true;
+    } else {
+      if ((step > 0 && cur >= length-step) || (step < 0 && cur <= -step-1)) {
+        result.done = true;
+      } else {
+        cur += step;
+        result.value = cur;
+      }
+    }
+    return result;
+  };
 
   const chain = _ => {
     if (times > 0) {
       let next = once();
       if (!next.done) return next;
       if (--times <= 0) return {value: cur, done: true};
-      cur = start;
+      cur = 0;
       return once();
     }
     return {value: cur, done: true};
@@ -34,20 +50,17 @@ const iterator = (start, end, type) => {
 
   const loop = _ => {
     let next = once();
-    if(!next.done) return next;
-    cur = start;
+    if (!next.done) return next;
+    started = false;
+    cur = 0;
     return once();
   };
 
-  const wave = _ => {
-    let next = once(),
-      tmp = start;
+  const swing = _ => {
+    let next = once();
 
     if (!next.done) return next;
-    start = end;
-    end = tmp;
-    cur = start;
-    once();
+    step *= -1;
     return once();
   };
 
@@ -55,10 +68,11 @@ const iterator = (start, end, type) => {
     case 'loop':
       next = loop;
       break;
-    case 'wave':
-      next = wave;
+    case 'wave': case 'swing':
+      next = swing;
       break;
     case 'once': default:
+      type = 'once';
       next = once;
       break;
   }
@@ -69,32 +83,43 @@ const iterator = (start, end, type) => {
 
   const getCur = _ => cur;
 
-  const reset = _ => {
-    cur = start;
-    if (!isNaN(type)) times = type;
-  }
+  const setCur = num => cur = num;
+
+  const setStep = num => step = num;
+
+  const resetPosition = _ => setCur(start);
+
+  const resetState = _ => {
+    resetPosition();
+    times = type;
+    started = false;
+  };
+
+  const debug = {
+    length,
+    type,
+    step,
+    start,
+    cur,
+    times,
+    next,
+    started
+  };
 
   return {
-    cur: getCur,
+    debug,
+    getCur,
+    setCur,
+    setStep,
     next,
-    reset
+    resetPosition
   };
 }
 
-let iter = iterator(3,0,2),
+let
+  iter = iterator(10),
   next = {};
-while (!next.done) if (!(next = iter.next()).done) console.log(next.value);
-
-console.log('');
-
-iter.reset();
-next = {};
-for (let i = 0; i < 20; i++) {
-  next = iter.next();
-  if (!next.done) {
-    console.log(next.value);
-  } else {
-    console.log(`done: ${i}`);
-    break;
-  }
-}
+  
+console.log(iter.debug);
+// while (!next.done) if (!(next = iter.next()).done) console.log(next);
+while (!iter.next().done) console.log(iter.getCur());

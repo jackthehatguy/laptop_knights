@@ -19,6 +19,15 @@ gEngine.DefaultResources = (function () {
   // default font
   var kDefaultFont = 'assets/fonts/system-default-font';
   var getDefaultFont = function () { return kDefaultFont; };
+  
+  // Global ambient color
+  var mGlobalAmbientColor = [0.3, 0.3, 0.3, 1];
+  var mGlobalAmbientIntensity = 1;
+
+  var getGlobalAmbientIntensity = function() { return mGlobalAmbientIntensity; };
+  var setGlobalAmbientIntensity = function(v) { mGlobalAmbientIntensity = v; };
+  var getGlobalAmbientColor = function() { return mGlobalAmbientColor; };
+  var setGlobalAmbientColor = function(v) { mGlobalAmbientColor = vec4.fromValues(v[0], v[1], v[2], v[3]); };
 
   var _createShaders = function (callbackFunction) {
     gEngine.ResourceMap.setLoadCompleteCallback(null);
@@ -67,6 +76,10 @@ gEngine.DefaultResources = (function () {
     getTextureShader,
     getSpriteShader,
     getDefaultFont,
+    getGlobalAmbientColor,
+    setGlobalAmbientColor,
+    getGlobalAmbientIntensity,
+    setGlobalAmbientIntensity,
     cleanUp
   };
   return mPublic;
