@@ -18,9 +18,6 @@ function MyGame() {
   this.mRMinion = null;
 
   this.mTheLight = null;
-
-  this.mBlock1 = null;
-  this.mBlock2 = null;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -79,16 +76,6 @@ MyGame.prototype.initialize = function () {
   this.mMsg.setColor([1, 1, 1, 1]);
   this.mMsg.getXform().setPosition(1, 2);
   this.mMsg.setTextHeight(3);
-
-  this.mBlock1 = new Renderable();
-  this.mBlock1.setColor([1, 0, 0, 1]);
-  this.mBlock1.getXform().setSize(5, 5);
-  this.mBlock1.getXform().setPosition(30, 50);
-
-  this.mBlock2 = new Renderable();
-  this.mBlock2.setColor([0, 1, 0, 1]);
-  this.mBlock2.getXform().setSize(5, 5);
-  this.mBlock2.getXform().setPosition(70, 50);
 };
 
 // useless? I hope not...
@@ -105,8 +92,6 @@ MyGame.prototype.drawCamera = function (camera) {
   this.mHero.draw(camera);
   this.mLMinion.draw(camera);
   this.mRMinion.draw(camera);
-  this.mBlock1.draw(camera);
-  this.mBlock2.draw(camera);
 };
 
 // do NOT change any states in this function
