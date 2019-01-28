@@ -1,5 +1,11 @@
 'use strict';
 
+function PerRenderCache() {
+  this.mWCToPixelRatio = 1;
+  this.mCameraOrgX = 1;
+  this.mCameraOrgY = 1;
+}
+
 function Camera(wcCenter, wcWidth, viewportArray, bound) {
   // WorldCoordinate and viewport pos and size
   this.mCameraState = new CameraState(wcCenter, wcWidth);
@@ -23,6 +29,10 @@ function Camera(wcCenter, wcWidth, viewportArray, bound) {
 
   // background color
   this.mBgColor = [0.8, 0.8, 0.8, 1]; // RGBA
+
+  // per render cached info
+  // updates every setupViewProjection
+  this.mRenderCache = new PerRenderCache();
 }
 
 Camera.eViewport = Object.freeze({
@@ -135,6 +145,11 @@ Camera.prototype.setupViewProjection = function () {
 
   // concat view & proj matrices
   mat4.multiply(this.mVPMatrix, this.mProjMatrix, this.mViewMatrix);
+
+  // compute and cache per-render info
+  this.mRenderCache.mWCToPixelRatio = this.mViewport[Camera.eViewport.eWidth] / this.getWCWidth();
+  this.mRenderCache.mCameraOrgX = center[0] - (this.getWCWidth()/2);
+  this.mRenderCache.mCameraOrgY = center[1] - (this.getWCHeight()/2);
 };
 
 Camera.prototype.collideWCBound = function (aXform, zone) {

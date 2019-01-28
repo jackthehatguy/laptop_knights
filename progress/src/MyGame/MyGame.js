@@ -16,6 +16,11 @@ function MyGame() {
   this.mHero = null;
   this.mLMinion = null;
   this.mRMinion = null;
+
+  this.mTheLight = null;
+
+  this.mBlock1 = null;
+  this.mBlock2 = null;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -44,24 +49,46 @@ MyGame.prototype.initialize = function () {
   );
   this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
 
+  // light
+  this.mTheLight = new Light();
+  this.mTheLight.setRadius(8);
+  this.mTheLight.setXPos(30);
+  this.mTheLight.setYPos(30);
+  this.mTheLight.setZPos(2);
+  this.mTheLight.setColor([0.9, 0.9, 0.6, 1]);
+
   // bg img
-  var bgR = new SpriteRenderable(this.kBg);
-  bgR.setElementPixelPositions(0, 1900, 0, 1000);
-  bgR.getXform().setSize(190, 100);
-  bgR.getXform().setPosition(50,35);
+  var bgR = new LightRenderable(this.kBg);
+  bgR.setElementPixelPositions(0, 1024, 0, 1024);
+  bgR.getXform().setSize(100, 100);
+  bgR.getXform().setPosition(50, 35);
+  bgR.addLight(this.mTheLight);
   this.mBg = new GameObject(bgR);
 
   // game objects
   this.mHero = new Hero(this.kMinionSprite);
-
+  this.mHero.getRenderable().addLight(this.mTheLight);
+  
   this.mLMinion = new Minion(this.kMinionSprite, 30, 30);
+  this.mLMinion.getRenderable().addLight(this.mTheLight);
   this.mRMinion = new Minion(this.kMinionSprite, 70, 30);
+  // this.mRMinion.getRenderable().addLight(this.mTheLight);
 
   // text renderables
   this.mMsg = new FontRenderable('Status Message');
   this.mMsg.setColor([1, 1, 1, 1]);
   this.mMsg.getXform().setPosition(1, 2);
   this.mMsg.setTextHeight(3);
+
+  this.mBlock1 = new Renderable();
+  this.mBlock1.setColor([1, 0, 0, 1]);
+  this.mBlock1.getXform().setSize(5, 5);
+  this.mBlock1.getXform().setPosition(30, 50);
+
+  this.mBlock2 = new Renderable();
+  this.mBlock2.setColor([0, 1, 0, 1]);
+  this.mBlock2.getXform().setSize(5, 5);
+  this.mBlock2.getXform().setPosition(70, 50);
 };
 
 // useless? I hope not...
@@ -78,6 +105,8 @@ MyGame.prototype.drawCamera = function (camera) {
   this.mHero.draw(camera);
   this.mLMinion.draw(camera);
   this.mRMinion.draw(camera);
+  this.mBlock1.draw(camera);
+  this.mBlock2.draw(camera);
 };
 
 // do NOT change any states in this function
@@ -92,20 +121,16 @@ MyGame.prototype.draw = function () {
 
 // do NOT draw in this function
 MyGame.prototype.update = function () {
-  var deltaAmbient = 0.01;
-  var msg = '[Current Ambient]: ';
+  var msg, i, c;
+  var deltaC = 0.01;
+  var deltaZ = 0.05;
   
   this.mCamera.update();
-
   this.mLMinion.update();
   this.mRMinion.update();
-
   this.mHero.update();
 
-  this.mCamera.panWith(this.mHero.getXform(), 0.8);
-  
   let
-    dr = gEngine.DefaultResources,
     input = gEngine.Input,
     keys = input.keys,
     button = input.mouseButton,
@@ -113,17 +138,37 @@ MyGame.prototype.update = function () {
     kclicked = input.isKeyClicked,
     mpressed = input.isButtonPressed;
 
-  var v = dr.getGlobalAmbientColor();
+  if (mpressed(button.Left)) this.mTheLight.set2DPosition(this.mHero.getXform().getPosition());
 
-  if (mpressed(button.Left)) v[0] += deltaAmbient;
-  if (mpressed(button.Middle)) v[0] -= deltaAmbient;
+  if (kpressed(keys.Right)) {
+    c = this.mTheLight.getColor();
+    for (i = 0; i < 3; i++) c[i] += deltaC;
+  }
+  if (kpressed(keys.Left)) {
+    c = this.mTheLight.getColor();
+    for (i = 0; i < 3; i++) c[i] -= deltaC;
+  }
 
-  if (kpressed(keys.Left)) dr.setGlobalAmbientIntensity(dr.getGlobalAmbientIntensity() - deltaAmbient);
-  if (kpressed(keys.Right)) dr.setGlobalAmbientIntensity(dr.getGlobalAmbientIntensity() + deltaAmbient);
+  var p = this.mTheLight.getPosition(), r;
+  if (kpressed(keys.Z)) p[2] += deltaZ;
+  if (kpressed(keys.X)) p[2] -= deltaZ;
+  if (kpressed(keys.C)) {
+    r = this.mTheLight.getRadius();
+    r += deltaC;
+    this.mTheLight.setRadius(r);
+  }
+  if (kpressed(keys.V)) {
+    r = this.mTheLight.getRadius();
+    r -= deltaC;
+    this.mTheLight.setRadius(r);
+  }
+
+  c = this.mTheLight.getColor();
 
   // quit
   if (kclicked(keys.Esc)) gEngine.GameLoop.stop();
 
-  msg += ` Red=${v[0].toPrecision(3)} Intensity=${dr.getGlobalAmbientIntensity().toPrecision(3)}`;
+  msg = `LightColor:${c[0].toFixed(2)} ${c[1].toFixed(2)} ${c[2].toFixed(2)} ` +
+    `Z=${p[2].toFixed(2)} r=${this.mTheLight.getRadius().toFixed(2)}`;
   this.mMsg.setText(msg);
 };
