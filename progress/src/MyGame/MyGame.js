@@ -52,7 +52,7 @@ MyGame.prototype.initialize = function () {
   this.mTheLight.setXPos(30);
   this.mTheLight.setYPos(30);
   this.mTheLight.setZPos(2);
-  this.mTheLight.setColor([0.9, 0.9, 0.6, 1]);
+  this.mTheLight.setColor([0.6, 0.6, 0.5, 1]);
 
   // bg img
   var bgR = new LightRenderable(this.kBg);

@@ -25,7 +25,7 @@ gEngine.DefaultResources = (function () {
   var getDefaultFont = function () { return kDefaultFont; };
   
   // Global ambient color
-  var mGlobalAmbientColor = [0.3, 0.3, 0.3, 1];
+  var mGlobalAmbientColor = [0.5, 0.5, 0.5, 1];
   var mGlobalAmbientIntensity = 1;
 
   var getGlobalAmbientIntensity = function() { return mGlobalAmbientIntensity; };
