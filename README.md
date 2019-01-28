@@ -89,6 +89,7 @@ playing as the bombardier.
 * $ README
 * use newest version of gl-matrix.js || ? build new library
 * ? use the electron stack as a container
+* ? create json SceneFileParser
 
 ## Glossary
 | Key | Value     |
