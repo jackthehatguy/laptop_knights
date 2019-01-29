@@ -3,6 +3,10 @@ var app = express();
 
 const PORT = 8012;
 
+app.get('/', (req, res, next) => {
+  res.redirect('/progress');
+});
+
 app.get('/old', (req, res, next) => {
   const file = 'index.html',
     options = {
