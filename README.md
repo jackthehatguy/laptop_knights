@@ -90,6 +90,7 @@ playing as the bombardier.
 * use newest version of gl-matrix.js || ? build new library
 * ? use the electron stack as a container
 * ? create json SceneFileParser
+* \+ more Semantic Web elements
 
 ## Glossary
 | Key | Value     |
