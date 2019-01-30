@@ -11,8 +11,9 @@ gEngine.TextFileLoader = (function () {
       // update resources in load counter
       gEngine.ResourceMap.asyncLoadRequested(fileName);
 
-      // TODO: update this to ES2017 standards
-      // async req data from server
+      /* TODO: update this to ES2017 standards
+       * async req data from server
+       */
       var req = new XMLHttpRequest();
       req.onreadystatechange = function () {
         if ((req.readyState === 4) && (req.status !== 200)) {
@@ -23,7 +24,7 @@ gEngine.TextFileLoader = (function () {
       };
       req.open('GET', fileName, true);
       req.setRequestHeader('Content-Type', 'text/xml');
-      req.overrideMimeType('text/plain; charset=utf-8'); // TODO: remove pesky error messages
+      req.overrideMimeType('text/plain; charset=utf-8');
 
       req.onload = function () {
         var fileContent = null;
