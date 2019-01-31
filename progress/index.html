@@ -2,17 +2,17 @@
 <html lang="en" dir="ltr" prefix="og: http://ogp.me/ns#">
   <head>
     <meta charset="utf-8">
-    <title>Game Engine Progress 8.2</title>
+    <title>Engine v0.8.3</title>
     <link rel="stylesheet" type="text/css" href="assets/styles.css">
     <meta property="og:site_name" content="Laptop Knights" />
-    <meta property="og:title" content="Game Engine v0.8.2" />
+    <meta property="og:title" content="Engine v0.8.3" />
     <meta property="og:type" content="website">
     <meta property="og:url" content="http://69.87.228.74:9001/">
-    <meta property="og:description" content="The current iteration of the game engine. Now with spotlights!">
+    <meta property="og:description" content="The current iteration of the game engine. Check out what we've added next!">
     <meta property="og:image" content="/ttkC">
   </head>
   <body onload="var myGame = new MyGame(); gEngine.Core.initializeEngineCore('GLCanvas', myGame);"
-    style="background: #313131; color: #c0c0c0;">
+    style="background: #313131; color: #c0c0c0; position: fixed;">
     <!-- Libraries -->
     <script type="text/javascript" src="src/lib/gl-matrix.js"></script>
     <!-- Engine Code -->
@@ -31,6 +31,7 @@
         <script type="text/javascript" src="src/Engine/Scene.js"></script>
       <!-- Lights -->
       <script type="text/javascript" src="src/Engine/Lights/Light.js"></script>
+      <script type="text/javascript" src="src/Engine/Lights/LightSet.js"></script>
       <!-- Utilities -->
       <script type="text/javascript" src="src/Engine/Utils/Transform.js"></script>
       <script type="text/javascript" src="src/Engine/Utils/BoundingBox.js"></script>
@@ -57,6 +58,7 @@
       <script type="text/javascript" src="src/Engine/Shaders/SpriteShader.js"></script>
       <!-- <script type="text/javascript" src="src/Engine/Shaders/LineShader.js"></script> -->
       <script type="text/javascript" src="src/Engine/Shaders/LightShader.js"></script>
+      <script type="text/javascript" src="src/Engine/Shaders/ShaderLightAtIndex.js"></script>
       <!-- Camera -->
       <script type="text/javascript" src="src/Engine/Cameras/Camera.js"></script>
       <script type="text/javascript" src="src/Engine/Cameras/Camera_Manipulation.js"></script>
@@ -66,6 +68,8 @@
       <script type="text/javascript" src="src/Engine/Cameras/CameraShake.js"></script>
     <!-- Game Client Code -->
     <script type="text/javascript" src="src/MyGame/MyGame.js"></script>
+    <script type="text/javascript" src="src/MyGame/MyGame_LightControl.js"></script>
+    <script type="text/javascript" src="src/MyGame/MyGame_Lights.js"></script>
     <script type="text/javascript" src="src/MyGame/GameOver.js"></script>
       <!-- Objects -->
       <script type="text/javascript" src="src/MyGame/Objects/Hero.js"></script>
@@ -86,21 +90,17 @@
         </div>
         <div class="panel">
           <div class="heading1">Hero</div>
-          <div>W: move up</div>
-          <div>A: move left</div>
-          <div>S: move down</div>
-          <div>D: move right</div>
+          <div>WASD: move</div>
           <div>F: print location to console</div>
         </div>
         <div class="panel">
           <div class="heading1">Lighting</div>
-          <div>Left Key: Decrease light color values</div>
-          <div>Right Key: Increase light values</div>
-          <div>Z: Increase light Z coord</div>
-          <div>X: Decrease light Z coord</div>
-          <div>C: Increase light radius</div>
-          <div>V: Decrease light radius</div>
-          <div>Left Mouse Button: Center light on hero</div>
+          <div>Number keys 0-3: Select corresponding light source</div>
+          <div>Arrow keys: move selected light</div>
+          <div>Z/X: Increase/Decrease light Z coord</div>
+          <div>C/V &amp; B/N: Increase/Decrease selected light near/far cutoff</div>
+          <div>K/L: Increase/Decreas selected light intensity</div>
+          <div>H: Toggle selected light on/off</div>
         </div>
       </div>
     </div>

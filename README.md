@@ -63,12 +63,12 @@ playing as the bombardier.
   * multiple
 * lighting
   * ambient
-  * light source
+  * source
+  * multiple sources
+  * distance attenuation (near and far bounds)
 
 ## What We Are Working On
 ### Game Engine <em title="matches book section">v0.8.3</em>
-* multiple light sources
-* distance attenuation
 * diffuse reflection
 * normal mapping
 * specular reflection
@@ -87,14 +87,14 @@ playing as the bombardier.
 ## TODO
 * __update to es6 and Spencer's standards__
 * $ README
-* use newest version of gl-matrix.js || ? build new library
+* ? use newest version of gl-matrix.js || ? build new library
 * ? use the electron stack as a container
-* ? create json SceneFileParser
-* \+ more Semantic Web elements
+* ? ~ SceneFileParser -> JSON
+* ? \+ more Semantic Web elements
 
 ## Glossary
 | Key | Value     |
-|:---:| --------- |
+|:---:|:--------- |
 | \+  | adds      |
 | \-  | removes   |
 | ^   | updates   |

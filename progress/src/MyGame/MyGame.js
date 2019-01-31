@@ -17,7 +17,9 @@ function MyGame() {
   this.mLMinion = null;
   this.mRMinion = null;
 
-  this.mTheLight = null;
+  this.mGlobalLightSet = null;
+
+  this.mLgtIndex = 0;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -47,30 +49,29 @@ MyGame.prototype.initialize = function () {
   this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
 
   // light
-  this.mTheLight = new Light();
-  this.mTheLight.setRadius(8);
-  this.mTheLight.setXPos(30);
-  this.mTheLight.setYPos(30);
-  this.mTheLight.setZPos(2);
-  this.mTheLight.setColor([0.6, 0.6, 0.5, 1]);
+  this._initializeLights(); // in MyGame_Lights.js
 
   // bg img
   var bgR = new LightRenderable(this.kBg);
   bgR.setElementPixelPositions(0, 1024, 0, 1024);
   bgR.getXform().setSize(100, 100);
   bgR.getXform().setPosition(50, 35);
-  bgR.addLight(this.mTheLight);
+  this._applyAllLights(bgR);                      // in MyGame_Lights.js
   this.mBg = new GameObject(bgR);
 
   // game objects
   this.mHero = new Hero(this.kMinionSprite);
-  this.mHero.getRenderable().addLight(this.mTheLight);
+  this._applyAllLights(this.mHero.getRenderable()); // in MyGame_Lights.js
   
   this.mLMinion = new Minion(this.kMinionSprite, 30, 30);
-  this.mLMinion.getRenderable().addLight(this.mTheLight);
+  this.mLMinion.getRenderable().addLight(this.mGlobalLightSet.getLightAt(1));
+  this.mLMinion.getRenderable().addLight(this.mGlobalLightSet.getLightAt(3));
+  
   this.mRMinion = new Minion(this.kMinionSprite, 70, 30);
-  // this.mRMinion.getRenderable().addLight(this.mTheLight);
+  this.mRMinion.getRenderable().addLight(this.mGlobalLightSet.getLightAt(0));
+  this.mRMinion.getRenderable().addLight(this.mGlobalLightSet.getLightAt(2));
 
+  // TODO: ? move to external file
   // text renderables
   this.mMsg = new FontRenderable('Status Message');
   this.mMsg.setColor([1, 1, 1, 1]);
@@ -94,7 +95,7 @@ MyGame.prototype.drawCamera = function (camera) {
   this.mRMinion.draw(camera);
 };
 
-// do NOT change any states in this function
+// do **NOT** change any states in this function
 MyGame.prototype.draw = function () {
   // a: clear canvas
   gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1.0]);
@@ -106,54 +107,24 @@ MyGame.prototype.draw = function () {
 
 // do NOT draw in this function
 MyGame.prototype.update = function () {
-  var msg, i, c;
-  var deltaC = 0.01;
-  var deltaZ = 0.05;
+  var msg = `Light #${this.mLgtIndex} `;
   
   this.mCamera.update();
+
   this.mLMinion.update();
   this.mRMinion.update();
+  
   this.mHero.update();
 
   let
     input = gEngine.Input,
     keys = input.keys,
-    button = input.mouseButton,
-    kpressed = input.isKeyPressed,
-    kclicked = input.isKeyClicked,
-    mpressed = input.isButtonPressed;
+    kclicked = input.isKeyClicked;
 
-  if (mpressed(button.Left)) this.mTheLight.set2DPosition(this.mHero.getXform().getPosition());
-
-  if (kpressed(keys.Right)) {
-    c = this.mTheLight.getColor();
-    for (i = 0; i < 3; i++) c[i] += deltaC;
-  }
-  if (kpressed(keys.Left)) {
-    c = this.mTheLight.getColor();
-    for (i = 0; i < 3; i++) c[i] -= deltaC;
-  }
-
-  var p = this.mTheLight.getPosition(), r;
-  if (kpressed(keys.Z)) p[2] += deltaZ;
-  if (kpressed(keys.X)) p[2] -= deltaZ;
-  if (kpressed(keys.C)) {
-    r = this.mTheLight.getRadius();
-    r += deltaC;
-    this.mTheLight.setRadius(r);
-  }
-  if (kpressed(keys.V)) {
-    r = this.mTheLight.getRadius();
-    r -= deltaC;
-    this.mTheLight.setRadius(r);
-  }
-
-  c = this.mTheLight.getColor();
+  msg += this._lightControl();
 
   // quit
   if (kclicked(keys.Esc)) gEngine.GameLoop.stop();
 
-  msg = `LightColor:${c[0].toFixed(2)} ${c[1].toFixed(2)} ${c[2].toFixed(2)} ` +
-    `Z=${p[2].toFixed(2)} r=${this.mTheLight.getRadius().toFixed(2)}`;
   this.mMsg.setText(msg);
 };
