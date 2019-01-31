@@ -68,7 +68,7 @@ playing as the bombardier.
   * distance attenuation (near and far bounds)
 
 ## What We Are Working On
-### Game Engine <em title="matches book section">v0.8.3</em>
+### Game Engine <em title="matches book section">v0.8.4</em>
 * diffuse reflection
 * normal mapping
 * specular reflection
