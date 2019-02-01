@@ -7,70 +7,10 @@ app.get('/', (req, res, next) => {
   res.redirect('/progress');
 });
 
-app.get('/old', (req, res, next) => {
-  const file = 'index.html',
-    options = {
-      root: `${__dirname}/old/`,
-      dotfiles: 'deny',
-      headers: {
-        'x-timestamp': Date.now(),
-        'x-sent': true
-      }
-    };
-  res.sendFile(file, options, err => {
-    if (err) {
-      console.log(err);
-      next();
-    } else {
-      console.log(`Sent: ${file}`);
-    }
-  });
-});
-
-app.get('/old/demo', (req, res, next) => {
-  const file = 'demo.js',
-    options = {
-      root: `${__dirname}/old/`,
-      dotfiles: 'deny',
-      headers: {
-        'x-timestamp': Date.now(),
-        'x-sent': true
-      }
-    };
-  res.sendFile(file, options, err => {
-    if (err) {
-      console.log(err);
-      next();
-    } else {
-      console.log(`Sent: ${file}`);
-    }
-  });
-});
-
 app.get('/ttkC', (req, res, next) => {
   const file = 'TabletopKnightsCover.jpg',
     options = {
-      root: `${__dirname}/old/img/`,
-      dotfiles: 'deny',
-      headers: {
-        'x-timestamp': Date.now(),
-        'x-sent': true
-      }
-    };
-  res.sendFile(file, options, err => {
-    if (err) {
-      console.log(err);
-      next();
-    } else {
-      console.log(`Sent: ${file}`);
-    }
-  });
-});
-
-app.get('/old/pierre/:action/:direction', (req, res, next) => {
-  const file = `pierre_${req.params.action}_${req.params.direction}.png`,
-    options = {
-      root: `${__dirname}/old/img/pierre/`,
+      root: `${__dirname}`,
       dotfiles: 'deny',
       headers: {
         'x-timestamp': Date.now(),
