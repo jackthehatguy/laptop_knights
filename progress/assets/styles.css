@@ -1,6 +1,4 @@
 body {
-  background: #313131;
-  color: #c0c0c0;
   position: fixed;
 }
 
@@ -23,5 +21,5 @@ body {
 
 canvas {
   margin: 1em;
-  box-shadow: 6px 6px #292929;
+  float: left;
 }
