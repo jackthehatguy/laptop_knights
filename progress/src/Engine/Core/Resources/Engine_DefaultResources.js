@@ -17,8 +17,11 @@ gEngine.DefaultResources = (function () {
   var mSpriteShader = null;
 
   // light shader
-  var kLightFS = 'src/GLSLShaders/LightFS.glsl';
+  const kLightFS = 'src/GLSLShaders/LightFS.glsl';
   var mLightShader = null;
+
+  const kIllumFS = 'src/GLSLShaders/IllumFS.glsl';
+  var mIllumShader = null;
 
   // default font
   var kDefaultFont = 'assets/fonts/system-default-font';
@@ -39,6 +42,7 @@ gEngine.DefaultResources = (function () {
     mTextureShader = new TextureShader(kTextureVS, kTextureFS);
     mSpriteShader = new SpriteShader(kTextureVS, kTextureFS);
     mLightShader = new LightShader(kTextureVS, kLightFS);
+    mIllumShader = new IllumShader(kTextureVS, kIllumFS);
     callbackFunction();
   };
 
@@ -46,6 +50,7 @@ gEngine.DefaultResources = (function () {
   var getTextureShader = function () { return mTextureShader; };
   var getSpriteShader = function () { return mSpriteShader; };
   var getLightShader = function () { return mLightShader; };
+  var getIllumShader = function () { return mIllumShader; };
 
   var initialize = function (callbackFunction) {
     let
@@ -64,6 +69,9 @@ gEngine.DefaultResources = (function () {
     // light shader
     loadTextFile(kLightFS, eTextFile);
 
+    // illumination shader
+    loadTextFile(kIllumFS, eTextFile);
+
     // default font
     gEngine.Fonts.loadFont(kDefaultFont);
 
@@ -75,6 +83,7 @@ gEngine.DefaultResources = (function () {
     mTextureShader.cleanUp();
     mSpriteShader.cleanUp();
     mLightShader.cleanUp();
+    mIllumShader.cleanUp();
 
     let unloadTextFile = gEngine.TextFileLoader.unloadTextFile;
 
@@ -86,6 +95,8 @@ gEngine.DefaultResources = (function () {
 
     unloadTextFile(kLightFS);
 
+    unloadTextFile(kIllumFS);
+
     gEngine.Fonts.unloadFont(kDefaultFont);
   };
 
@@ -95,6 +106,7 @@ gEngine.DefaultResources = (function () {
     getTextureShader,
     getSpriteShader,
     getLightShader,
+    getIllumShader,
     getDefaultFont,
     getGlobalAmbientColor,
     setGlobalAmbientColor,

@@ -66,11 +66,11 @@ playing as the bombardier.
   * source
   * multiple sources
   * distance attenuation (near and far bounds)
+  * diffuse reflection
+  * normal mapping
 
 ## What We Are Working On
-### Game Engine <em title="matches book section">v0.8.4</em>
-* diffuse reflection
-* normal mapping
+### Game Engine <em title="matches book section">v0.8.5</em>
 * specular reflection
 * materials
 * light source types

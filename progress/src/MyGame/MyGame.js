@@ -3,7 +3,9 @@
 function MyGame() {
   // textures
   this.kMinionSprite = 'assets/minion_sprite.png';
-  this.kBg = 'assets/bg.png'
+  this.kMinionSpriteNormal = 'assets/minion_sprite_normal.png';
+  this.kBg = 'assets/bg.png';
+  this.kBgNormal = 'assets/bg_normal.png';
 
   // camera
   this.mCamera = null;
@@ -27,12 +29,16 @@ MyGame.prototype.loadScene = function () {
   let loadTexture = gEngine.Textures.loadTexture;
   loadTexture(this.kMinionSprite);
   loadTexture(this.kBg);
+  loadTexture(this.kMinionSpriteNormal);
+  loadTexture(this.kBgNormal);
 };
 
 MyGame.prototype.unloadScene = function () {
   let unloadTexture = gEngine.Textures.unloadTexture;
   unloadTexture(this.kMinionSprite);
   unloadTexture(this.kBg);
+  unloadTexture(this.kMinionSpriteNormal);
+  unloadTexture(this.kBgNormal);
 
   // starts new level once current level is unloaded
   var nextLevel = new GameOver();
@@ -52,22 +58,22 @@ MyGame.prototype.initialize = function () {
   this._initializeLights(); // in MyGame_Lights.js
 
   // bg img
-  var bgR = new LightRenderable(this.kBg);
+  var bgR = new IllumRenderable(this.kBg, this.kBgNormal);
   bgR.setElementPixelPositions(0, 1024, 0, 1024);
   bgR.getXform().setSize(100, 100);
   bgR.getXform().setPosition(50, 35);
-  this._applyAllLights(bgR);                      // in MyGame_Lights.js
+  this._applyAllLights(bgR);  // in MyGame_Lights.js
   this.mBg = new GameObject(bgR);
 
   // game objects
-  this.mHero = new Hero(this.kMinionSprite);
+  this.mHero = new Hero(this.kMinionSprite, this.kMinionSpriteNormal);
   this._applyAllLights(this.mHero.getRenderable()); // in MyGame_Lights.js
   
-  this.mLMinion = new Minion(this.kMinionSprite, 30, 30);
+  this.mLMinion = new Minion(this.kMinionSprite, this.kMinionSpriteNormal, 30, 30);
   this.mLMinion.getRenderable().addLight(this.mGlobalLightSet.getLightAt(1));
   this.mLMinion.getRenderable().addLight(this.mGlobalLightSet.getLightAt(3));
   
-  this.mRMinion = new Minion(this.kMinionSprite, 70, 30);
+  this.mRMinion = new Minion(this.kMinionSprite, null, 70, 30);
   this.mRMinion.getRenderable().addLight(this.mGlobalLightSet.getLightAt(0));
   this.mRMinion.getRenderable().addLight(this.mGlobalLightSet.getLightAt(2));
 

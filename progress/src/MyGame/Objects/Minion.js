@@ -1,8 +1,14 @@
-function Minion(spriteTexture, atY) {
+function Minion(spriteTexture, normalMap, atX, atY) {
   this.kDelta = (Math.trunc(Math.random() * 3) + 1)/10;
-  this.mMinion = new LightRenderable(spriteTexture);
+  
+  if (normalMap === null) {
+    this.mMinion = new LightRenderable(spriteTexture);
+  } else {
+    this.mMinion = new IllumRenderable(spriteTexture, normalMap);
+  }
+
   this.mMinion.setColor([1, 1, 1, 0]);
-  this.mMinion.getXform().setPosition(Math.random() * 100, atY);
+  this.mMinion.getXform().setPosition(atX, atY);
   this.mMinion.getXform().setSize(12, 9.6);
   this.mMinion.setSpriteSequence(
     512,  // top
