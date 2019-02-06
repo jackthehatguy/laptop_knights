@@ -47,6 +47,28 @@ app.get('/progress', (req, res, next) => {
   });
 });
 
+app.get('/pierre/:file', (req, res, next) => {
+  const {file} = req.params,
+    options = {
+      root: `${__dirname}/workshop/pierre/`,
+      dotfiles: 'deny',
+      headers: {
+        'x-timestamp': Date.now(),
+        'x-sent': true
+      }
+    };
+  res.sendFile(file, options, err => {
+    console.log(`sent: ${file}`);
+    
+    if (err) {
+      console.log(err);
+      next();
+    } else {
+      console.log(`Sent: ${file}`);
+    }
+  });
+});
+
 app.get('/assets/:file', (req, res, next) => {
   const {file} = req.params,
     options = {
