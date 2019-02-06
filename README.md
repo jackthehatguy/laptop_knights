@@ -105,3 +105,4 @@ playing as the bombardier.
 | %   | tests     |
 | ?   | asks      |
 | <em title="including this one">em</em>  | shows tool-tip |
+| \*  | documentation |
