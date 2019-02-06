@@ -67,6 +67,14 @@ SpriteAnimateRenderable.prototype._setSpriteElement = function () {
   );
 };
 
+/**
+ * @param {number} topPixel top of the first frame
+ * @param {number} rightPixel right of the last frame
+ * @param {number} elmWidthInPixel width of single frame
+ * @param {number} elmHeightInPixel height of single frame
+ * @param {number} numElements number of frames
+ * @param {number} wPaddingInPixel number of pixels in between each frame
+ */
 SpriteAnimateRenderable.prototype.setSpriteSequence = function (
   topPixel,
   rightPixel,
