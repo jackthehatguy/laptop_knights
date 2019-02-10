@@ -68,6 +68,9 @@ playing as the bombardier.
   * distance attenuation (near and far bounds)
   * diffuse reflection
   * normal mapping
+### Etc
+* semantic web elements to allow for more descriptive external linking
+* discord webhooks to keep the dev server up to date
 
 ## What We Are Working On
 ### Game Engine <em title="matches book section">v0.8.5</em>
