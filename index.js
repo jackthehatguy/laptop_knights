@@ -47,6 +47,46 @@ app.get('/progress', (req, res, next) => {
   });
 });
 
+app.get('/workshop', (req, res, next) => {
+  const file = 'index.html',
+    options = {
+      root: `${__dirname}/workshop/`,
+      dotfiles: 'deny',
+      headers: {
+        'x-timestamp': Date.now(),
+        'x-sent': true
+      }
+    };
+  res.sendFile(file, options, err => {
+    if (err) {
+      console.log(err);
+      next();
+    } else {
+      console.log(`Sent: ${file}`);
+    }
+  });
+});
+
+app.get('/workshop/:file', (req, res, next) => {
+  const {file} = req.params,
+    options = {
+      root: `${__dirname}/workshop/`,
+      dotfiles: 'deny',
+      headers: {
+        'x-timestamp': Date.now(),
+        'x-sent': true
+      }
+    };
+  res.sendFile(file, options, err => {
+    if (err) {
+      console.log(err);
+      next();
+    } else {
+      console.log(`Sent: ${file}`);
+    }
+  });
+});
+
 app.get('/pierre/:file', (req, res, next) => {
   const {file} = req.params,
     options = {
@@ -58,8 +98,6 @@ app.get('/pierre/:file', (req, res, next) => {
       }
     };
   res.sendFile(file, options, err => {
-    console.log(`sent: ${file}`);
-    
     if (err) {
       console.log(err);
       next();
@@ -169,6 +207,6 @@ app.get('/src/:sector/:folder/:subfolder/:file', (req, res, next) => {
   });
 });
 
-app.listen(PORT);
-
-console.log(`Server running on http://localhost:${PORT}`);
+app.listen(PORT, _ => {
+  console.log(`Server running on localhost:${PORT}`);
+});
