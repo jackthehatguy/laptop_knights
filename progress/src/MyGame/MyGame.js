@@ -13,6 +13,8 @@ function MyGame() {
 
   // text
   this.mMsg = null;
+  this.mMatMsg = null;
+  this.mSelectedChMsg = null;
 
   // game objects
   this.mHero = null;
@@ -22,6 +24,8 @@ function MyGame() {
   this.mGlobalLightSet = null;
 
   this.mLgtIndex = 0;
+  this.mSelectedCh = null;
+  this.mMaterialCh = null;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -62,6 +66,8 @@ MyGame.prototype.initialize = function () {
   bgR.setElementPixelPositions(0, 1024, 0, 1024);
   bgR.getXform().setSize(100, 100);
   bgR.getXform().setPosition(50, 35);
+  bgR.getMaterial().setShininess(100);
+  bgR.getMaterial().setSpecular([1, 0, 0, 1]);
   this._applyAllLights(bgR);  // in MyGame_Lights.js
   this.mBg = new GameObject(bgR);
 
@@ -83,6 +89,15 @@ MyGame.prototype.initialize = function () {
   this.mMsg.setColor([1, 1, 1, 1]);
   this.mMsg.getXform().setPosition(1, 2);
   this.mMsg.setTextHeight(3);
+
+  this.mMatMsg = new FontRenderable('Status Message');
+  this.mMatMsg.setColor([1, 1, 1, 1]);
+  this.mMatMsg.getXform().setPosition(1, 73);
+  this.mMatMsg.setTextHeight(3);
+
+  this.mSelectedCh = this.mHero;
+  this.mSelectedChMsg = 'R:';
+  this.mMaterialCh = this.mSelectedCh.getRenderable().getMaterial().getDiffuse();
 };
 
 // useless? I hope not...
@@ -109,28 +124,43 @@ MyGame.prototype.draw = function () {
   // camera
   this.drawCamera(this.mCamera);
   this.mMsg.draw(this.mCamera);
+  this.mMatMsg.draw(this.mCamera);
 };
 
 // do NOT draw in this function
 MyGame.prototype.update = function () {
-  var msg = `Light #${this.mLgtIndex} `;
-  
   this.mCamera.update();
 
   this.mLMinion.update();
   this.mRMinion.update();
-  
   this.mHero.update();
 
-  let
-    input = gEngine.Input,
-    keys = input.keys,
-    kclicked = input.isKeyClicked;
+  var msg = `L=${this.mLgtIndex} ${this._lightControl()}`;
+  this.mMsg.setText(msg);
 
-  msg += this._lightControl();
+  msg = `${this._selectCharacter()}${this.materialControl()}`;
+  this.mMatMsg.setText(msg);
 
   // quit
-  if (kclicked(keys.Esc)) gEngine.GameLoop.stop();
+  let input = gEngine.Input;
+  if (input.isKeyClicked(input.keys.Esc)) gEngine.GameLoop.stop();
+};
 
-  this.mMsg.setText(msg);
+MyGame.prototype._selectCharacter = function () {
+  let
+    input = gEngine.Input,
+    kClicked = input.isKeyClicked,
+    keys = input.keys;
+
+  if (kClicked(keys.Five)) {
+    this.mSelectedCh = this.mLMinion;
+    this.mMaterialCh = this.mSelectedCh.getRenderable().getMaterial().getDiffuse();
+    this.mSelectedChMsg = 'L:';
+  }
+  if (kClicked(keys.Six)) {
+    this.mSelectedCh = this.mHero;
+    this.mMaterialCh = this.mSelectedCh.getRenderable().getMaterial().getDiffuse();
+    this.mSelectedChMsg = 'H:';
+  }
+  return this.mSelectedChMsg;
 };

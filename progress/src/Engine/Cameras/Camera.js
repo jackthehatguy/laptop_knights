@@ -4,6 +4,7 @@ function PerRenderCache() {
   this.mWCToPixelRatio = 1;
   this.mCameraOrgX = 1;
   this.mCameraOrgY = 1;
+  this.mCameraPosInPixelSpace = vec3.fromValues(0, 0, 0);
 }
 
 function Camera(wcCenter, wcWidth, viewportArray, bound) {
@@ -21,6 +22,8 @@ function Camera(wcCenter, wcWidth, viewportArray, bound) {
 
   this.mNearPlane = 0;
   this.mFarPlane = 1000;
+
+  this.kCameraZ = 10;
 
   // transformation matrices
   this.mViewMatrix = mat4.create();
@@ -150,6 +153,10 @@ Camera.prototype.setupViewProjection = function () {
   this.mRenderCache.mWCToPixelRatio = this.mViewport[Camera.eViewport.eWidth] / this.getWCWidth();
   this.mRenderCache.mCameraOrgX = center[0] - (this.getWCWidth()/2);
   this.mRenderCache.mCameraOrgY = center[1] - (this.getWCHeight()/2);
+  var p = this.wcPosToPixel(this.getWCCenter());
+  this.mRenderCache.mCameraPosInPixelSpace[0] = p[0];
+  this.mRenderCache.mCameraPosInPixelSpace[1] = p[1];
+  this.mRenderCache.mCameraPosInPixelSpace[2] = this.fakeZInPixelSpace(this.kCameraZ);
 };
 
 Camera.prototype.collideWCBound = function (aXform, zone) {
@@ -179,3 +186,5 @@ Camera.prototype.clampAtBoundary = function (aXform, zone) {
   }
   return status;
 };
+
+Camera.prototype.getPosInPixelSpace = function () { return this.mRenderCache.mCameraPosInPixelSpace; };

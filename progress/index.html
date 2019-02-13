@@ -2,13 +2,13 @@
 <html lang="en" dir="ltr" prefix="og: http://ogp.me/ns#">
   <head>
     <meta charset="utf-8">
-    <title>Engine v0.8.4</title>
+    <title>Engine v0.8.5</title>
     <link rel="stylesheet" type="text/css" href="assets/styles.css">
     <meta property="og:site_name" content="Laptop Knights" />
-    <meta property="og:title" content="Engine v0.8.4" />
+    <meta property="og:title" content="Engine v0.8.5" />
     <meta property="og:type" content="website">
     <meta property="og:url" content="http://69.87.228.74:9001/">
-    <meta property="og:description" content="The current iteration of the game engine. Check out what we've added next!">
+    <meta property="og:description" content="The current iteration of the game engine. Now has Specular Reflection and Materials">
     <meta property="og:image" content="/ttkC">
   </head>
   <body onload="var myGame = new MyGame(); gEngine.Core.initializeEngineCore('GLCanvas', myGame);">
@@ -28,6 +28,7 @@
         <script type="text/javascript" src="src/Engine/Core/Resources/Engine_Textures.js"></script>
         <script type="text/javascript" src="src/Engine/Core/Resources/Engine_Fonts.js"></script>
         <script type="text/javascript" src="src/Engine/Scene.js"></script>
+        <script type="text/javascript" src="src/Engine/Material.js"></script>
       <!-- Lights -->
       <script type="text/javascript" src="src/Engine/Lights/Light.js"></script>
       <script type="text/javascript" src="src/Engine/Lights/LightSet.js"></script>
@@ -60,6 +61,7 @@
       <script type="text/javascript" src="src/Engine/Shaders/LightShader.js"></script>
       <script type="text/javascript" src="src/Engine/Shaders/ShaderLightAtIndex.js"></script>
       <script type="text/javascript" src="src/Engine/Shaders/IllumShader.js"></script>
+      <script type="text/javascript" src="src/Engine/Shaders/ShaderMaterial.js"></script>
       <!-- Camera -->
       <script type="text/javascript" src="src/Engine/Cameras/Camera.js"></script>
       <script type="text/javascript" src="src/Engine/Cameras/Camera_Manipulation.js"></script>
@@ -69,13 +71,13 @@
       <script type="text/javascript" src="src/Engine/Cameras/CameraShake.js"></script>
     <!-- Game Client Code -->
     <script type="text/javascript" src="src/MyGame/MyGame.js"></script>
-    <script type="text/javascript" src="src/MyGame/MyGame_LightControl.js"></script>
     <script type="text/javascript" src="src/MyGame/MyGame_Lights.js"></script>
+    <script type="text/javascript" src="src/MyGame/MyGame_LightControl.js"></script>
+    <script type="text/javascript" src="src/MyGame/MyGame_MaterialControl.js"></script>
     <script type="text/javascript" src="src/MyGame/GameOver.js"></script>
       <!-- Objects -->
       <script type="text/javascript" src="src/MyGame/Objects/Hero.js"></script>
       <script type="text/javascript" src="src/MyGame/Objects/Minion.js"></script>
-      <script type="text/javascript" src="pierre/Pierre.js"></script>
       <!-- Util -->
       <!-- <script type="text/javascript" src="src/MyGame/Util/SceneFileParser.js"></script> -->
     <!-- Canvas -->
@@ -101,6 +103,13 @@
           <div>C/V &amp; B/N: Increase/Decrease selected light near/far cutoff</div>
           <div>K/L: Increase/Decreas selected light intensity</div>
           <div>H: Toggle selected light on/off</div>
+        </div>
+        <div class="panel">
+          <div class="heading1">Material</div>
+          <div>Number keys 5-6: select left minion & hero</div>
+          <div>Number keys 7-9: select the ambient, diffuse, and specular property of the selected object</div>
+          <div>E/R T/Y U/I: Increase/decrease R, G, and B channels of selected property</div>
+          <div>O/P: Increade/decrease the shininess of selected property</div>
         </div>
       </div>
     </div>

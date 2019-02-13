@@ -68,14 +68,15 @@ playing as the bombardier.
   * distance attenuation (near and far bounds)
   * diffuse reflection
   * normal mapping
+  * specular reflection
+  * materials
+
 ### Etc
 * semantic web elements to allow for more descriptive external linking
 * discord webhooks to keep the dev server up to date
 
 ## What We Are Working On
-### Game Engine <em title="matches book section">v0.8.5</em>
-* specular reflection
-* materials
+### Game Engine <em title="matches book section">v0.8.6</em>
 * light source types
 * shadow simulation
 
@@ -94,6 +95,7 @@ playing as the bombardier.
 * ? use the electron stack as a container
 * ? ~ SceneFileParser -> JSON
 * ? \+ more Semantic Web elements
+* ? remove node_modules from github
 
 ## Glossary
 | Key | Value     |
@@ -108,4 +110,4 @@ playing as the bombardier.
 | %   | tests     |
 | ?   | asks      |
 | <em title="including this one">em</em>  | shows tool-tip |
-| \*  | documentation |
+| \*  | documents |
