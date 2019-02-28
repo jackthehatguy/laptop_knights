@@ -9,13 +9,19 @@ MyGame.prototype.materialControl = function () {
     kPressed = input.isKeyPressed,
     keys = input.keys;
 
+  //ambient
   if (kPressed(keys.E)) this.mMaterialCh[0] += delta;
   if (kPressed(keys.R)) this.mMaterialCh[0] -= delta;
+
+  // diffuse
   if (kPressed(keys.T)) this.mMaterialCh[1] += delta;
   if (kPressed(keys.Y)) this.mMaterialCh[1] -= delta;
+
+  // specular
   if (kPressed(keys.U)) this.mMaterialCh[2] += delta;
   if (kPressed(keys.I)) this.mMaterialCh[2] -= delta;
 
+  // shininess
   var mat = this.mSelectedCh.getRenderable().getMaterial();
   if (kPressed(keys.O)) mat.setShininess(mat.getShininess() + delta);
   if (kPressed(keys.P)) mat.setShininess(mat.getShininess() - delta);

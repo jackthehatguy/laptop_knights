@@ -4,15 +4,15 @@ var gEngine = gEngine || { };
 
 gEngine.Input = (function () {
   var kKeys = {
+    // etc
+    Esc: 27,
+    Space: 32,
+    
     // arrows
     Left: 37,
     Up: 38,
     Right: 39,
     Down: 40,
-
-    // ect
-    // Space: 32,
-    Esc: 27,
 
     // numbers:
     Zero: 48,
@@ -32,7 +32,7 @@ gEngine.Input = (function () {
     C: 67,
     D: 68,
     E: 69,
-    // F: 70,
+    F: 70,
     H: 72,
     I: 73,
     // J: 74,

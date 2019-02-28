@@ -14,35 +14,35 @@ function MyGame() {
   // text
   this.mMsg = null;
   this.mMatMsg = null;
-  this.mSelectedChMsg = null;
 
   // game objects
-  this.mHero = null;
-  this.mLMinion = null;
-  this.mRMinion = null;
+  // hero
+  this.mLgtHero = null;
+  this.mIllumHero = null;
+  
+  // minion
+  this.mLgtMinion = null;
+  this.mIllumMinion = null;
 
   this.mGlobalLightSet = null;
 
   this.mLgtIndex = 0;
-  this.mSelectedCh = null;
-  this.mMaterialCh = null;
+  this.mLgtRotateTheta = 0;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
 MyGame.prototype.loadScene = function () {
-  let loadTexture = gEngine.Textures.loadTexture;
-  loadTexture(this.kMinionSprite);
-  loadTexture(this.kBg);
-  loadTexture(this.kMinionSpriteNormal);
-  loadTexture(this.kBgNormal);
+  gEngine.Textures.loadTexture(this.kMinionSprite);
+  gEngine.Textures.loadTexture(this.kBg);
+  gEngine.Textures.loadTexture(this.kMinionSpriteNormal);
+  gEngine.Textures.loadTexture(this.kBgNormal);
 };
 
 MyGame.prototype.unloadScene = function () {
-  let unloadTexture = gEngine.Textures.unloadTexture;
-  unloadTexture(this.kMinionSprite);
-  unloadTexture(this.kBg);
-  unloadTexture(this.kMinionSpriteNormal);
-  unloadTexture(this.kBgNormal);
+  gEngine.Textures.unloadTexture(this.kMinionSprite);
+  gEngine.Textures.unloadTexture(this.kBg);
+  gEngine.Textures.unloadTexture(this.kMinionSpriteNormal);
+  gEngine.Textures.unloadTexture(this.kBgNormal);
 
   // starts new level once current level is unloaded
   var nextLevel = new GameOver();
@@ -52,9 +52,9 @@ MyGame.prototype.unloadScene = function () {
 MyGame.prototype.initialize = function () {
   // cameras
   this.mCamera = new Camera(
-    vec2.fromValues(50, 37.5),
-    100,
-    [0, 0, 640, 480]
+    vec2.fromValues(50, 37.5),  // position
+    100,                        // width
+    [0, 0, 640, 480]            // viewport
   );
   this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
 
@@ -66,24 +66,26 @@ MyGame.prototype.initialize = function () {
   bgR.setElementPixelPositions(0, 1024, 0, 1024);
   bgR.getXform().setSize(100, 100);
   bgR.getXform().setPosition(50, 35);
-  bgR.getMaterial().setShininess(100);
   bgR.getMaterial().setSpecular([1, 0, 0, 1]);
-  this._applyAllLights(bgR);  // in MyGame_Lights.js
+  // this._applyAllLights(bgR);  // in MyGame_Lights.js
+  for (let i = 0; i < this.mGlobalLightSet.mSet.length; i++) bgR.addLight(this.mGlobalLightSet.getLightAt(i));
   this.mBg = new GameObject(bgR);
 
   // game objects
-  this.mHero = new Hero(this.kMinionSprite, this.kMinionSpriteNormal);
-  this._applyAllLights(this.mHero.getRenderable()); // in MyGame_Lights.js
+  this.mIllumHero = new Hero(this.kMinionSprite, this.kMinionSpriteNormal, 15, 50);
+  this.mLgtHero = new Hero(this.kMinionSprite, null, 80, 50);
   
-  this.mLMinion = new Minion(this.kMinionSprite, this.kMinionSpriteNormal, 30, 30);
-  this.mLMinion.getRenderable().addLight(this.mGlobalLightSet.getLightAt(1));
-  this.mLMinion.getRenderable().addLight(this.mGlobalLightSet.getLightAt(3));
-  
-  this.mRMinion = new Minion(this.kMinionSprite, null, 70, 30);
-  this.mRMinion.getRenderable().addLight(this.mGlobalLightSet.getLightAt(0));
-  this.mRMinion.getRenderable().addLight(this.mGlobalLightSet.getLightAt(2));
+  this.mIllumMinion = new Minion(this.kMinionSprite, this.kMinionSpriteNormal, 17, 15);
+  this.mLgtMinion = new Minion(this.kMinionSprite, null, 87, 15);
 
-  // TODO: ? move to external file
+  for (let i = 0; i < this.mGlobalLightSet.mSet.length; i++) {
+    this.mIllumHero.getRenderable().addLight(this.mGlobalLightSet.getLightAt(i));
+    this.mLgtHero.getRenderable().addLight(this.mGlobalLightSet.getLightAt(i));
+    this.mIllumMinion.getRenderable().addLight(this.mGlobalLightSet.getLightAt(i));
+    this.mLgtMinion.getRenderable().addLight(this.mGlobalLightSet.getLightAt(i));
+  }
+  
+  // ? -> extern file
   // text renderables
   this.mMsg = new FontRenderable('Status Message');
   this.mMsg.setColor([1, 1, 1, 1]);
@@ -95,12 +97,14 @@ MyGame.prototype.initialize = function () {
   this.mMatMsg.getXform().setPosition(1, 73);
   this.mMatMsg.setTextHeight(3);
 
-  this.mSelectedCh = this.mHero;
-  this.mSelectedChMsg = 'R:';
+  this.mSelectedCh = this.mIllumHero;
   this.mMaterialCh = this.mSelectedCh.getRenderable().getMaterial().getDiffuse();
+  this.mSelectedChMsg = 'H:';
 };
 
-// useless? I hope not...
+/**
+ * why isn't the book using this?
+ */
 MyGame.prototype._initText = function (font, posX, posY, color, textH) {
   font.setColor(color);
   font.getXform().setPosition(posX, posY);
@@ -111,9 +115,12 @@ MyGame.prototype.drawCamera = function (camera) {
   camera.setupViewProjection();
 
   this.mBg.draw(camera);
-  this.mHero.draw(camera);
-  this.mLMinion.draw(camera);
-  this.mRMinion.draw(camera);
+
+  this.mLgtHero.draw(camera);
+  this.mIllumHero.draw(camera);
+  
+  this.mLgtMinion.draw(camera);
+  this.mIllumMinion.draw(camera);
 };
 
 // do **NOT** change any states in this function
@@ -131,9 +138,10 @@ MyGame.prototype.draw = function () {
 MyGame.prototype.update = function () {
   this.mCamera.update();
 
-  this.mLMinion.update();
-  this.mRMinion.update();
-  this.mHero.update();
+  this.mIllumMinion.update();
+  this.mLgtMinion.update();
+
+  this.mIllumHero.update();
 
   var msg = `L=${this.mLgtIndex} ${this._lightControl()}`;
   this.mMsg.setText(msg);
@@ -153,12 +161,12 @@ MyGame.prototype._selectCharacter = function () {
     keys = input.keys;
 
   if (kClicked(keys.Five)) {
-    this.mSelectedCh = this.mLMinion;
+    this.mSelectedCh = this.mIllumMinion;
     this.mMaterialCh = this.mSelectedCh.getRenderable().getMaterial().getDiffuse();
     this.mSelectedChMsg = 'L:';
   }
   if (kClicked(keys.Six)) {
-    this.mSelectedCh = this.mHero;
+    this.mSelectedCh = this.mIllumHero;
     this.mMaterialCh = this.mSelectedCh.getRenderable().getMaterial().getDiffuse();
     this.mSelectedChMsg = 'H:';
   }

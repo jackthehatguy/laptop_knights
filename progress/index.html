@@ -2,13 +2,13 @@
 <html lang="en" dir="ltr" prefix="og: http://ogp.me/ns#">
   <head>
     <meta charset="utf-8">
-    <title>Engine v0.8.5</title>
+    <title>Engine v0.8.6</title>
     <link rel="stylesheet" type="text/css" href="assets/styles.css">
     <meta property="og:site_name" content="Laptop Knights" />
-    <meta property="og:title" content="Engine v0.8.5" />
+    <meta property="og:title" content="Engine v0.8.6" />
     <meta property="og:type" content="website">
     <meta property="og:url" content="http://69.87.228.74:9001/">
-    <meta property="og:description" content="The current iteration of the game engine. Now has Specular Reflection and Materials">
+    <meta property="og:description" content="Adds Light Source Types: Point, Directional, Spot">
     <meta property="og:image" content="/ttkC">
   </head>
   <body onload="var myGame = new MyGame(); gEngine.Core.initializeEngineCore('GLCanvas', myGame);">
@@ -99,11 +99,12 @@
           <div class="heading1">Lighting</div>
           <div>Number keys 0-3: Select corresponding light source</div>
           <div>Arrow keys: move selected light</div>
-          <div>Z/X: Increase/Decrease light Z coord</div>
-          <div>C/V &amp; B/N: Increase/Decrease selected light near/far cutoff</div>
+          <div>Z/X: Increase/Decrease light Z position</div>
+          <div>C/V &amp; B/N: Increase/Decrease inner/outer cone angles of selected light</div>
           <div>K/L: Increase/Decreas selected light intensity</div>
           <div>H: Toggle selected light on/off</div>
         </div>
+        <!-- I'm not completely sure this is used -->
         <div class="panel">
           <div class="heading1">Material</div>
           <div>Number keys 5-6: select left minion & hero</div>

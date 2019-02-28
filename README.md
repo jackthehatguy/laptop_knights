@@ -70,14 +70,14 @@ playing as the bombardier.
   * normal mapping
   * specular reflection
   * materials
+  * light source types
 
 ### Etc
 * semantic web elements to allow for more descriptive external linking
 * discord webhooks to keep the dev server up to date
 
 ## What We Are Working On
-### Game Engine <em title="matches book section">v0.8.6</em>
-* light source types
+### Game Engine <em title="matches book section">v0.8.7</em>
 * shadow simulation
 
 ## What We Are Doing Next
