@@ -89,13 +89,14 @@ playing as the bombardier.
 * particle emitters
 
 ## TODO
-* __update to es6 and Spencer's standards__
-* $ README
+* __^ -> ES6 and Spencer's standards__
+* __reduce load by moving functionality to same files__
+* __$ README__
+* ^CSS for readability on all screens
 * ? use newest version of gl-matrix.js || ? build new library
 * ? use the electron stack as a container
 * ? ~ SceneFileParser -> JSON
 * ? \+ more Semantic Web elements
-* ? remove node_modules from github
 
 ## Glossary
 | Key | Value     |
