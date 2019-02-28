@@ -1,25 +1,3 @@
 body {
-  position: fixed;
-}
-
-.panel {
-  float: left;
-  margin: 1em;
-  padding: 1em;
-}
-
-.heading1 {
-  size: 16;
-  text-decoration: underline;
-  font-weight: bold;
-}
-
-.normal_text {
-  text-indent: 1em;
-  padding: 0.5em;
-}
-
-canvas {
-  margin: 1em;
-  float: left;
+  overflow: hidden;
 }

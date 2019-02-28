@@ -28,5 +28,8 @@ Hero.prototype.update = function () {
   if (pressed(keys.S)) xform.incYPosBy(-this.kDelta);
   if (pressed(keys.A)) xform.incXPosBy(-this.kDelta);
   if (pressed(keys.D)) xform.incXPosBy(this.kDelta);
-  if (clicked(keys.F)) console.log(xform.getPosition());
+  if (clicked(keys.F)) {
+    let coords = xform.getPosition();
+    console.log({x: coords[0], y: coords[1]});
+  }
 };

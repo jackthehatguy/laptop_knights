@@ -92,10 +92,9 @@ playing as the bombardier.
 * __^ -> ES6 and Spencer's standards__
 * __reduce load by moving functionality to same files__
 * __$ README__
-* ^CSS for readability on all screens
+* ? ~ SceneFileParser -> JSON
 * ? use newest version of gl-matrix.js || ? build new library
 * ? use the electron stack as a container
-* ? ~ SceneFileParser -> JSON
 * ? \+ more Semantic Web elements
 
 ## Glossary

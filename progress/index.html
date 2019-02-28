@@ -10,6 +10,15 @@
     <meta property="og:url" content="http://69.87.228.74:9001/">
     <meta property="og:description" content="Adds Light Source Types: Point, Directional, Spot">
     <meta property="og:image" content="/ttkC">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </head>
   <body onload="var myGame = new MyGame(); gEngine.Core.initializeEngineCore('GLCanvas', myGame);">
     <!-- Libraries -->
@@ -80,38 +89,86 @@
       <script type="text/javascript" src="src/MyGame/Objects/Minion.js"></script>
       <!-- Util -->
       <!-- <script type="text/javascript" src="src/MyGame/Util/SceneFileParser.js"></script> -->
-    <!-- Canvas -->
-    <canvas id="GLCanvas" width="640" height="480">Oops! Use a newer browser.</canvas>
 
-    <div class="panel">
-      <div class="heading1">Controls:</div>
-      <div class="normal_text">
-        <div class="panel">
-          <div class="heading1">Game</div>
-          <div>Esc: quit</div>
-        </div>
-        <div class="panel">
-          <div class="heading1">Hero</div>
-          <div>WASD: move</div>
-          <div>F: print location to console</div>
-        </div>
-        <div class="panel">
-          <div class="heading1">Lighting</div>
-          <div>Number keys 0-3: Select corresponding light source</div>
-          <div>Arrow keys: move selected light</div>
-          <div>Z/X: Increase/Decrease light Z position</div>
-          <div>C/V &amp; B/N: Increase/Decrease inner/outer cone angles of selected light</div>
-          <div>K/L: Increase/Decreas selected light intensity</div>
-          <div>H: Toggle selected light on/off</div>
-        </div>
-        <!-- I'm not completely sure this is used -->
-        <div class="panel">
-          <div class="heading1">Material</div>
-          <div>Number keys 5-6: select left minion & hero</div>
-          <div>Number keys 7-9: select the ambient, diffuse, and specular property of the selected object</div>
-          <div>E/R T/Y U/I: Increase/decrease R, G, and B channels of selected property</div>
-          <div>O/P: Increade/decrease the shininess of selected property</div>
-        </div>
+    <div class="container">
+      <div class="row">
+        <main class="col">
+          <!-- Canvas -->
+          <canvas id="GLCanvas" width="640" height="480">Oops! Use a newer browser.</canvas>
+        </main>
+        
+        <aside class="col">
+          <div id="controls" class="carousel slide" data-ride="carousel" data-interval="false">
+            <!-- indicators -->
+            <ul class="carousel-indicators">
+              <li data-target="#controls" data-slide-to="0" class="active"></li>
+              <li data-target="#controls" data-slide-to="1"></li>
+              <li data-target="#controls" data-slide-to="2"></li>
+              <li data-target="#controls" data-slide-to="3"></li>
+            </ul>
+        
+            <!-- slideshow -->
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <div class="card">
+                  <div class="card-header">Hero</div>
+                  <div class="card-body">
+                    <ul>
+                      <li>WASD: move</li>
+                      <li>F: print location to console</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="card">
+                  <div class="card-header">Lighting</div>
+                  <div class="card-body">
+                    <ul>
+                      <li>Number keys 0-3: Select corresponding light source</li>
+                      <li>Arrow keys: move selected light</li>
+                      <li>Z/X: Increase/Decrease light Z position</li>
+                      <li>C/V &amp; B/N: Increase/Decrease inner/outer cone angles of selected light</li>
+                      <li>K/L: Increase/Decreas selected light intensity</li>
+                      <li>H: Toggle selected light on/off</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="card">
+                  <div class="card-header">Material</div>
+                  <div class="card-body">
+                    <ul>
+                      <li>Number keys 5-6: select left minion & hero</li>
+                      <li>Number keys 7-9: select the ambient, diffuse, and specular property of the selected object</li>
+                      <li>E/R T/Y U/I: Increase/decrease R, G, and B channels of selected property</li>
+                      <li>O/P: Increade/decrease the shininess of selected property</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="card">
+                  <div class="card-header">Game</div>
+                  <div class="card-body">
+                    <ul>
+                      <li>Esc: quit</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+            <!-- left & right controls -->
+            <a href="#controls" class="carousel-control-prev" data-slide="prev">
+              <span class="carousel-control-prev-icon"></span>
+            </a>
+            <a href="#controls" class="carousel-control-next" data-slide="next">
+              <span class="carousel-control-next-icon"></span>
+            </a>
+          </div>
+        </aside>
       </div>
     </div>
   </body>
