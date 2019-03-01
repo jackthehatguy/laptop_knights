@@ -3,7 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title>Engine v0.8.6</title>
-    <link rel="stylesheet" type="text/css" href="assets/styles.css">
+
+    <!-- semantic web magic -->
     <meta property="og:site_name" content="Laptop Knights" />
     <meta property="og:title" content="Engine v0.8.6" />
     <meta property="og:type" content="website">
@@ -11,6 +12,7 @@
     <meta property="og:description" content="Adds Light Source Types: Point, Directional, Spot">
     <meta property="og:image" content="/ttkC">
 
+    <!-- bootstrap 4 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -19,6 +21,14 @@
       integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!-- internal CSS (external is wasteful) -->
+    <style>
+      body {
+        overflow: hidden;
+        font-family: 'Fira Code', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif !important;
+      }
+    </style>
   </head>
   <body onload="var myGame = new MyGame(); gEngine.Core.initializeEngineCore('GLCanvas', myGame);">
     <!-- Libraries -->
@@ -127,6 +137,7 @@
                     <ul>
                       <li>Number keys 0-3: Select corresponding light source</li>
                       <li>Arrow keys: move selected light</li>
+                      <li>Hold Space & Arrow keys: rotate selected light</li>
                       <li>Z/X: Increase/Decrease light Z position</li>
                       <li>C/V &amp; B/N: Increase/Decrease inner/outer cone angles of selected light</li>
                       <li>K/L: Increase/Decreas selected light intensity</li>
