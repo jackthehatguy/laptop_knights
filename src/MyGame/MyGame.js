@@ -2,10 +2,10 @@
 
 function MyGame() {
   // textures
-  this.kMinionSprite = 'assets/minion_sprite.png';
-  this.kMinionSpriteNormal = 'assets/minion_sprite_normal.png';
-  this.kBg = 'assets/bg.png';
-  this.kBgNormal = 'assets/bg_normal.png';
+  this.kMinionSprite = 'assets/images/minion_sprite.png';
+  this.kMinionSpriteNormal = 'assets/images/minion_sprite_normal.png';
+  this.kBg = 'assets/images/bg.png';
+  this.kBgNormal = 'assets/images/bg_normal.png';
 
   // camera
   this.mCamera = null;
