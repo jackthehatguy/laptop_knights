@@ -441,6 +441,27 @@ vec2.inverse = function(out, a) {
 };
 
 /**
+ * Rotate a 2D vector (around the z-axis)
+ * @param {vec2} out The receiving vec3
+ * @param {vec2} a The vec2 point to rotate
+ * @param {vec2} b The origin of the rotation
+ * @param {Number} c The angle of rotation
+ * @returns {vec2} out
+ */
+vec2.rotate = function (out, a, c) {
+    var r = [];
+
+    //perform rotation
+    r[0] = a[0] * Math.cos(c) - a[1] * Math.sin(c);
+    r[1] = a[0] * Math.sin(c) + a[1] * Math.cos(c);
+
+    out[0] = r[0];
+    out[1] = r[1];
+
+    return r;
+};
+
+/**
  * Normalize a vec2
  *
  * @param {vec2} out the receiving vector
@@ -485,18 +506,6 @@ vec2.cross = function(out, a, b) {
     out[0] = out[1] = 0;
     out[2] = z;
     return out;
-};
-
-vec2.rotate = function (out, a, c) {
-  var r = [];
-
-  r[0] = a[0]*Math.cos(c) - a[1]*Math.sin(c);
-  r[1] = a[0]*Math.sin(c) + a[1]*Math.cos(c);
-
-  out[0] = r[0];
-  out[1] = r[1];
-
-  return r;
 };
 
 /**
@@ -646,7 +655,7 @@ vec2.forEach = (function() {
  * @returns {String} string representation of the vector
  */
 vec2.str = function (a) {
-    return 'vec2(' + a[0] + ', ' + a[1] + ')';
+    return `vec2(${a[0]}, ${a[1]})`;
 };
 
 if(typeof(exports) !== 'undefined') {
@@ -1284,7 +1293,7 @@ vec3.forEach = (function() {
  * @returns {String} string representation of the vector
  */
 vec3.str = function (a) {
-    return 'vec3(' + a[0] + ', ' + a[1] + ', ' + a[2] + ')';
+    return `vec3(${a[0]}, ${a[1]}, ${a[2]})`;
 };
 
 if(typeof(exports) !== 'undefined') {
@@ -1824,7 +1833,7 @@ vec4.forEach = (function() {
  * @returns {String} string representation of the vector
  */
 vec4.str = function (a) {
-    return 'vec4(' + a[0] + ', ' + a[1] + ', ' + a[2] + ', ' + a[3] + ')';
+    return `vec4(${a[0]}, ${a[1]}, ${a[2]}, ${a[3]})`;
 };
 
 if(typeof(exports) !== 'undefined') {
@@ -2063,7 +2072,7 @@ mat2.scale = function(out, a, v) {
  * @returns {String} string representation of the matrix
  */
 mat2.str = function (a) {
-    return 'mat2(' + a[0] + ', ' + a[1] + ', ' + a[2] + ', ' + a[3] + ')';
+    return `mat2(${a[0]}, ${a[1]}, ${a[2]}, ${a[3]})`;
 };
 
 /**
@@ -2336,8 +2345,8 @@ mat2d.translate = function(out, a, v) {
  * @returns {String} string representation of the matrix
  */
 mat2d.str = function (a) {
-    return 'mat2d(' + a[0] + ', ' + a[1] + ', ' + a[2] + ', ' + 
-                    a[3] + ', ' + a[4] + ', ' + a[5] + ')';
+    return `mat2d(${a[0]}, ${a[1]}, ${a[2]}, `
+            +    `${a[3]}, ${a[4]}, ${a[5]})`;
 };
 
 /**
@@ -2825,9 +2834,9 @@ mat3.normalFromMat4 = function (out, a) {
  * @returns {String} string representation of the matrix
  */
 mat3.str = function (a) {
-    return 'mat3(' + a[0] + ', ' + a[1] + ', ' + a[2] + ', ' + 
-                    a[3] + ', ' + a[4] + ', ' + a[5] + ', ' + 
-                    a[6] + ', ' + a[7] + ', ' + a[8] + ')';
+    return `mat3(${a[0]}, ${a[1]}, ${a[2]}, `
+            +   `${a[3]}, ${a[4]}, ${a[5]}, `
+            +   `${a[6]}, ${a[7]}, ${a[8]})`;
 };
 
 /**
@@ -3736,10 +3745,10 @@ mat4.lookAt = function (out, eye, center, up) {
  * @returns {String} string representation of the matrix
  */
 mat4.str = function (a) {
-    return 'mat4(' + a[0] + ', ' + a[1] + ', ' + a[2] + ', ' + a[3] + ', ' +
-                    a[4] + ', ' + a[5] + ', ' + a[6] + ', ' + a[7] + ', ' +
-                    a[8] + ', ' + a[9] + ', ' + a[10] + ', ' + a[11] + ', ' + 
-                    a[12] + ', ' + a[13] + ', ' + a[14] + ', ' + a[15] + ')';
+    return `mat4(${a[0]}, ${a[1]}, ${a[2]}, ${a[3]}, `
+            +   `${a[4]}, ${a[5]}, ${a[6]}, ${a[7]}, `
+            +   `${a[8]}, ${a[9]}, ${a[10]}, ${a[11]}, `
+            +   `${a[12]}, ${a[13]}, ${a[14]}, ${a[15]})`;
 };
 
 /**
@@ -4280,7 +4289,7 @@ quat.fromMat3 = function(out, m) {
  * @returns {String} string representation of the vector
  */
 quat.str = function (a) {
-    return 'quat(' + a[0] + ', ' + a[1] + ', ' + a[2] + ', ' + a[3] + ')';
+    return `quat(${a[0]}, ${a[1]}, ${a[2]}, ${a[3]})`;
 };
 
 if(typeof(exports) !== 'undefined') {
