@@ -24,6 +24,7 @@ function SpriteAnimateRenderable(myTexture) {
   // current animation state
   this.mCurrentAnimAdvance = -1;
   this.mCurrentElm = 0;
+  this._initAnimation();
 }
 gEngine.Core.inheritPrototype(SpriteAnimateRenderable, SpriteRenderable);
 
