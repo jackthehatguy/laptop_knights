@@ -16,6 +16,7 @@ function Light() {
   this.mDropOff = 1;
   this.mLightType = Light.eLightType.ePointLight;
   this.mIsOn = true;
+  this.mCastShadow = false;
 }
 
 Light.prototype.setColor = function (c) { this.mColor = vec4.clone(c); };
@@ -53,3 +54,6 @@ Light.prototype.getLightType = function () { return this.mLightType; };
 
 Light.prototype.setLightTo = function (isOn) { this.mIsOn = isOn; };
 Light.prototype.isLightOn = function () { return this.mIsOn; };
+
+Light.prototype.isLightCastShadow = function () { return this.mCastShadow; };
+Light.prototype.setLightCastShadowTo = function (on) { this.mCastShadow = on; };

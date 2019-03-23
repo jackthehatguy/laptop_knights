@@ -14,7 +14,8 @@ gEngine.Core = (function() {
     var canvas = document.getElementById(htmlCanvasID);
 
     // get & bind webgl :: store in mGL
-    mGL = canvas.getContext('webgl', {alpha: false}) || canvas.getContext('experimental-webgl', {alpha: false});
+    mGL = canvas.getContext('webgl', {alpha: false, depth: true, stencil: true})
+      || canvas.getContext('experimental-webgl', {alpha: false, depth: true, stencil: true});
 
     // allows transparency w/ textures
     mGL.blendFunc(mGL.SRC_ALPHA, mGL.ONE_MINUS_SRC_ALPHA);
@@ -22,6 +23,10 @@ gEngine.Core = (function() {
 
     // invert img y-axis to match coord space
     mGL.pixelStorei(mGL.UNPACK_FLIP_Y_WEBGL, true);
+
+    // make sure depth testing is enabled
+    mGL.enable(mGL.DEPTH_TEST);
+    mGL.depthFunc(mGL.LEQUAL);
 
     if (mGL === null) {
       document.write('<br /><strong>WebGL is not supported!</strong>');
@@ -31,7 +36,7 @@ gEngine.Core = (function() {
 
   var clearCanvas = function(color) {
     mGL.clearColor(color[0], color[1], color[2], color[3]); // set color
-    mGL.clear(mGL.COLOR_BUFFER_BIT);
+    mGL.clear(mGL.COLOR_BUFFER_BIT | mGL.STENCIL_BUFFER_BIT | mGL.DEPTH_BUFFER_BIT);
   };
 
   var initializeEngineCore = function (htmlCanvasID, myGame) {

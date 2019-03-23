@@ -51,6 +51,7 @@ Camera.prototype.setWCCenter = function (xPos, yPos) {
   this.mCameraState.setCenter(p);
 };
 Camera.prototype.getWCCenter = function () { return this.mCameraState.getCenter(); };
+Camera.prototype.getPosInPixelSpace = function () { return this.mRenderCache.mCameraPosInPixelSpace; };
 
 Camera.prototype.setWCWidth = function (width) { this.mCameraState.setWidth(width); };
 Camera.prototype.getWCWidth = function () { return this.mCameraState.getWidth(); };
@@ -59,9 +60,7 @@ Camera.prototype.getWCWidth = function () { return this.mCameraState.getWidth();
 Camera.prototype.getWCHeight = function () { return this.mCameraState.getWidth() * this.mViewport[Camera.eViewport.eHeight] / this.mViewport[Camera.eViewport.eWidth]; };
 
 Camera.prototype.setViewport = function (viewportArray, bound) {
-  if (bound === undefined) {
-    bound = this.mViewportBound;
-  }
+  if (bound === undefined) bound = this.mViewportBound;
 
   this.mViewport[0] = viewportArray[0] + bound;         // x
   this.mViewport[1] = viewportArray[1] + bound;         // y
@@ -128,9 +127,9 @@ Camera.prototype.setupViewProjection = function () {
 
   mat4.lookAt(
     this.mViewMatrix,
-    [center[0], center[1], 10], // WC center
+    [center[0], center[1], this.kCameraZ],  // WC center
     [center[0], center[1], 0],
-    [0, 1, 0]                   // orientation
+    [0, 1, 0]                               // orientation
   );
 
   // def proj matrix
@@ -186,5 +185,3 @@ Camera.prototype.clampAtBoundary = function (aXform, zone) {
   }
   return status;
 };
-
-Camera.prototype.getPosInPixelSpace = function () { return this.mRenderCache.mCameraPosInPixelSpace; };

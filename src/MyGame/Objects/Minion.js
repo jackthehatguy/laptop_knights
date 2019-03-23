@@ -1,4 +1,4 @@
-function Minion(spriteTexture, normalMap, atX, atY) {
+function Minion(spriteTexture, normalMap, atX, atY, atZ = 2) {
   this.kDelta = (Math.trunc(Math.random() * 3) + 1)/10;
   
   if (normalMap === null) {
@@ -9,6 +9,7 @@ function Minion(spriteTexture, normalMap, atX, atY) {
 
   this.mMinion.setColor([1, 1, 1, 0]);
   this.mMinion.getXform().setPosition(atX, atY);
+  this.mMinion.getXform().setZPos(atZ);
   this.mMinion.getXform().setSize(12, 9.6);
   this.mMinion.setSpriteSequence(
     512,  // top

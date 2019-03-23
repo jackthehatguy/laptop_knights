@@ -17,5 +17,9 @@ Renderable.prototype.getXform = function () { return this.mXform; };
 Renderable.prototype.setColor = function (color) { this.mColor = color };
 Renderable.prototype.getColor = function () { return this.mColor; };
 
-// protected
 Renderable.prototype._setShader = function (s) { this.mShader = s; };
+Renderable.prototype.swapShader = function (s) {
+  let out = this.mShader;
+  this.mShader = s;
+  return out;
+};

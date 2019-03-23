@@ -17,7 +17,6 @@ function MyGame() {
 
   // game objects
   // hero
-  this.mLgtHero = null;
   this.mIllumHero = null;
   
   // minion
@@ -28,6 +27,10 @@ function MyGame() {
 
   this.mLgtIndex = 0;
   this.mLgtRotateTheta = 0;
+
+  this.mBgShadow = null;
+  this.mMinionShadow = null;
+  this.mLgtMinionShadow = null;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -67,23 +70,27 @@ MyGame.prototype.initialize = function () {
   bgR.getXform().setSize(100, 100);
   bgR.getXform().setPosition(50, 35);
   bgR.getMaterial().setSpecular([1, 0, 0, 1]);
-  // this._applyAllLights(bgR);  // in MyGame_Lights.js
-  for (let i = 0; i < this.mGlobalLightSet.mSet.length; i++) bgR.addLight(this.mGlobalLightSet.getLightAt(i));
+  this._applyAllLights(bgR);  // in MyGame_Lights.js
+  // for (let i = 0; i < this.mGlobalLightSet.mSet.length; i++) bgR.addLight(this.mGlobalLightSet.getLightAt(i));
   this.mBg = new GameObject(bgR);
 
   // game objects
-  this.mIllumHero = new Hero(this.kMinionSprite, this.kMinionSpriteNormal, 15, 50);
-  this.mLgtHero = new Hero(this.kMinionSprite, null, 80, 50);
+  this.mIllumHero = new Hero(this.kMinionSprite, this.kMinionSpriteNormal, 20, 30);
   
-  this.mIllumMinion = new Minion(this.kMinionSprite, this.kMinionSpriteNormal, 17, 15);
-  this.mLgtMinion = new Minion(this.kMinionSprite, null, 87, 15);
+  this.mIllumMinion = new Minion(this.kMinionSprite, this.kMinionSpriteNormal, 25, 30);
+  this.mIllumMinion.getXform().incSizeBy(20);
+  this.mLgtMinion = new Minion(this.kMinionSprite, null, 65, 25);
 
-  for (let i = 0; i < this.mGlobalLightSet.mSet.length; i++) {
-    this.mIllumHero.getRenderable().addLight(this.mGlobalLightSet.getLightAt(i));
-    this.mLgtHero.getRenderable().addLight(this.mGlobalLightSet.getLightAt(i));
-    this.mIllumMinion.getRenderable().addLight(this.mGlobalLightSet.getLightAt(i));
-    this.mLgtMinion.getRenderable().addLight(this.mGlobalLightSet.getLightAt(i));
-  }
+  // for (let i = 0; i < this.mGlobalLightSet.numLights(); i++) {
+  //   this.mIllumHero.getRenderable().addLight(this.mGlobalLightSet.getLightAt(i));
+  //   this.mIllumMinion.getRenderable().addLight(this.mGlobalLightSet.getLightAt(i));
+  //   this.mLgtMinion.getRenderable().addLight(this.mGlobalLightSet.getLightAt(i));
+  // }
+  this._applyAllLights(
+    this.mIllumHero.getRenderable(),
+    this.mIllumMinion.getRenderable(),
+    this.mLgtMinion.getRenderable()
+  );
   
   // ? -> extern file
   // text renderables
@@ -100,6 +107,8 @@ MyGame.prototype.initialize = function () {
   this.mSelectedCh = this.mIllumHero;
   this.mMaterialCh = this.mSelectedCh.getRenderable().getMaterial().getDiffuse();
   this.mSelectedChMsg = 'H:';
+
+  this._setupShadow();
 };
 
 /**
@@ -114,13 +123,11 @@ MyGame.prototype._initText = function (font, posX, posY, color, textH) {
 MyGame.prototype.drawCamera = function (camera) {
   camera.setupViewProjection();
 
-  this.mBg.draw(camera);
+  this.mBgShadow.draw(camera);
+  this.mMinionShadow.draw(camera);
+  this.mLgtMinionShadow.draw(camera);
 
-  this.mLgtHero.draw(camera);
   this.mIllumHero.draw(camera);
-  
-  this.mLgtMinion.draw(camera);
-  this.mIllumMinion.draw(camera);
 };
 
 // do **NOT** change any states in this function

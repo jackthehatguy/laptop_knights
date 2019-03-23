@@ -13,5 +13,7 @@ LightRenderable.prototype.draw = function (aCamera) {
   SpriteAnimateRenderable.prototype.draw.call(this, aCamera);
 };
 
+LightRenderable.prototype.numLights = function () { return this.mLights.length; };
+
 LightRenderable.prototype.getLightAt = function (index) { return this.mLights[index]; };
 LightRenderable.prototype.addLight = function (l) { this.mLights.push(l); };

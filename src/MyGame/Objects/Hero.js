@@ -1,6 +1,6 @@
 'use strict';
 
-function Hero(spriteTexture, normalMap, atX, atY) {
+function Hero(spriteTexture, normalMap, atX, atY, atZ = 5) {
   this.kDelta = 0.3;
   if (normalMap !== null) {
     this.mDye = new IllumRenderable(spriteTexture, normalMap);
@@ -9,6 +9,7 @@ function Hero(spriteTexture, normalMap, atX, atY) {
   }
   this.mDye.setColor([1, 1, 1, 0]);
   this.mDye.getXform().setPosition(atX, atY);
+  this.mDye.getXform().setZPos(atZ);
   this.mDye.getXform().setSize(18, 24);
   this.mDye.setElementPixelPositions(0, 120, 0, 180);
   GameObject.call(this, this.mDye);
@@ -29,7 +30,7 @@ Hero.prototype.update = function () {
   if (pressed(keys.A)) xform.incXPosBy(-this.kDelta);
   if (pressed(keys.D)) xform.incXPosBy(this.kDelta);
   if (clicked(keys.F)) {
-    let coords = xform.getPosition();
-    console.log({x: coords[0], y: coords[1]});
+    let coords = xform.get3DPosition();
+    console.log({x: coords[0], y: coords[1], z: coords[2]});
   }
 };
