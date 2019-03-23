@@ -18,19 +18,26 @@ function SpriteShader(vertexShaderPath, fragmentShaderPath) {
 }
 gEngine.Core.inheritPrototype(SpriteShader, TextureShader);
 
+SpriteShader.prototype.activateShader = function (pixelColor, aCamera) {
+  SimpleShader.prototype.activateShader.call(this, pixelColor, aCamera);
+
+  var gl = gEngine.Core.getGL();
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.mTexCoordBuffer);
+  gl.vertexAttribPointer(
+    this.mShaderTextureCoordAttribute,
+    2,
+    gl.FLOAT,
+    false,
+    0,
+    0
+  );
+  gl.enableVertexAttribArray(this.mShaderTextureCoordAttribute);
+};
+
 SpriteShader.prototype.setTextureCoordinate = function (texCoord) {
   var gl = gEngine.Core.getGL();
   gl.bindBuffer(gl.ARRAY_BUFFER, this.mTexCoordBuffer);
   gl.bufferSubData(gl.ARRAY_BUFFER, 0, new Float32Array(texCoord));
-};
-
-SpriteShader.prototype.activateShader = function (pixelColor, vpMatrix) {
-  SimpleShader.prototype.activateShader.call(this, pixelColor, vpMatrix);
-
-  var gl = gEngine.Core.getGL();
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.mTexCoordBuffer);
-  gl.vertexAttribPointer(this.mShaderTextureCoordAttribute, 2, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray(this.mShaderTextureCoordAttribute);
 };
 
 SpriteShader.prototype.cleanUp = function () {
@@ -39,3 +46,7 @@ SpriteShader.prototype.cleanUp = function () {
 
   SimpleShader.prototype.cleanUp.call(this);
 };
+
+SpriteShader.prototype.setLights = function (l) { };
+
+SpriteShader.prototype.setMaterialAndCameraPos = function (m, p) { };
