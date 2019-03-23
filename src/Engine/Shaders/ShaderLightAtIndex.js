@@ -5,17 +5,20 @@ function ShaderLightAtIndex(shader, index) {
 ShaderLightAtIndex.prototype._setShaderReferences = function (aLightShader, index) {
   var gl = gEngine.Core.getGL();
 
-  this.mColorRef =      gl.getUniformLocation(aLightShader, `uLights[${index}].Color`);
-  this.mPosRef =        gl.getUniformLocation(aLightShader, `uLights[${index}].Position`);
-  this.mDirRef =        gl.getUniformLocation(aLightShader, `uLights[${index}].Direction`);
-  this.mNearRef =       gl.getUniformLocation(aLightShader, `uLights[${index}].Near`);
-  this.mFarRef =        gl.getUniformLocation(aLightShader, `uLights[${index}].Far`);
-  this.mInnerRef =      gl.getUniformLocation(aLightShader, `uLights[${index}].CosInner`);
-  this.mOuterRef =      gl.getUniformLocation(aLightShader, `uLights[${index}].CosOuter`);
-  this.mIntensityRef =  gl.getUniformLocation(aLightShader, `uLights[${index}].Intensity`);
-  this.mDropOffRef =    gl.getUniformLocation(aLightShader, `uLights[${index}].DropOff`);
-  this.mIsOnRef =       gl.getUniformLocation(aLightShader, `uLights[${index}].IsOn`);
-  this.mLightTypeRef =  gl.getUniformLocation(aLightShader, `uLights[${index}].LightType`);
+  // Spencer added this bc he was tired of looking at all of the typing
+  let gul = attribute => gl.getUniformLocation(aLightShader, `uLights[${index}].${attribute}`);
+
+  this.mColorRef = gul('Color');
+  this.mPosRef = gul('Position');
+  this.mDirRef = gul('Direction');
+  this.mNearRef = gul('Near');
+  this.mFarRef = gul('Far');
+  this.mInnerRef = gul('CosInner');
+  this.mOuterRef = gul('CosOuter');
+  this.mIntensityRef = gul('Intensity');
+  this.mDropOffRef = gul('DropOff');
+  this.mIsOnRef = gul('IsOn');
+  this.mLightTypeRef = gul('LightType');
 };
 
 ShaderLightAtIndex.prototype.loadToShader = function (aCamera, aLight) {

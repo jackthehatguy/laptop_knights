@@ -93,11 +93,7 @@ vec4 ShadedResult(Light lgt, vec3 N, vec4 textureMapColor) {
     L = lgt.Position.xyz - gl_FragCoord.xyz;
     dist = length(L);
     L /= dist;
-  }
-  if (lgt.LightType == eSpotLight) {
-    aAtten = AngularDropOff(lgt, lgtDir, L);
-  }
-  if (lgt.LightType != eDirectionalLight) {
+    if (lgt.LightType == eSpotLight) aAtten = AngularDropOff(lgt, lgtDir, L);
     dAtten = DistanceDropOff(lgt, dist);
   }
   vec4 diffuse = DiffuseResult(N, L, textureMapColor);

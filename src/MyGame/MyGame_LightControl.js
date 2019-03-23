@@ -4,7 +4,7 @@ MyGame.prototype._lightControl = function () {
   var
     dirDelta = 0.005,
     delta = 0.2,
-    msg = ``;
+    msg = '';
 
   this._selectLight();
 
