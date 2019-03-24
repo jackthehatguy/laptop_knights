@@ -1,6 +1,6 @@
 "use strict";
 
-var gEngine = gEngine || { };
+var gEngine = gEngine || {};
 
 gEngine.GameLoop = (function () {
   var kFPS = 60;          // frames per second
@@ -22,7 +22,7 @@ gEngine.GameLoop = (function () {
   var _runLoop = function () {
     if (mIsLoopRunning) {
       // a: set up for next call to _runLoop and update input!
-      requestAnimationFrame( function () { _runLoop.call(mMyGame); });
+      requestAnimationFrame(function () { _runLoop.call(mMyGame); });
 
       // b: compute elapsed time since last RunLoop was executed
       mCurrentTime = Date.now();

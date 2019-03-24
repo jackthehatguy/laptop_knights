@@ -1,6 +1,6 @@
 'use strict';
 
-function ShadowReceiver (theReceiverObject) {
+function ShadowReceiver(theReceiverObject) {
   this.kShadowStencilBit = 0x01;
   this.kShadowStencilMask = 0xFF;
   this.mReceiverShader = gEngine.DefaultResources.getShadowReceiverShader();

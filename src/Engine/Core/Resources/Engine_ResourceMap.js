@@ -1,6 +1,6 @@
 "use strict";
 
-var gEngine = gEngine || { };
+var gEngine = gEngine || {};
 
 gEngine.ResourceMap = (function () {
   var MapEntry = function (rName) {

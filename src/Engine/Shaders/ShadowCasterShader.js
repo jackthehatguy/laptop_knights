@@ -1,6 +1,6 @@
 'use strict';
 
-function ShadowCasterShader (vertexShaderPath, fragmentShaderPath) {
+function ShadowCasterShader(vertexShaderPath, fragmentShaderPath) {
   SpriteShader.call(this, vertexShaderPath, fragmentShaderPath);
 
   this.mLight = null;

@@ -1,21 +1,21 @@
 'use strict';
 
-var gEngine = gEngine || { }; // no redef
+var gEngine = gEngine || {}; // no redef
 
-gEngine.Core = (function() {
+gEngine.Core = (function () {
   // context
   var mGL = null;
 
   // getter
-  var getGL = function() { return mGL; };
+  var getGL = function () { return mGL; };
 
   // int WebGL, vertex buffer & compile shaders
-  var _initializeWebGL = function(htmlCanvasID) {
+  var _initializeWebGL = function (htmlCanvasID) {
     var canvas = document.getElementById(htmlCanvasID);
 
     // get & bind webgl :: store in mGL
-    mGL = canvas.getContext('webgl', {alpha: false, depth: true, stencil: true})
-      || canvas.getContext('experimental-webgl', {alpha: false, depth: true, stencil: true});
+    mGL = canvas.getContext('webgl', { alpha: false, depth: true, stencil: true })
+      || canvas.getContext('experimental-webgl', { alpha: false, depth: true, stencil: true });
 
     // allows transparency w/ textures
     mGL.blendFunc(mGL.SRC_ALPHA, mGL.ONE_MINUS_SRC_ALPHA);
@@ -34,7 +34,7 @@ gEngine.Core = (function() {
     }
   };
 
-  var clearCanvas = function(color) {
+  var clearCanvas = function (color) {
     mGL.clearColor(color[0], color[1], color[2], color[3]); // set color
     mGL.clear(mGL.COLOR_BUFFER_BIT | mGL.STENCIL_BUFFER_BIT | mGL.DEPTH_BUFFER_BIT);
   };

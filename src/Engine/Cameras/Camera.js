@@ -150,8 +150,8 @@ Camera.prototype.setupViewProjection = function () {
 
   // compute and cache per-render info
   this.mRenderCache.mWCToPixelRatio = this.mViewport[Camera.eViewport.eWidth] / this.getWCWidth();
-  this.mRenderCache.mCameraOrgX = center[0] - (this.getWCWidth()/2);
-  this.mRenderCache.mCameraOrgY = center[1] - (this.getWCHeight()/2);
+  this.mRenderCache.mCameraOrgX = center[0] - (this.getWCWidth() / 2);
+  this.mRenderCache.mCameraOrgY = center[1] - (this.getWCHeight() / 2);
   var p = this.wcPosToPixel(this.getWCCenter());
   this.mRenderCache.mCameraPosInPixelSpace[0] = p[0];
   this.mRenderCache.mCameraPosInPixelSpace[1] = p[1];

@@ -1,6 +1,6 @@
 "use strict";
 
-var gEngine = gEngine || { };
+var gEngine = gEngine || {};
 
 gEngine.AudioClips = (function () {
   var mAudioContext = null;

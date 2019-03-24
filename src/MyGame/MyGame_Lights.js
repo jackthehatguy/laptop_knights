@@ -2,7 +2,7 @@
 
 MyGame.prototype._createALight = function (type, pos, dir, color, n, f, inner, outer, intensity, dropOff) {
   var light = new Light();
-  
+
   light.setLightType(type);
   light.setColor(color);
   light.setXPos(pos[0]);

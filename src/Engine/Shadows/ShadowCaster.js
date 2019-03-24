@@ -1,6 +1,6 @@
 'use strict';
 
-function ShadowCaster (shadowCaster, shadowReceiver) {
+function ShadowCaster(shadowCaster, shadowReceiver) {
   this.mShadowCaster = shadowCaster;
   this.mShadowReceiver = shadowReceiver;
   this.mCasterShader = gEngine.DefaultResources.getShadowCasterShader();
@@ -48,7 +48,7 @@ ShadowCaster.prototype._computeShadowGeometry = function (aLight) {
     vec3.normalize(lgtToCaster, lgtToCaster);
 
     distToReceiver = Math.abs(receiverToCasterZ / lgtToCaster[2]);
-    scale = Math.abs(1/lgtToCaster[2]);
+    scale = Math.abs(1 / lgtToCaster[2]);
   } else {
     // region 3: projection from a point
     vec3.sub(lgtToCaster, cxf.get3DPosition(), aLight.getPosition());
@@ -62,10 +62,10 @@ ShadowCaster.prototype._computeShadowGeometry = function (aLight) {
       return false;
     }
 
-    
+
     distToCaster = vec3.length(lgtToCaster);
-    vec3.scale(lgtToCaster, lgtToCaster, 1/distToCaster);
-    
+    vec3.scale(lgtToCaster, lgtToCaster, 1 / distToCaster);
+
     distToReceiver = Math.abs(receiverToCasterZ / lgtToCaster[2]);
     scale = (distToCaster + (distToReceiver * this.kReceiverDistanceFudge)) / distToCaster;
   }

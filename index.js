@@ -24,7 +24,7 @@ app.get('/', (req, res, next) => {
 });
 
 app.get('/assets/:file', (req, res, next) => {
-  const {file} = req.params,
+  const { file } = req.params,
     options = {
       root: `${__dirname}/progress/assets/`,
       dotfiles: 'deny',
@@ -44,7 +44,7 @@ app.get('/assets/:file', (req, res, next) => {
 });
 
 app.get('/assets/:type/:file', (req, res, next) => {
-  const {type, file} = req.params,
+  const { type, file } = req.params,
     options = {
       root: `${__dirname}/assets/${type}/`,
       dotfiles: 'deny',
@@ -64,7 +64,7 @@ app.get('/assets/:type/:file', (req, res, next) => {
 });
 
 app.get('/src/:sector/:file', (req, res, next) => {
-  const {sector, file} = req.params,
+  const { sector, file } = req.params,
     options = {
       root: `${__dirname}/src/${sector}/`,
       dotfiles: 'deny',
@@ -84,7 +84,7 @@ app.get('/src/:sector/:file', (req, res, next) => {
 });
 
 app.get('/src/:sector/:folder/:file', (req, res, next) => {
-  const {sector, folder, file} = req.params,
+  const { sector, folder, file } = req.params,
     options = {
       root: `${__dirname}/src/${sector}/${folder}/`,
       dotfiles: 'deny',
@@ -104,7 +104,7 @@ app.get('/src/:sector/:folder/:file', (req, res, next) => {
 });
 
 app.get('/src/:sector/:folder/:subfolder/:file', (req, res, next) => {
-  const {sector, subfolder, folder, file} = req.params,
+  const { sector, subfolder, folder, file } = req.params,
     options = {
       root: `${__dirname}/src/${sector}/${folder}/${subfolder}/`,
       dotfiles: 'deny',

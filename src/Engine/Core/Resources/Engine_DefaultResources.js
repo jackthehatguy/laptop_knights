@@ -1,15 +1,15 @@
 'use strict';
 
-var gEngine = gEngine || { };
+var gEngine = gEngine || {};
 
 gEngine.DefaultResources = (function () {
   // Global ambient color
   var mGlobalAmbientColor = [0.5, 0.5, 0.5, 1];
   var mGlobalAmbientIntensity = 1;
-  var getGlobalAmbientIntensity = function() { return mGlobalAmbientIntensity; };
-  var setGlobalAmbientIntensity = function(v) { mGlobalAmbientIntensity = v; };
-  var getGlobalAmbientColor = function() { return mGlobalAmbientColor; };
-  var setGlobalAmbientColor = function(v) { mGlobalAmbientColor = vec4.fromValues(v[0], v[1], v[2], v[3]); };
+  var getGlobalAmbientIntensity = function () { return mGlobalAmbientIntensity; };
+  var setGlobalAmbientIntensity = function (v) { mGlobalAmbientIntensity = v; };
+  var getGlobalAmbientColor = function () { return mGlobalAmbientColor; };
+  var setGlobalAmbientColor = function (v) { mGlobalAmbientColor = vec4.fromValues(v[0], v[1], v[2], v[3]); };
 
   // simple shader
   const kSimpleVS = 'src/GLSLShaders/SimpleVS.glsl';
@@ -72,7 +72,7 @@ gEngine.DefaultResources = (function () {
       tfl = gEngine.TextFileLoader,
       loadTextFile = tfl.loadTextFile,
       eTextFile = tfl.eTextFileType.eTextFile;
-    
+
     /*
     * FIXME:
     *   Why do I have to pass in the enum file type?

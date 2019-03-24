@@ -4,7 +4,7 @@ function LightShader(vertexShaderPath, fragmentShaderPath) {
   SpriteShader.call(this, vertexShaderPath, fragmentShaderPath);
 
   this.mLights = null;
-  
+
   // /!\ must **ALWAYS** correspond to same var in LightFS.glsl
   this.kGLSLuLightArraySize = 4;
   this.mShaderLights = [];

@@ -26,7 +26,7 @@ MyGame.prototype.materialControl = function () {
   if (kPressed(keys.O)) mat.setShininess(mat.getShininess() + delta);
   if (kPressed(keys.P)) mat.setShininess(mat.getShininess() - delta);
 
-  msg += `n(${mat.getShininess().toFixed(2)})` + 
+  msg += `n(${mat.getShininess().toFixed(2)})` +
     this._printVec3('D', mat.getDiffuse()) +
     this._printVec3('S', mat.getSpecular()) +
     this._printVec3('A', mat.getAmbient());

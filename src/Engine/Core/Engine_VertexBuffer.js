@@ -1,9 +1,9 @@
 'use strict';
 
-var gEngine = gEngine || { };
+var gEngine = gEngine || {};
 
 // VertexBuffer obj
-gEngine.VertexBuffer = (function() {
+gEngine.VertexBuffer = (function () {
   // ref vert pos for squ in context
   var mSquareVertexBuffer = null;
 
@@ -26,7 +26,7 @@ gEngine.VertexBuffer = (function() {
     0.0, 0.0
   ];
 
-  var initialize = function() {
+  var initialize = function () {
     var gl = gEngine.Core.getGL();
 
     // a: alloc and store vertext pos in webGL
@@ -50,7 +50,7 @@ gEngine.VertexBuffer = (function() {
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoordinates), gl.STATIC_DRAW);
   };
 
-  var getGLVertexRef = function() { return mSquareVertexBuffer; };
+  var getGLVertexRef = function () { return mSquareVertexBuffer; };
   var getGLTexCoordRef = function () { return mTextureCoordBuffer; };
 
   var cleanUp = function () {

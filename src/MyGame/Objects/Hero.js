@@ -31,6 +31,6 @@ Hero.prototype.update = function () {
   if (pressed(keys.D)) xform.incXPosBy(this.kDelta);
   if (clicked(keys.F)) {
     let coords = xform.get3DPosition();
-    console.log({x: coords[0], y: coords[1], z: coords[2]});
+    console.log({ x: coords[0], y: coords[1], z: coords[2] });
   }
 };

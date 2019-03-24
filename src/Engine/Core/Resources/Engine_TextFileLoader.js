@@ -1,4 +1,4 @@
-var gEngine = gEngine || { };
+var gEngine = gEngine || {};
 
 gEngine.TextFileLoader = (function () {
   var eTextFileType = Object.freeze({
@@ -34,7 +34,7 @@ gEngine.TextFileLoader = (function () {
         } else {
           fileContent = req.responseText;
         }
-        gEngine.ResourceMap.asyncLoadCompleted(fileName,fileContent);
+        gEngine.ResourceMap.asyncLoadCompleted(fileName, fileContent);
 
         if ((callbackFunction !== null) && (callbackFunction !== undefined)) callbackFunction(fileName);
       };

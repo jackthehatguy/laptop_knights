@@ -17,7 +17,7 @@ function CharacterInfo() {
   this.mCharAspectRatio = 1;
 }
 
-var gEngine = gEngine || { };
+var gEngine = gEngine || {};
 
 gEngine.Fonts = (function () {
   var loadFont = function (fontName) {

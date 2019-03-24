@@ -1,6 +1,6 @@
 function Minion(spriteTexture, normalMap, atX, atY, atZ = 2) {
-  this.kDelta = (Math.trunc(Math.random() * 3) + 1)/10;
-  
+  this.kDelta = (Math.trunc(Math.random() * 3) + 1) / 10;
+
   if (normalMap === null) {
     this.mMinion = new LightRenderable(spriteTexture);
   } else {
@@ -20,8 +20,8 @@ function Minion(spriteTexture, normalMap, atX, atY, atZ = 2) {
     0     // padding
   );
   this.mMinion.setAnimationType(SpriteAnimateRenderable.eAnimationType.eAnimateSwing);
-  this.mMinion.setAnimationSpeed(30/(this.kDelta*10));
-  
+  this.mMinion.setAnimationSpeed(30 / (this.kDelta * 10));
+
   GameObject.call(this, this.mMinion);
 }
 gEngine.Core.inheritPrototype(Minion, GameObject);
@@ -34,8 +34,8 @@ Minion.prototype.update = function () {
   xform.incXPosBy(-this.kDelta);
 
   if (xform.getXPos() < -5) {
-    this.kDelta = (Math.trunc(Math.random() * 3) + 1)/10;
-    this.mMinion.setAnimationSpeed(30/(this.kDelta*10));
+    this.kDelta = (Math.trunc(Math.random() * 3) + 1) / 10;
+    this.mMinion.setAnimationSpeed(30 / (this.kDelta * 10));
     xform.setXPos(105);
     xform.setYPos(63 * Math.random() + 6);
   }

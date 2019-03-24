@@ -1,13 +1,13 @@
 "use strict";
 
-var gEngine = gEngine || { };
+var gEngine = gEngine || {};
 
 gEngine.Input = (function () {
   var kKeys = {
     // etc
     Esc: 27,
     Space: 32,
-    
+
     // arrows
     Left: 37,
     Up: 38,

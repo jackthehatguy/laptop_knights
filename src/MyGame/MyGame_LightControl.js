@@ -12,7 +12,7 @@ MyGame.prototype._lightControl = function () {
     lgt = this.mGlobalLightSet.getLightAt(this.mLgtIndex),
     p = lgt.getPosition(),
     d = lgt.getDirection();
-  
+
   let
     input = gEngine.Input,
     keys = input.keys,
@@ -68,7 +68,7 @@ MyGame.prototype._lightControl = function () {
       lgt.setZPos(p[2] - delta);
     }
   }
-  
+
   // Radius
   if (kpressed(keys.C)) lgt.setInner(lgt.getInner() + (delta * 0.01));
   if (kpressed(keys.V)) lgt.setInner(lgt.getInner() - (delta * 0.01));
