@@ -71,27 +71,28 @@ playing as the bombardier.
   * specular reflection
   * materials
   * light source types
+  * shadow simulation
 
 ### Etc
 * semantic web elements to allow for more descriptive external linking
 * discord webhooks to keep the dev server up to date
 
 ## What We Are Working On
-### Game Engine <em title="matches book section">v0.8.7</em>
-* shadow simulation
+### Game Engine <em title="matches book section">v0.9.1</em>
+* rigid shape bounds
 
 ## What We Are Doing Next
 ### Game Engine
-* physics
-* detecting collisions
 * resolving collisions
 * particle system
 * particle emitters
 
 ## TODO
+* __allow for psuedo orthographic projection__
 * __^ -> ES6 and Spencer's standards__
 * __reduce load by moving functionality to same files__
 * __$ README__
+* __!!! refactor !!!__
 * ? ~ SceneFileParser -> JSON
 * ? use newest version of gl-matrix.js || ? build new library
 * ? use the electron stack as a container

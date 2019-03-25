@@ -4,111 +4,27 @@ var app = express();
 const PORT = 8012;
 
 app.get('/', (req, res, next) => {
-  res.redirect('/progress');
-});
-
-app.get('/ttkC', (req, res, next) => {
-  const file = 'TabletopKnightsCover.jpg',
+  const
     options = {
-      root: `${__dirname}`,
+      root: `${__dirname}/`,
       dotfiles: 'deny',
       headers: {
         'x-timestamp': Date.now(),
         'x-sent': true
       }
     };
-  res.sendFile(file, options, err => {
+  res.sendFile(file = 'index.html', options, err => {
     if (err) {
       console.log(err);
       next();
     } else {
-      console.log(`Sent: ${file}`);
-    }
-  });
-});
-
-app.get('/progress', (req, res, next) => {
-  const file = 'index.html',
-    options = {
-      root: `${__dirname}/progress/`,
-      dotfiles: 'deny',
-      headers: {
-        'x-timestamp': Date.now(),
-        'x-sent': true
-      }
-    };
-  res.sendFile(file, options, err => {
-    if (err) {
-      console.log(err);
-      next();
-    } else {
-      console.log(`Sent: ${file}`);
-    }
-  });
-});
-
-app.get('/workshop', (req, res, next) => {
-  const file = 'index.html',
-    options = {
-      root: `${__dirname}/workshop/`,
-      dotfiles: 'deny',
-      headers: {
-        'x-timestamp': Date.now(),
-        'x-sent': true
-      }
-    };
-  res.sendFile(file, options, err => {
-    if (err) {
-      console.log(err);
-      next();
-    } else {
-      console.log(`Sent: ${file}`);
-    }
-  });
-});
-
-app.get('/workshop/:file', (req, res, next) => {
-  const {file} = req.params,
-    options = {
-      root: `${__dirname}/workshop/`,
-      dotfiles: 'deny',
-      headers: {
-        'x-timestamp': Date.now(),
-        'x-sent': true
-      }
-    };
-  res.sendFile(file, options, err => {
-    if (err) {
-      console.log(err);
-      next();
-    } else {
-      console.log(`Sent: ${file}`);
-    }
-  });
-});
-
-app.get('/pierre/:file', (req, res, next) => {
-  const {file} = req.params,
-    options = {
-      root: `${__dirname}/workshop/pierre/`,
-      dotfiles: 'deny',
-      headers: {
-        'x-timestamp': Date.now(),
-        'x-sent': true
-      }
-    };
-  res.sendFile(file, options, err => {
-    if (err) {
-      console.log(err);
-      next();
-    } else {
-      console.log(`Sent: ${file}`);
+      console.log(`sent: ${file}`);
     }
   });
 });
 
 app.get('/assets/:file', (req, res, next) => {
-  const {file} = req.params,
+  const { file } = req.params,
     options = {
       root: `${__dirname}/progress/assets/`,
       dotfiles: 'deny',
@@ -128,9 +44,9 @@ app.get('/assets/:file', (req, res, next) => {
 });
 
 app.get('/assets/:type/:file', (req, res, next) => {
-  const {type, file} = req.params,
+  const { type, file } = req.params,
     options = {
-      root: `${__dirname}/progress/assets/${type}/`,
+      root: `${__dirname}/assets/${type}/`,
       dotfiles: 'deny',
       headers: {
         'x-timestamp': Date.now(),
@@ -148,9 +64,9 @@ app.get('/assets/:type/:file', (req, res, next) => {
 });
 
 app.get('/src/:sector/:file', (req, res, next) => {
-  const {sector, file} = req.params,
+  const { sector, file } = req.params,
     options = {
-      root: `${__dirname}/progress/src/${sector}/`,
+      root: `${__dirname}/src/${sector}/`,
       dotfiles: 'deny',
       headers: {
         'x-timestamp': Date.now(),
@@ -168,9 +84,9 @@ app.get('/src/:sector/:file', (req, res, next) => {
 });
 
 app.get('/src/:sector/:folder/:file', (req, res, next) => {
-  const {sector, folder, file} = req.params,
+  const { sector, folder, file } = req.params,
     options = {
-      root: `${__dirname}/progress/src/${sector}/${folder}/`,
+      root: `${__dirname}/src/${sector}/${folder}/`,
       dotfiles: 'deny',
       headers: {
         'x-timestamp': Date.now(),
@@ -188,9 +104,9 @@ app.get('/src/:sector/:folder/:file', (req, res, next) => {
 });
 
 app.get('/src/:sector/:folder/:subfolder/:file', (req, res, next) => {
-  const {sector, subfolder, folder, file} = req.params,
+  const { sector, subfolder, folder, file } = req.params,
     options = {
-      root: `${__dirname}/progress/src/${sector}/${folder}/${subfolder}/`,
+      root: `${__dirname}/src/${sector}/${folder}/${subfolder}/`,
       dotfiles: 'deny',
       headers: {
         'x-timestamp': Date.now(),
